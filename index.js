@@ -1899,7 +1899,7 @@ loaded_h_0(function (_) {
     else {
       var g = getCellFromPixelPosition(a, b, c),
       clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
-      chording = chording || (digging && isCellDug(a, g))
+      chording = chording || (digging && isCellDug(a, g) && a.startedGame)
       if (g !== null) {
         a.isMobile()
           ? ((digging = false),
