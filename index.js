@@ -1899,6 +1899,7 @@ loaded_h_0(function (_) {
     else {
       var g = getCellFromPixelPosition(a, b, c),
       clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
+      chording = chording || (digging && isCellDug(a, g))
       if (g !== null) {
         a.isMobile()
           ? ((digging = false),
@@ -1930,15 +1931,15 @@ loaded_h_0(function (_) {
                         a.Ma === null &&
                         a.Ha === null &&
                         tPE(a)))
-          : (chording || (digging && flagging)) && !a.powerup
-            ? chordCells(a, g)
+          : (a.bossIntro
+                  ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
+                  : true) && ((chording || (digging && flagging)) && !a.powerup
+            ? (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : chordCells(a, g))
             : flagging
               ? placeFlag(a, g)
               : digging &&
-                (a.bossIntro
-                  ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
-                  : true) &&
-                (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g));
+                
+                (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g)));
         if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 8 : 0) && !a.Ij) {
           a.lastTenClicked = a.Mb;
           a.tenTimer = 0;
@@ -1989,6 +1990,10 @@ loaded_h_0(function (_) {
     );
   };
   chordCells = function (a, b) {
+    if (a.oa[b.x][b.y].powerup) {
+      collectPowerup(a, b);
+      return;
+    }
     if (
       isCellInGrid(a, b) &&
       a.oa[b.x][b.y].cellDug &&
