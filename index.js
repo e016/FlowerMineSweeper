@@ -1476,7 +1476,7 @@ loaded_h_0(function (_) {
       var b = a.totalMineCount - a.flagCount,
         time = getTimerValue(a.maxTime ? a.maxTime - a.Mb : a.Mb);
       a.Ya("coins").el().style.display = a.adventure ? "" : "hidden"
-      _.ln(document.getElementById("livesCounter"), a.lives.toString())
+      _.ln(document.getElementById("livesCounter"), Math.max(a.lives,0).toString())
       document.getElementById("timerDiv").style.background = a.maxTime
         ? "red"
         : "";
@@ -3656,11 +3656,13 @@ loaded_h_0(function (_) {
         }
         if (this.ten && this.tenTimer > 10000 && !this.Ij && this.startedGame) {
           this.lives = 0;
-          let x = this.oa.findIndex((col) => col.some((cell) => cell.isMine)),
-          y = this.oa[x].findIndex((cell) => cell.isMine);
-          console.log(x, y)
-          openCell(this, new _.Td(x, y), true);
+          let x = this.oa.findIndex((col) => col.some((cell) => cell.isMine));
+          if (x > -1) {
+            let y = this.oa[x].findIndex((cell) => cell.isMine);
+            openCell(this, new _.Td(x, y), true);
+          }
           endGame(this);
+            
         }
         extraSounds.TEN_GROW.volume = Math.min(Math.max((this.tenTimer - 5000) / 5000, 0), 1);
         if (this.nine && this.Mb > this.maxTime && !centerCell.isMine) {
