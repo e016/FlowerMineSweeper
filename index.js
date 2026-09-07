@@ -1940,7 +1940,7 @@ loaded_h_0(function (_) {
               : digging &&
                 
                 (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g)));
-        if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 8 : 0) && !a.Ij) {
+        if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) {
           a.lastTenClicked = a.Mb;
           a.tenTimer = 0;
           a.didWin = true;
@@ -2230,17 +2230,17 @@ loaded_h_0(function (_) {
     );
   };
   countOpenCells = function (a) {
-    var b = 0;
+    var openCells = 0;
     for (let c = 0; c < a.Aa.width; c++)
       for (let d = 0; d < a.Aa.height; d++) {
         let isPartOfNine = isTileNine(a, new _.Td(c, d)) || isTileAdjacentNine(a, new _.Td(c, d)),
         isMine = a.oa[c][d].isMine,
         cellDug = a.oa[c][d].cellDug;
         if (isPartOfNine ? (isMine) : (!cellDug || isMine)) {
-          b++;
+          openCells++;
         }
       };
-    return b;
+    return openCells;
   };
   endGame = function (a) {
     a.didWin
