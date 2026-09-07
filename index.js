@@ -2991,19 +2991,39 @@ loaded_h_0(function (_) {
         drawCellPart(a, b, "MINE", tile);
         break;
       case "MINE":
-        ((a.context.fillStyle = darkenColor(tile.color, 0.35)),
+        a.context.fillStyle = darkenColor(tile.color, 0.35);
           tile.mineValue < 0 &&
-            (a.context.fillStyle = darkenColor(tile.color, -0.35)),
-          a.context.beginPath(),
-          a.context.arc(
-            b.x * a.cellSize + a.cellSize / 2,
-            b.y * a.cellSize + a.cellSize / 2,
-            a.cellSize / 4,
-            0,
-            2 * Math.PI,
-            false,
-          ),
-          a.context.fill());
+            (a.context.fillStyle = darkenColor(tile.color, -0.35));
+          a.context.beginPath();
+           if (tile.mineValue === 2) {
+            a.context.arc(
+              b.x * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
+              b.y * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
+              a.cellSize / 4,
+              0,
+              2 * Math.PI,
+              false,
+            );
+            a.context.arc(
+              b.x * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
+              b.y * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
+              a.cellSize / 4,
+              0,
+              2 * Math.PI,
+              false,
+            );
+          } else {
+            a.context.arc(
+              b.x * a.cellSize + a.cellSize / 2,
+              b.y * a.cellSize + a.cellSize / 2,
+              a.cellSize / 4,
+              0,
+              2 * Math.PI,
+              false,
+            );
+          }
+          a.context.fill();
+        break;
     }
     a.Ba &&
       a.Ba.equals(b) &&
