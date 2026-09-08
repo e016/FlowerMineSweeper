@@ -72944,7 +72944,7 @@ Dual licensed under the MIT and GPL licenses.
     YvE = function() {
         return {
             Authorization: _.J9a([], !0),
-            "X-Goog-Api-Key": "AIzaSyBwQcjgmXUAsw5r4FZXO5t8_EZ_aUm_TGE",
+            "X-Goog-Api-Key": "",
             "X-Goog-AuthUser": _.vm(_.wd("QrtxK"), "0"),
             "X-Goog-Encode-Response-If-Executable": "base64"
         }
@@ -73252,7 +73252,7 @@ Dual licensed under the MIT and GPL licenses.
             try {
                 let h = this.Aa(), k = {
                     auth: {
-                        apiKey: "AIzaSyBwQcjgmXUAsw5r4FZXO5t8_EZ_aUm_TGE",
+                        apiKey: "",
                         FW: !0
                     },
                     keepalive: h.kind === "url",
