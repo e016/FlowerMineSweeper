@@ -3671,7 +3671,7 @@ loaded_h_0(function (_) {
         this.startedGame
           ? this.Ij || ((this.Mb = this.Ce + (a - this.startTime)))
           : (this.startTime = a);
-        if ((this.startedGame || this.bossIntro) && this.ten && !this.Ij) {
+        if (this.ten && !this.Ij && this.startedGame && !this.didWin) {
           this.tenTimer += ((this.Aa.width * this.Aa.height) / (countOpenCells(this))) * 10;
         }
         if (this.ten && this.tenTimer > 10000 && !this.Ij && this.startedGame) {
