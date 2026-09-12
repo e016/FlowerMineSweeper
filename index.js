@@ -1069,6 +1069,8 @@ loaded_h_0(function (_) {
       DIG_REVEAL_ELEVEN: new Audio("audio/eleven.wav"),
       RESET_TEN: new Audio("audio/reset.ogg"),
       TEN_GROW: new Audio("audio/ten-grow.mp3"),
+
+      NINE_INTRO: new Audio("audio/nine-intro.mp3")
     };
     extraSounds.TEN_GROW.loop = true;
 
@@ -2037,17 +2039,19 @@ loaded_h_0(function (_) {
       cellCoordinate = new _.Td(centerX, centerY);
 
     if (number == 9) {
+      extraSounds.NINE_INTRO.currentTime = 0;
+      //extraSounds.NINE_INTRO.play();
       let neighbors = getRealCellNeighbors(a, cellCoordinate);
       a.ninePosition = new _.Td(centerX, centerY);
       neighbors.forEach((c) => {
         a.oa[c.x][c.y].isMine = true;
         a.oa[c.x][c.y].mineValue = 1;
         a.oa[c.x][c.y].isBossTile = true;
-        setTimeout(() => openCell(a, c), Math.random() * 3000 + 1000);
+        setTimeout(() => openCell(a, c), Math.random() * 4000 + 2000);
         setTimeout(() => {
           a.bossIntro = false;
           a.maxTime = 199000;
-        }, 4000);
+        }, 4000 + 2000);
       });
     } else if (number == 10) {
       a.tenPosition = new _.Td(
@@ -3610,6 +3614,7 @@ loaded_h_0(function (_) {
       return this.reset();
     }
     resetState() {
+      extraSounds.NINE_INTRO.pause();
       extraSounds.TEN_GROW.pause();
       this.powerups = this.adventure ? this.adventure.powerups : [];
       this.coins = this.adventure ? this.adventure.coins : 0;
