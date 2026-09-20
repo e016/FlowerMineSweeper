@@ -1604,6 +1604,19 @@ loaded_h_0(function (_) {
           true
         );
       }
+      a.context.globalCompositeOperation = "lighter";
+      for (b = 0; b < a.glowParticles.length; b++) {
+        c = a.glowParticles[b];
+        let gradient = a.context.createRadialGradient(c.pos.x, c.pos.y, 0, c.pos.x, c.pos.y, c.size);
+        gradient.addColorStop(0, "#FFF2");
+        gradient.addColorStop(1, "#0000");
+        a.context.fillStyle = gradient;
+        a.context.beginPath();
+        a.context.arc(c.pos.x, c.pos.y, c.size, 0, Math.PI * 2)
+        a.context.closePath();
+        a.context.fill();
+      }
+      a.context.globalCompositeOperation = "source-over";
       a.context.setTransform(1, 0, 0, 1, 0, 0);
       a.context.fillStyle = currentTheme[6];
       a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
@@ -3187,6 +3200,8 @@ loaded_h_0(function (_) {
       this.Yl = true;
       this.wb = [];
       this.Za = [];
+      this.specialFx = false;
+      this.glowParticles = [];
       this.ob = [];
       this.Ua = [];
       this.Ea = [];
@@ -3398,6 +3413,7 @@ loaded_h_0(function (_) {
         );
 
         this.totalMineCount = +document.getElementById("mines").value;
+        this.specialFx = document.getElementById("specialFx").checked;
         this.nine = document.getElementById("nine").checked;
         this.ten = document.getElementById("ten").checked;
         this.doubleMines = +document.getElementById("doublemines").value / 100;
@@ -3676,6 +3692,7 @@ loaded_h_0(function (_) {
       this.Zc = this.Yb = this.Bb = 0;
       this.wb = [];
       this.Za = [];
+      this.glowParticles = [];
       this.ob = [];
       this.Ua = [];
       this.Dc = false;
@@ -3721,6 +3738,16 @@ loaded_h_0(function (_) {
           this.lives = 0;
           openCell(this, new this.ninePosition());
         }
+        this.specialFx && this.glowParticles.length < 50 && this.glowParticles.push(
+          {
+            pos: { x: Math.random() * this.Aa.width * this.cellSize,  y: this.Aa.height * this.cellSize },
+            Fe: {
+              x: (Math.random() * this.cellSize) - this.cellSize / 2,
+              y: -Math.random() * this.cellSize * 4
+            },
+            size: Math.random() * this.cellSize
+          }
+        )
         a = b * 0.01;
         for (var c = 0; c < this.Za.length; c++) {
           var d = this.Za[c];
@@ -3732,6 +3759,13 @@ loaded_h_0(function (_) {
           d.pos.y += d.Fe.y * a;
           d.size = Math.max(0, d.size - a * 0.1);
           d.size <= 0 && (this.Za.splice(c, 1), c--);
+        }
+        for (var c = 0; c < this.glowParticles.length; c++) {
+          var d = this.glowParticles[c];
+          d.pos.x += d.Fe.x * a * 0.1;
+          d.pos.y += d.Fe.y * a * 0.1;
+          d.size = Math.max(0, d.size - a * 0.1);
+          (d.size <= 0 || d.pos.y <= 0) && (this.glowParticles.splice(c, 1), c--);
         }
         for (c = 0; c < this.wb.length; c++)
           ((d = this.wb[c]),
