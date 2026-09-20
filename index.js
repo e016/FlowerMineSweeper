@@ -1070,8 +1070,10 @@ loaded_h_0(function (_) {
       RESET_TEN: new Audio("audio/reset.ogg"),
       TEN_GROW: new Audio("audio/ten-grow.mp3"),
 
-      NINE_INTRO: new Audio("audio/nine-intro.mp3")
+      NINE_INTRO: new Audio("audio/nine-intro.mp3"),
+      NINE_LOOP: new Audio("audio/nine-loop.mp3")
     };
+    extraSounds.NINE_LOOP.loop = true;
     extraSounds.TEN_GROW.loop = true;
 
   var gPE = class extends _.fIE {
@@ -1582,7 +1584,7 @@ loaded_h_0(function (_) {
           a.ninePosition.x * a.cellSize + a.cellSize / 2,
           a.ninePosition.y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1,
         );
-        a.nineRotation += 4;
+        a.nineRotation += a.nineRotationDelta;
       }
       if (a.ten && !a.bossIntro) {
         a.context.fillStyle = colorToColor(gQE[9], gQE[2], a.tenTimer / 10000);
@@ -2040,18 +2042,26 @@ loaded_h_0(function (_) {
 
     if (number == 9) {
       extraSounds.NINE_INTRO.currentTime = 0;
-      //extraSounds.NINE_INTRO.play();
+      extraSounds.NINE_INTRO.play();
       let neighbors = getRealCellNeighbors(a, cellCoordinate);
       a.ninePosition = new _.Td(centerX, centerY);
       neighbors.forEach((c) => {
         a.oa[c.x][c.y].isMine = true;
         a.oa[c.x][c.y].mineValue = 1;
         a.oa[c.x][c.y].isBossTile = true;
-        setTimeout(() => openCell(a, c), Math.random() * 4000 + 2000);
-        setTimeout(() => {
-          a.bossIntro = false;
-          a.maxTime = 199000;
-        }, 4000 + 2000);
+        a.Ea.push(
+            (0, _.xo)(() => openCell(a, c), Math.random() * 4000 + 2000),
+          );
+        a.Ea.push(
+          (0, _.xo)(() => {
+            a.bossIntro = false;
+            a.maxTime = 199000;
+          }, 4000 + 2000));
+        a.Ea.push(
+          (0, _.xo)(() => {
+            a.bossIntro = false;
+            a.maxTime = 199000;
+          }, 8000));
       });
     } else if (number == 10) {
       a.tenPosition = new _.Td(
@@ -2125,6 +2135,11 @@ loaded_h_0(function (_) {
             (c = nPE(a.Vt, b, a.oa, a.totalMineCount)),
             (e = new Date()));
         while (!c && e.valueOf() - d.valueOf() < 150);
+        if (a.nine) {
+          extraSounds.NINE_LOOP.currentTime = 0;
+          extraSounds.NINE_INTRO.pause();
+          extraSounds.NINE_LOOP.play();
+        }
         if (a.ten) {
           extraSounds.TEN_GROW.play();
         }
@@ -2257,6 +2272,8 @@ loaded_h_0(function (_) {
       : (a.Bb = 1e3);
     a.Ij = true;
     a.Va = 2e3;
+    extraSounds.NINE_INTRO.pause();
+    extraSounds.NINE_LOOP.pause();
     extraSounds.TEN_GROW.pause();
     setPopupBackground(a);
   };
@@ -3355,6 +3372,8 @@ loaded_h_0(function (_) {
         Math.floor(this.Aa.width / 2),
         Math.floor(this.Aa.height / 2),
       );
+      this.nineRotationDelta = 0;
+      this.nineScale = 0;
       this.lastTenClicked = 0;
       this.tenTimer = 0;
       this.nineRotation = 0;
@@ -3615,6 +3634,7 @@ loaded_h_0(function (_) {
     }
     resetState() {
       extraSounds.NINE_INTRO.pause();
+      extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
       this.powerups = this.adventure ? this.adventure.powerups : [];
       this.coins = this.adventure ? this.adventure.coins : 0;
@@ -3623,6 +3643,8 @@ loaded_h_0(function (_) {
         Math.floor(this.Aa.width / 2),
         Math.floor(this.Aa.height / 2),
       );
+      this.nineRotationDelta = 0;
+      this.nineScale = 0;
       this.tenPosition = new _.Td(
         Math.floor(this.Aa.width / 2),
         Math.floor(this.Aa.height / 2),
@@ -3689,6 +3711,8 @@ loaded_h_0(function (_) {
           endGame(this);
             
         }
+        extraSounds.NINE_INTRO.volume = this.muted ? 0 : 1;
+        extraSounds.NINE_LOOP.volume = this.muted ? 0 : 1;
         extraSounds.TEN_GROW.volume = Math.min(Math.max((this.tenTimer - 5000) / 5000, 0), 1);
         if (this.nine && this.Mb > this.maxTime && !centerCell.isMine) {
           centerCell.isMine = true;
