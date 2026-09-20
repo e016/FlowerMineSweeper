@@ -1443,6 +1443,23 @@ loaded_h_0(function (_) {
       }
     }
   };
+  const newCell = function (props) {
+    return Object.assign({
+      enabled: true,
+      isBossTile: false,
+      isMine: false,
+      mineValue: 0,
+      FLb: false,
+      mgd: 0,
+      flagCount: 0,
+      uNb: -1,
+      cellDug: false,
+      mineCount: 0,
+      value: 0,
+      color: uPE[Math.floor(Math.random() * uPE.length)],
+      powerup: null,
+    }, props || {});
+  }
   createGrid = function (a, noReset) {
     if (!noReset) {
       a.oa = Array(a.Aa.width);
@@ -1452,21 +1469,7 @@ loaded_h_0(function (_) {
         a.oa[b] = Array(a.Aa.height);
       }
       for (let c = 0; c < a.Aa.height; c++) {
-        a.oa[b][c] = {
-          enabled: true,
-          isBossTile: false,
-          isMine: false,
-          mineValue: 0,
-          FLb: false,
-          mgd: 0,
-          flagCount: 0,
-          uNb: -1,
-          cellDug: false,
-          mineCount: 0,
-          value: 0,
-          color: uPE[Math.floor(Math.random() * uPE.length)],
-          powerup: null,
-        };
+        a.oa[b][c] = newCell();
       }
     }
     try {
@@ -2422,15 +2425,9 @@ loaded_h_0(function (_) {
   },
   moveTen = function (a, exclude) {
     let pos = new _.Td(
-      Math.floor(Math.random() * a.Aa.width),
-      Math.floor(Math.random() * a.Aa.height),
+      Math.random() * (a.Aa.width - 1),
+      Math.random() * (a.Aa.height - 1),
     );
-    while ((pos.x === exclude.x && pos.y === exclude.y) && isTileMine(a, pos)) {
-      pos = new _.Td(
-        Math.floor(Math.random() * a.Aa.width),
-        Math.floor(Math.random() * a.Aa.height),
-      );
-    };
     a.tenPosition = pos;
     extraSounds.RESET_TEN.play();
   };
@@ -2859,13 +2856,16 @@ loaded_h_0(function (_) {
     );
   };
   drawCell = function (a, b, force) {
-    var c = a.oa[b.x][b.y];
+    var c = force ? 
+      newCell({
+        enabled: true,
+        cellDug: true,
+        isTen: true,
+      })
+    : a.oa[b.x][b.y];
     const isNine = isTileNine(a, b),
       isAdjacentNine = isTileAdjacentNine(a, b),
       isTen = a.ten && !a.bossIntro && b.x === a.tenPosition.x && b.y === a.tenPosition.y;
-    if (isTen && !force) {
-      return;
-    }
     drawCellPart(
       a,
       b,
@@ -2888,9 +2888,9 @@ loaded_h_0(function (_) {
     );
   };
   drawCellPart = function (a, b, c, tile) {
-    const isNine = isTileNine(a, b),
-      isAdjacentNine = isTileAdjacentNine(a, b),
-      isTen = a.ten && !a.bossIntro && b.x === a.tenPosition.x && b.y === a.tenPosition.y;
+    const isNine = isTileNine(a, b) && !tile.isTen,
+      isAdjacentNine = isTileAdjacentNine(a, b) && !tile.isTen,
+      isTen = a.ten && !a.bossIntro && tile.isTen;
     switch (c) {
       case "DISABLED":
         a.context.fillStyle = currentTheme[6];
@@ -3099,7 +3099,7 @@ loaded_h_0(function (_) {
   eQE = function (a, b, tile) {
     const isNine = isTileNine(a, b),
       isAdjacentNine = isTileAdjacentNine(a, b),
-      cellDug = isCellDug(a, b);
+      cellDug = tile.isTen || isCellDug(a, b);
     var c =
         b.equals(a.Ab) && (!cellDug || tile.mineCount !== 0) && tile.enabled,
       d =
