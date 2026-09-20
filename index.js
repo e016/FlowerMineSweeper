@@ -1587,7 +1587,7 @@ loaded_h_0(function (_) {
           a.ninePosition.x * a.cellSize + a.cellSize / 2,
           a.ninePosition.y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1,
         );
-        a.nineRotation += a.nineRotationDelta;
+        
       }
       if (a.ten && !a.bossIntro) {
         a.context.fillStyle = colorToColor(gQE[9], gQE[2], a.tenTimer / 10000);
@@ -3738,6 +3738,17 @@ loaded_h_0(function (_) {
           this.lives = 0;
           openCell(this, new this.ninePosition());
         }
+        a = b * 0.01;
+        if (this.Ij) {
+          if (this.nineRotationDelta > 0) {
+            this.nineRotationDelta -= 1 * a
+          } else {
+            this.nineRotationDelta = 0;
+          }
+        } else if (this.nine && this.startedGame) {
+          this.nineRotationDelta += 0.009 * a
+        }
+        this.nineRotation += this.nineRotationDelta;
         this.specialFx && this.glowParticles.length < 50 && this.glowParticles.push(
           {
             pos: { x: Math.random() * this.Aa.width * this.cellSize,  y: this.Aa.height * this.cellSize },
@@ -3748,7 +3759,7 @@ loaded_h_0(function (_) {
             size: Math.random() * this.cellSize
           }
         )
-        a = b * 0.01;
+        
         for (var c = 0; c < this.Za.length; c++) {
           var d = this.Za[c];
           d.Fe.y < 0
