@@ -1613,12 +1613,14 @@ loaded_h_0(function (_) {
         let gradient = a.context.createRadialGradient(c.pos.x, c.pos.y, 0, c.pos.x, c.pos.y, c.size);
         gradient.addColorStop(0, "#FFF2");
         gradient.addColorStop(1, "#0000");
+        a.context.globalAlpha = c.opacity;
         a.context.fillStyle = gradient;
         a.context.beginPath();
         a.context.arc(c.pos.x, c.pos.y, c.size, 0, Math.PI * 2)
         a.context.closePath();
         a.context.fill();
       }
+      a.context.globalAlpha = 1;
       a.context.globalCompositeOperation = "source-over";
       a.context.setTransform(1, 0, 0, 1, 0, 0);
       a.context.fillStyle = currentTheme[6];
@@ -3749,14 +3751,15 @@ loaded_h_0(function (_) {
           this.nineRotationDelta += 0.009 * a
         }
         this.nineRotation += this.nineRotationDelta;
-        this.specialFx && this.glowParticles.length < 50 && this.glowParticles.push(
+        this.specialFx && this.glowParticles.length < 60 && this.glowParticles.push(
           {
             pos: { x: Math.random() * this.Aa.width * this.cellSize,  y: this.Aa.height * this.cellSize },
             Fe: {
               x: (Math.random() * this.cellSize) - this.cellSize / 2,
               y: -Math.random() * this.cellSize * 4
             },
-            size: Math.random() * this.cellSize
+            size: Math.random() * this.cellSize,
+            opacity: Math.random()
           }
         )
         
@@ -4023,7 +4026,7 @@ loaded_h_0(function (_) {
   };
   _.Ls(_.u8q, _.G6);
   var gQE =
-      "#1976D2 #388E3C #D32F2F #7B1FA2 #FF8F00 #0097A7 #424242 #9E9E9E #c93999 #497000".split(
+      "#1976D2 #388E3C #D32F2F #671fa2 #de7e00 #0097A7 #424242 #9E9E9E #c93999 #007041 #ec5a2a #811fa2".split(
         " ",
       ),
     uPE =
