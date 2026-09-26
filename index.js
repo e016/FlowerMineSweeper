@@ -3668,8 +3668,8 @@ loaded_h_0(function (_) {
       extraSounds.NINE_INTRO.pause();
       extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
-      this.powerups = this.adventure ? this.adventure.powerups : [];
-      this.coins = this.adventure ? this.adventure.coins : 0;
+      this.powerups = this.adventure ? this.adventure.powerups : this.powerups;
+      this.coins = this.adventure ? this.adventure.coins : this.coins;
       this.maxTime = 0;
       this.ninePosition = new _.Td(
         Math.floor(this.Aa.width / 2),
