@@ -1071,9 +1071,13 @@ loaded_h_0(function (_) {
       TEN_GROW: new Audio("audio/ten-grow.mp3"),
 
       NINE_INTRO: new Audio("audio/nine-intro.mp3"),
-      NINE_LOOP: new Audio("audio/nine-loop.mp3")
+      NINE_LOOP: new Audio("audio/nine-loop.mp3"),
+
+      TEN_INTRO: new Audio("audio/ten-intro.mp3"),
+      TEN_LOOP: new Audio("audio/ten-loop.mp3"),
     };
     extraSounds.NINE_LOOP.loop = true;
+    extraSounds.TEN_LOOP.loop = true;
     extraSounds.TEN_GROW.loop = true;
 
   var gPE = class extends _.fIE {
@@ -2082,6 +2086,8 @@ loaded_h_0(function (_) {
           }, 8000));
       });
     } else if (number == 10) {
+      extraSounds.TEN_INTRO.currentTime = 0;
+      extraSounds.TEN_INTRO.play();
       a.tenPosition = new _.Td(
         Math.floor(a.Aa.width / 2),
         Math.floor(a.Aa.height / 2),
@@ -2153,9 +2159,13 @@ loaded_h_0(function (_) {
             (c = nPE(a.Vt, b, a.oa, a.totalMineCount)),
             (e = new Date()));
         while (!c && e.valueOf() - d.valueOf() < 150);
-        if (a.nine) {
-          extraSounds.NINE_LOOP.currentTime = 0;
-          extraSounds.NINE_INTRO.pause();
+        extraSounds.NINE_LOOP.currentTime = 0;
+        extraSounds.TEN_LOOP.currentTime = 0;
+        extraSounds.TEN_INTRO.pause();
+        extraSounds.NINE_INTRO.pause();
+        if (a.ten) {
+          extraSounds.TEN_LOOP.play();
+        } else if (a.nine) {
           extraSounds.NINE_LOOP.play();
         }
         if (a.ten) {
@@ -2290,6 +2300,8 @@ loaded_h_0(function (_) {
       : (a.Bb = 1e3);
     a.Ij = true;
     a.Va = 2e3;
+    extraSounds.TEN_INTRO.pause();
+    extraSounds.TEN_LOOP.pause();
     extraSounds.NINE_INTRO.pause();
     extraSounds.NINE_LOOP.pause();
     extraSounds.TEN_GROW.pause();
@@ -3651,6 +3663,8 @@ loaded_h_0(function (_) {
       return this.reset();
     }
     resetState() {
+      extraSounds.TEN_INTRO.pause();
+      extraSounds.TEN_LOOP.pause();
       extraSounds.NINE_INTRO.pause();
       extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
@@ -3732,6 +3746,8 @@ loaded_h_0(function (_) {
         }
         extraSounds.NINE_INTRO.volume = this.muted ? 0 : 1;
         extraSounds.NINE_LOOP.volume = this.muted ? 0 : 1;
+        extraSounds.TEN_INTRO.volume = this.muted ? 0 : 1;
+        extraSounds.TEN_LOOP.volume = this.muted ? 0 : 1;
         extraSounds.TEN_GROW.volume = Math.min(Math.max((this.tenTimer - 5000) / 5000, 0), 1);
         if (this.nine && this.Mb > this.maxTime && !centerCell.isMine) {
           centerCell.isMine = true;
