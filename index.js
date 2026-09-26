@@ -1301,12 +1301,12 @@ loaded_h_0(function (_) {
   };
   qPE.prototype.kb = "foSC6e";
   var sPE,
-    tPE,
+    clearMobileSelectedTile,
     createGrid,
     setHtmlDisplays,
     APE,
     showFinishPopup,
-    rPE,
+    showMobileButtons,
     placeFlag,
     getTimerValue,
     OPE,
@@ -1419,10 +1419,10 @@ loaded_h_0(function (_) {
   sPE = function (a) {
     return a.Coa().then(() => {
       a.jd = true;
-      a.Ba !== null && rPE(a);
+      a.Ba !== null && showMobileButtons(a);
     });
   };
-  tPE = function (a) {
+  clearMobileSelectedTile = function (a) {
     a.La = null;
     a.Ma = null;
     a.Ha = null;
@@ -1829,7 +1829,7 @@ loaded_h_0(function (_) {
       };
     }
   };
-  rPE = function (a) {
+  showMobileButtons = function (a) {
     var b = a.Ba,
       c = new _.Td(
         b.x * a.cellSize + a.cellSize / 2,
@@ -1842,14 +1842,14 @@ loaded_h_0(function (_) {
       h = a.oa[b.x][b.y].cellDug,
       k = a.oa[b.x][b.y].flagCount,
       l = getRealCellNeighbors(a, b),
-      n = 0,
+      surroundingFlags = 0,
       q = 8 - l.length;
     for (let r = 0; r < l.length; r++) {
       let t = l[r];
-      a.oa[t.x][t.y].flagCount && n++;
+      (a.oa[t.x][t.y].flagCount || (isTileMine(a, t) && isCellDug(a, t))) && surroundingFlags++;
       a.oa[t.x][t.y].cellDug && q++;
     }
-    b = n === a.oa[a.Ba.x][b.y].mineCount && n + q !== 8;
+    b = surroundingFlags === a.oa[a.Ba.x][b.y].mineCount && surroundingFlags + q !== 8;
     (!h && !k) || (h && b)
       ? ((k = g ? Math.PI / 2 : (3 * Math.PI) / 2),
         (a.La = new _.Td(
@@ -1938,25 +1938,27 @@ loaded_h_0(function (_) {
                 : HPE(a, b, c, a.Ma)
                   ? (placeFlag(a, a.Ba), (digging = true))
                   : HPE(a, b, c, a.Ha) && (digging = true)),
-            digging
-              ? tPE(a)
-              : !a.startedGame && isCellInGrid(a, g)
-                ? userDigCells(a, g)
+            digging || !(a.bossIntro
+                  ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
+                  : true)
+              ? clearMobileSelectedTile(a)
+              : clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : !a.startedGame && isCellInGrid(a, g) 
+                ? (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g))
                 : !isCellInGrid(a, g) ||
-                    (isCellDug(a, g) && a.oa[g.x][g.y].mineCount === 0)
-                  ? tPE(a)
+                    (isCellDug(a, g) && a.oa[g.x][g.y].mineCount === 0 && !a.oa[g.x][g.y].powerup)
+                  ? clearMobileSelectedTile(a)
                   : a.Ba !== null && a.Ba.x === g.x && a.Ba.y === g.y
                     ? (a.Qc < 350 &&
                         (isNumberCellOpen(a, a.Ba)
                           ? chordCells(a, a.Ba)
                           : userDigCells(a, a.Ba)),
-                      tPE(a))
-                    : ((a.Ba = clickingTen ? null : g),
-                      rPE(a),
+                      clearMobileSelectedTile(a))
+                    : a.oa[g.x][g.y].powerup ? userDigCells(a, g) : ((a.Ba = g),
+                      showMobileButtons(a),
                       a.La === null &&
                         a.Ma === null &&
                         a.Ha === null &&
-                        tPE(a)))
+                        clearMobileSelectedTile(a)))
           : (a.bossIntro
                   ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
                   : true) && ((chording || (digging && flagging)) && !a.powerup
@@ -3686,7 +3688,7 @@ loaded_h_0(function (_) {
       this.nineRotation = 0;
       this.bossBattle = this.nine || this.ten;
       this.bossIntro = this.bossBattle;
-      tPE(this);
+      clearMobileSelectedTile(this);
       for (let a = 0; a < this.Ea.length; a++) (0, _.yo)(this.Ea[a]);
       this.Ea = [];
       createGrid(this);
@@ -3832,7 +3834,7 @@ loaded_h_0(function (_) {
           this.Lc &&
           this.Ba &&
           this.Qc > 700 &&
-          ((this.Lc = false), placeFlag(this, this.Ba), tPE(this));
+          ((this.Lc = false), placeFlag(this, this.Ba), clearMobileSelectedTile(this));
         APE(this);
         setHtmlDisplays(this);
       }
