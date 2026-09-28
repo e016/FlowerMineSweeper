@@ -1915,8 +1915,8 @@ loaded_h_0(function (_) {
     return b;
   };
   OPE = function (a, b, c) {
-    var digging = a.leftClicking && !a.Sa,
-      flagging = a.rightClicking || (a.leftClicking && a.Sa),
+    var digging = a.leftClicking && !a.Sa && !a.IS_TITLE_SCREEN,
+      flagging = (a.rightClicking || (a.leftClicking && a.Sa)) && !a.IS_TITLE_SCREEN,
       chording = a.readyToChord;
     if (a.Ij)
       a.Va === 0 && (digging || a.isMobile())
@@ -2967,6 +2967,9 @@ loaded_h_0(function (_) {
         drawCellPart(a, b, "DUG", tile);
         let d = isTen ? Math.max(10 - Math.floor(a.tenTimer / 1000), 0) : isNine ? 9 : tile.value;
         let color = gQE[Math.abs(isTen ? 10 : d) - 1] || "#FFF";
+        if (typeof d === "string") {
+          color = "#000";
+        }
         c = a.cellSize * 0.62 * (d.toString().length > 1 ? 0.8 : 1);
         a.context.strokeStyle = "white";
         a.context.lineWidth = Math.round(a.cellSize * 0.08);
@@ -3193,6 +3196,8 @@ loaded_h_0(function (_) {
     }
     constructor(a) {
       super(a.Na);
+      this.IS_TITLE_SCREEN = true;
+      this.TITLE_SCREEN_PAGE = "main";
       this.cutout = null;
       this.qc = null;
       this.Ud = {};
@@ -3420,6 +3425,7 @@ loaded_h_0(function (_) {
       this.bossIntro = this.bossBattle;
       this.setAdventureLevel();
       this.Dw && (this.Yf(), this.Ne());
+      
 
       const myself = this;
       document.getElementById("goButton").onclick = () => {
@@ -3715,7 +3721,44 @@ loaded_h_0(function (_) {
       this.Ua = [];
       this.Dc = false;
       this.Ce = 0;
+      if (this.IS_TITLE_SCREEN) {
+        switch (this.TITLE_SCREEN_PAGE){
+          case "main":
+            this.digTileForTitleSceen(7, 6, 1);
+            this.digTileForTitleSceen(8, 6, 0);
+            this.digTileForTitleSceen(9, 6, 0);
+            this.digTileForTitleSceen(10, 6, 0);
+    
+            this.digTileForTitleSceen(7, 9, 2);
+            this.digTileForTitleSceen(8, 9, 0);
+            this.digTileForTitleSceen(9, 9, 0);
+            this.digTileForTitleSceen(10, 9, 0);
+    
+            this.digTileForTitleSceen(1, 12, "i");
+            this.digTileForTitleSceen(16, 12, "⚙️");
+            break;
+          case "free":
+            this.digTileForTitleSceen(7, 6, 1);
+            this.digTileForTitleSceen(8, 6, 0);
+            this.digTileForTitleSceen(9, 6, 0);
+            this.digTileForTitleSceen(10, 6, 0);
+    
+            this.digTileForTitleSceen(7, 9, 2);
+            this.digTileForTitleSceen(8, 9, 0);
+            this.digTileForTitleSceen(9, 9, 0);
+            this.digTileForTitleSceen(10, 9, 0);
+    
+            this.digTileForTitleSceen(1, 12, "i");
+            this.digTileForTitleSceen(16, 12, "⚙️");
+            break;
+        }
+      };
       showFinishPopup(this, false);
+    }
+    digTileForTitleSceen(x, y, v) {
+      this.oa[x][y].cellDug = true;
+      this.oa[x][y].mineCount = v;
+      this.oa[x][y].value = v;
     }
     M6() {
       return sPE(this);
