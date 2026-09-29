@@ -3493,8 +3493,7 @@ loaded_h_0(function (_) {
       this.ten = !!document.getElementById("ten").checked;
       this.doubleMines = +document.getElementById("doublemines").value / 100;
       this.antiMines = +document.getElementById("antimines").value / 100;
-      this.B5a();
-      this.resetState();
+      this.reset();
       document.querySelector('div[jsname="V68bde"]').style.display = "none";
     }
     usePowerup(i) {
@@ -3651,6 +3650,9 @@ loaded_h_0(function (_) {
     }
     Xg() {
       this.Ij && _.fw(this.Ja("NSjDf").el());
+      this.IS_TITLE_SCREEN = true;
+      this.TITLE_SCREEN_PAGE = "main";
+      this.Aa = this.od["MEDIUM"]
       return this.reset();
     }
     reset() {
@@ -3741,9 +3743,9 @@ loaded_h_0(function (_) {
         return;
       }
       createGrid(this, true, true);
-      F6.fSd.play();
       if (this.IS_TITLE_SCREEN) {
-        switch (this.TITLE_SCREEN_PAGE){
+        F6.fSd.play();
+        switch (this.TITLE_SCREEN_PAGE) {
           case "main":
             this.digTileForTitleSceen(7, 6, 1, "adventure");
             this.digTileForTitleSceen(8, 6, 0, "adventure");
@@ -3758,16 +3760,19 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
-            this.digTileForTitleSceen(2, 12, "<", "main");
+            this.digTileForTitleSceen(1, 12, "<", "main");
             break;
           case "free":
             document.querySelector('div[jsname="V68bde"]').style.display = "";
 
-            this.digTileForTitleSceen(2, 12, "<", "main");
+            this.digTileForTitleSceen(1, 12, "<", "main");
 
-            this.digTileForTitleSceen(13, 12, 0, "go");
             this.digTileForTitleSceen(14, 12, 0, "go");
             this.digTileForTitleSceen(15, 12, 0, "go");
+            this.digTileForTitleSceen(16, 12, 0, "go");
+            break;
+          case "credits":
+            this.digTileForTitleSceen(1, 12, "<", "main");
             break;
         }
       };
