@@ -3493,8 +3493,9 @@ loaded_h_0(function (_) {
       this.ten = !!document.getElementById("ten").checked;
       this.doubleMines = +document.getElementById("doublemines").value / 100;
       this.antiMines = +document.getElementById("antimines").value / 100;
-      //this.B5a();
-      //document.querySelector('div[jsname="V68bde"]').style.display = "none";
+      this.B5a();
+      this.resetState();
+      document.querySelector('div[jsname="V68bde"]').style.display = "none";
     }
     usePowerup(i) {
       let item = this.powerups[i];
@@ -3734,7 +3735,7 @@ loaded_h_0(function (_) {
     }
     digUpTitleScreenPage() {
       document.querySelector('div[jsname="V68bde"]').style.display = "none";
-      if (this.TITLE_SCREEN_PAGE === "go") {
+      if (this.TITLE_SCREEN_PAGE === "go" && this.IS_TITLE_SCREEN) {
         this.IS_TITLE_SCREEN = false;
         this.setFreePlaySettings();
         return;
