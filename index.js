@@ -1522,6 +1522,7 @@ loaded_h_0(function (_) {
     );
   };
   APE = function (a) {
+    try{
     if (!a.isDisposed()) {
       if (true) {
         //!!!!!
@@ -1783,6 +1784,10 @@ loaded_h_0(function (_) {
           a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height)));
       
     }
+  } catch(e) {
+    console.error(e);
+    debugger;
+  }
   };
   const getTenRadius = function (a) {
     if (!a.ten || !a.startedGame || a.bossIntro) {
@@ -1936,6 +1941,7 @@ loaded_h_0(function (_) {
     else {
       var g = getCellFromPixelPosition(a, b, c),
       clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
+      console.warn(a, g, b, c, a.Ca, a.cellSize);
       chording = chording || (digging && isCellDug(a, g) && a.startedGame)
       if (g !== null) {
         a.isMobile()
@@ -3479,6 +3485,7 @@ loaded_h_0(function (_) {
         +document.getElementById("width").value,
         +document.getElementById("height").value,
       );
+      createGrid(this);
 
       this.totalMineCount = +document.getElementById("mines").value;
       this.specialFx = !!document.getElementById("specialFx").checked;
@@ -3486,9 +3493,8 @@ loaded_h_0(function (_) {
       this.ten = !!document.getElementById("ten").checked;
       this.doubleMines = +document.getElementById("doublemines").value / 100;
       this.antiMines = +document.getElementById("antimines").value / 100;
-      this.B5a();
-      this.reset();
-      document.querySelector('div[jsname="V68bde"]').style.display = "none";
+      //this.B5a();
+      //document.querySelector('div[jsname="V68bde"]').style.display = "none";
     }
     usePowerup(i) {
       let item = this.powerups[i];
@@ -3589,12 +3595,12 @@ loaded_h_0(function (_) {
           var b = _.oIE();
           if (true) {
             //this.isMobile()) {
-            var c = this.Qe[this.Da];
+            var c = this.Qe["MEDIUM"];
             this.qc = _.Etb(this.canvas);
-            if (this.qc.width === 0) {
+            /*if (this.qc.width === 0) {
               a.resolve();
               return;
-            }
+            }*/
             var d = this.qc.width - 40;
             let e = this.qc.height - 40;
             c = (d * e) / c;
@@ -3647,7 +3653,6 @@ loaded_h_0(function (_) {
       return this.reset();
     }
     reset() {
-      this.cellSize = 0;
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
       this.setAdventureLevel();
       
