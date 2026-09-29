@@ -1253,7 +1253,7 @@
       .YpcDnf {
         padding: 0 16px;
         vertical-align: middle;
-        display: block;
+        display: inline;
         position: relative;
         line-height: 30px;
       }
@@ -1935,13 +1935,20 @@
             font-size: 15px;
             font-weight: bold;
             color: #303030;
-            background-color: white;
             line-height: 30px;
             border-radius: 5px;
+            background-color: white;
             top: 15px;
           }
-          .JfmvR g-menu {
+          g-menu {
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            color: #303030;
+            line-height: 30px;
+            border-radius: 5px;
             background-color: white;
+            height: auto !important;
           }
           .tgTlrc {
             cursor: pointer;
@@ -2217,50 +2224,16 @@
               <div jsname="coins" class="KAQ14c">100</div>
             </div>
           </div>
-          <div class="KU0OAc" style="width: auto">
-            <div class="JfmvR">
-              <g-dropdown-menu
-                jsname="apZBxd"
-                class="tgTlrc adGN6"
-                jscontroller="pFsdhd"
-                jsdata="xJGXK;_;MMxkapDWMpKKmLQP-O-4oQ02"
-                jsshadow=""
-                jsaction="rcuQ6b:npT2md;mMf61e:GKlhgf;YraOve:cCpuJc;kNOP9c:bzkPEc;hmb6Ye:oyYkKb;KyPa0e:G8Ofmd;wjOG7e:rWoVB;ZvRO4b:L76sMb;LyWNEf:L76sMb"
-                ><g-popup
-                  jsname="zpo2ue"
-                  jscontroller="DPreE"
-                  jsaction="A05xBd:IYtByb;EOZ57e:WFrRFb;"
-                  jsdata="mVjAjf;_;MMxkapDWMpKKmLQP-O-4oQ03"
-                  id="ow15"
-                  __is_owner="true"
-                  ><div
-                    jsname="oYxtQd"
-                    class="CcNe6e"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    jsslot=""
-                    role="button"
-                    tabindex="0"
-                    jsaction="WFrRFb;keydown:uYT2Vb"
-                  >
-                    <g-dropdown-menu-button-caption
-                      jscontroller="EbPKJf"
-                      data-ddph=""
-                      jsaction="rcuQ6b:npT2md"
-                      ><span jsname="vs0Yb"
-                        >Options</span
-                      ></g-dropdown-menu-button-caption
-                    ><span class="fHwb5b"></span>
-                  </div>
+          
                   <div
                     jsname="V68bde"
                     class="UjBGL pkWBse iRQHZe"
-                    style="display: none; z-index: 1"
+                    style="display: none; z-index: 1; position: absolute; left: 50%; transform: translate(-50%, 30%); top: 0%;"
                     jsowner="ow15"
                   >
                     <g-menu
                       jsname="iXXGtd"
-                      class="WNN1b yTik0 PBn44e iQXTJe wplJBd"
+                      class="WNN1b yTik0 PBn44e iQXTJe wplJBd JfmvR"
                       jscontroller="WlNQGd"
                       role="menu"
                       tabindex="-1"
@@ -2277,9 +2250,9 @@
                           <option value="MEDIUM" selected="true">Medium</option>
                           <option value="HARD">Hard</option>
                         </select>
-                      </div>
+                      </div><br />
                       <br />
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Width:
                         <input
                           id="width"
@@ -2289,7 +2262,7 @@
                           value="18"
                         />
                       </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Height:
                         <input
                           id="height"
@@ -2298,8 +2271,8 @@
                           max="20"
                           value="14"
                         />
-                      </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      </div><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Mines:
                         <input
                           id="mines"
@@ -2308,8 +2281,8 @@
                           max="99"
                           value="40"
                         />
-                      </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      </div><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Antimines
                         <input
                           id="antimines"
@@ -2318,8 +2291,8 @@
                           max="100"
                           value="0"
                         />
-                      </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      </div><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Doublemines
                         <input
                           id="doublemines"
@@ -2328,8 +2301,8 @@
                           max="100"
                           value="0"
                         />
-                      </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      </div><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Theme:
                         <select name="theme" id="theme">
                           <option value="0">Default</option>
@@ -2341,27 +2314,21 @@
                           <option value="6">Beach</option>
                         </select>
                       </div>
-                      <br />
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      <br /><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Nine <input id="nine" type="checkbox" />
-                      </div>
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
+                      </div><br />
+                      <div jsname="ibnC6b" class="YpcDnf OSrXXb">
                         Ten <input id="ten" type="checkbox" />
-                      </div>
-                      <br />
-                      <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
-                        Special Effects (Experimental) <input id="specialFx" type="checkbox" />
-                      </div>
+                      </div><br />
                       <br />
                       <div jsname="ibnC6b" class="YpcDnf OSrXXb">
-                        <button id="goButton">Go!</button>
+                        Special Effects (Experimental) <input id="specialFx" type="checkbox" />
                       </div>
                     </g-menu>
                   </div></g-popup
                 >
               </g-dropdown-menu>
-            </div>
-          </div>
           <div class="EYPL8e">
             <div
               jsname="XBehdc"

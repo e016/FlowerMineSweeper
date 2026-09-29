@@ -1464,7 +1464,7 @@ loaded_h_0(function (_) {
       powerup: null,
     }, props || {});
   }
-  createGrid = function (a, noReset) {
+  createGrid = function (a, noReset, chipOthers) {
     if (!noReset) {
       a.oa = Array(a.Aa.width);
     }
@@ -1473,6 +1473,9 @@ loaded_h_0(function (_) {
         a.oa[b] = Array(a.Aa.height);
       }
       for (let c = 0; c < a.Aa.height; c++) {
+        if (noReset && chipOthers && a.oa[b][c].cellDug) {
+          chipAwayCell(a, { x: b, y: c }, false, true);
+        }
         a.oa[b][c] = newCell();
       }
     }
@@ -1915,10 +1918,18 @@ loaded_h_0(function (_) {
     return b;
   };
   OPE = function (a, b, c) {
-    var digging = a.leftClicking && !a.Sa && !a.IS_TITLE_SCREEN,
-      flagging = (a.rightClicking || (a.leftClicking && a.Sa)) && !a.IS_TITLE_SCREEN,
+    var digging = a.leftClicking && !a.Sa,
+      flagging = (a.rightClicking || (a.leftClicking && a.Sa)),
       chording = a.readyToChord;
-    if (a.Ij)
+    if (a.IS_TITLE_SCREEN) {
+      var g = getCellFromPixelPosition(a, b, c),
+      role = a.oa[g.x][g.y].role;
+      console.warn(g, role, digging);
+      if (digging && role) {
+        a.TITLE_SCREEN_PAGE = role;
+        a.digUpTitleScreenPage();
+      }
+    } else if (a.Ij)
       a.Va === 0 && (digging || a.isMobile())
         ? showFinishPopup(a, true)
         : a.Va > 0 && (a.Va = Math.max(0, a.Va - 1e3));
@@ -3428,22 +3439,6 @@ loaded_h_0(function (_) {
       
 
       const myself = this;
-      document.getElementById("goButton").onclick = () => {
-        this.Aa = new _.Xd(
-          +document.getElementById("width").value,
-          +document.getElementById("height").value,
-        );
-
-        this.totalMineCount = +document.getElementById("mines").value;
-        this.specialFx = document.getElementById("specialFx").checked;
-        this.nine = document.getElementById("nine").checked;
-        this.ten = document.getElementById("ten").checked;
-        this.doubleMines = +document.getElementById("doublemines").value / 100;
-        this.antiMines = +document.getElementById("antimines").value / 100;
-        this.B5a();
-        this.reset();
-        document.querySelector('div[jsname="V68bde"]').style.display = "none";
-      };
       document.getElementById("theme").onchange = () => {
         currentTheme = themes[+document.getElementById("theme").value];
         document.querySelector(".NWJp1d").style.backgroundColor =
@@ -3455,16 +3450,9 @@ loaded_h_0(function (_) {
       };
       document.getElementById("difficulty").onchange = () => {
         this.Da = document.getElementById("difficulty").value;
-        this.Aa = this.od[this.Da];
-        this.cellSize = this.Ud[this.Da];
-        this.trueCellSize = this.Ud[this.Da];
-        this.totalMineCount = this.Bd[this.Da];
-        this.B5a();
-        this.reset();
-        document.getElementById("width").value = this.Aa.width;
-        document.getElementById("height").value = this.Aa.height;
-        document.getElementById("mines").value = this.totalMineCount;
-        document.querySelector('div[jsname="V68bde"]').style.display = "none";
+        document.getElementById("width").value = this.od[this.Da].width;
+        document.getElementById("height").value = this.od[this.Da].height;
+        document.getElementById("mines").value = this.Bd[this.Da];
       };
       document.getElementById("powerupsButton").addEventListener('click', () => {
         document.getElementById("powerupsMenuDiv").style.display = "initial";
@@ -3481,11 +3469,26 @@ loaded_h_0(function (_) {
         })
       });
       document.addEventListener('click', function(event) {
-        console.warn(event.target, event.target.id, !(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id))
           if (!(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id)) {
             document.getElementById("powerupsMenuDiv").style.display = "none";
           }
       });
+    }
+    setFreePlaySettings() {
+      this.Aa = new _.Xd(
+        +document.getElementById("width").value,
+        +document.getElementById("height").value,
+      );
+
+      this.totalMineCount = +document.getElementById("mines").value;
+      this.specialFx = !!document.getElementById("specialFx").checked;
+      this.nine = !!document.getElementById("nine").checked;
+      this.ten = !!document.getElementById("ten").checked;
+      this.doubleMines = +document.getElementById("doublemines").value / 100;
+      this.antiMines = +document.getElementById("antimines").value / 100;
+      this.B5a();
+      this.reset();
+      document.querySelector('div[jsname="V68bde"]').style.display = "none";
     }
     usePowerup(i) {
       let item = this.powerups[i];
@@ -3721,44 +3724,53 @@ loaded_h_0(function (_) {
       this.Ua = [];
       this.Dc = false;
       this.Ce = 0;
+      this.digUpTitleScreenPage();
+      showFinishPopup(this, false);
+    }
+    digUpTitleScreenPage() {
+      document.querySelector('div[jsname="V68bde"]').style.display = "none";
+      if (this.TITLE_SCREEN_PAGE === "go") {
+        this.IS_TITLE_SCREEN = false;
+        this.setFreePlaySettings();
+        return;
+      }
+      createGrid(this, true, true);
+      F6.fSd.play();
       if (this.IS_TITLE_SCREEN) {
         switch (this.TITLE_SCREEN_PAGE){
           case "main":
-            this.digTileForTitleSceen(7, 6, 1);
-            this.digTileForTitleSceen(8, 6, 0);
-            this.digTileForTitleSceen(9, 6, 0);
-            this.digTileForTitleSceen(10, 6, 0);
+            this.digTileForTitleSceen(7, 6, 1, "adventure");
+            this.digTileForTitleSceen(8, 6, 0, "adventure");
+            this.digTileForTitleSceen(9, 6, 0, "adventure");
+            this.digTileForTitleSceen(10, 6, 0, "adventure");
     
-            this.digTileForTitleSceen(7, 9, 2);
-            this.digTileForTitleSceen(8, 9, 0);
-            this.digTileForTitleSceen(9, 9, 0);
-            this.digTileForTitleSceen(10, 9, 0);
+            this.digTileForTitleSceen(7, 9, 2, "free");
+            this.digTileForTitleSceen(8, 9, 0, "free");
+            this.digTileForTitleSceen(9, 9, 0, "free");
+            this.digTileForTitleSceen(10, 9, 0, "free");
     
-            this.digTileForTitleSceen(1, 12, "i");
-            this.digTileForTitleSceen(16, 12, "⚙️");
+            this.digTileForTitleSceen(16, 12, "i", "credits");
+            break;
+          case "adventure":
+            this.digTileForTitleSceen(2, 12, "<", "main");
             break;
           case "free":
-            this.digTileForTitleSceen(7, 6, 1);
-            this.digTileForTitleSceen(8, 6, 0);
-            this.digTileForTitleSceen(9, 6, 0);
-            this.digTileForTitleSceen(10, 6, 0);
-    
-            this.digTileForTitleSceen(7, 9, 2);
-            this.digTileForTitleSceen(8, 9, 0);
-            this.digTileForTitleSceen(9, 9, 0);
-            this.digTileForTitleSceen(10, 9, 0);
-    
-            this.digTileForTitleSceen(1, 12, "i");
-            this.digTileForTitleSceen(16, 12, "⚙️");
+            document.querySelector('div[jsname="V68bde"]').style.display = "";
+
+            this.digTileForTitleSceen(2, 12, "<", "main");
+
+            this.digTileForTitleSceen(13, 12, 0, "go");
+            this.digTileForTitleSceen(14, 12, 0, "go");
+            this.digTileForTitleSceen(15, 12, 0, "go");
             break;
         }
       };
-      showFinishPopup(this, false);
     }
-    digTileForTitleSceen(x, y, v) {
+    digTileForTitleSceen(x, y, v, r) {
       this.oa[x][y].cellDug = true;
       this.oa[x][y].mineCount = v;
       this.oa[x][y].value = v;
+      this.oa[x][y].role = r;
     }
     M6() {
       return sPE(this);
