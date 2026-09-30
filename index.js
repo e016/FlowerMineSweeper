@@ -1615,6 +1615,52 @@ loaded_h_0(function (_) {
           true
         );
       }
+      if (a.IS_TITLE_SCREEN) {
+        function drawText(text, x, y) {
+          a.context.fillText(
+            text,
+            x * a.cellSize + a.cellSize / 2,
+            y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1, // grrr...
+          );
+
+        };
+        a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
+        a.context.textAlign = "center";
+        a.context.fillStyle = "#242424";
+        switch (a.TITLE_SCREEN_PAGE) {
+          case "main":
+            a.context.drawImage(
+              a.LOGO,
+              2.5 * a.cellSize,
+              2 * a.cellSize
+            );
+            
+            drawText("ADVENTURE", 9, 6);
+            drawText("FREE PLAY", 9, 9);
+            break;
+          case "free":
+            drawText("PLAY", 15, 12);
+            break;
+          case "credits":
+            drawText("Google Minesweeper", 9.5, 1);
+            drawText("developed by Google Inc.", 9.5, 2);
+
+            drawText("Game modded by", 9.5, 4);
+            drawText("d016", 9.5, 5);
+
+            drawText("Game inspired by", 9.5, 7);
+            drawText("Minesweeper Plus", 9.5, 8);
+
+            drawText("Music partially based by", 9.5, 10);
+            drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
+            drawText("Final Boss Theme\" series", 9.5, 12)
+            break;
+          case "adventure":
+            drawText("Not yet...", 8.5, 6);
+            drawText("Coming Soon!", 8.5, 7);
+            break;
+        }
+      };
       a.context.globalCompositeOperation = "lighter";
       for (b = 0; b < a.glowParticles.length; b++) {
         c = a.glowParticles[b];
@@ -3393,6 +3439,8 @@ loaded_h_0(function (_) {
       this.NINE_FLOWER.src = "./img/nine_flower.png";
       this.TEN_VINES = new Image();
       this.TEN_VINES.src = "./img/ten_vines.png";
+      this.LOGO = new Image();
+      this.LOGO.src = "./img/logo.png";
       _.rIE(
         [
           this.Ll,
@@ -3410,6 +3458,7 @@ loaded_h_0(function (_) {
           this.ANTI_DOUBLE_FLAG_PLANT.WB,
           this.NINE_FLOWER,
           this.TEN_VINES,
+          this.LOGO,
           ...Object.values(this.itemTextures),
         ],
         () => {
@@ -3650,10 +3699,14 @@ loaded_h_0(function (_) {
     }
     Xg() {
       this.Ij && _.fw(this.Ja("NSjDf").el());
+      return this.reset();
+    }
+    toMenu() {
+      this.Ij && _.fw(this.Ja("returnToMenu").el());
       this.IS_TITLE_SCREEN = true;
       this.TITLE_SCREEN_PAGE = "main";
       this.Aa = this.od["MEDIUM"]
-      return this.reset();
+      return this.Xg();
     }
     reset() {
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
@@ -3747,20 +3800,29 @@ loaded_h_0(function (_) {
         F6.fSd.play();
         switch (this.TITLE_SCREEN_PAGE) {
           case "main":
-            this.digTileForTitleSceen(7, 6, 1, "adventure");
+            this.digTileForTitleSceen(6, 6, 1, "adventure");
+            this.digTileForTitleSceen(7, 6, 0, "adventure");
             this.digTileForTitleSceen(8, 6, 0, "adventure");
             this.digTileForTitleSceen(9, 6, 0, "adventure");
             this.digTileForTitleSceen(10, 6, 0, "adventure");
-    
-            this.digTileForTitleSceen(7, 9, 2, "free");
+            this.digTileForTitleSceen(11, 6, 0, "adventure");
+
+            this.digTileForTitleSceen(6, 9, 2, "free");
+            this.digTileForTitleSceen(7, 9, 0, "free");
             this.digTileForTitleSceen(8, 9, 0, "free");
             this.digTileForTitleSceen(9, 9, 0, "free");
             this.digTileForTitleSceen(10, 9, 0, "free");
+            this.digTileForTitleSceen(11, 9, 0, "free");
     
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
             this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 4; b < 14; b++) {
+              for (let c = 5; c < 9; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
             break;
           case "free":
             document.querySelector('div[jsname="V68bde"]').style.display = "";
@@ -3773,6 +3835,11 @@ loaded_h_0(function (_) {
             break;
           case "credits":
             this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 3; b < 17; b++) {
+              for (let c = 0; c < 14; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
             break;
         }
       };
@@ -4032,6 +4099,9 @@ loaded_h_0(function (_) {
   };
   _.G6.prototype.$wa$JrrOHc = function () {
     return this.Xg;
+  };
+  _.G6.prototype.$wa$toTheMenu = function () {
+    return this.toMenu;
   };
   _.G6.prototype.$wa$Wt8qFe = function () {
     return this.f1;
