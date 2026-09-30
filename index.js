@@ -1487,16 +1487,17 @@ loaded_h_0(function (_) {
   };
   setHtmlDisplays = function (a) {
     if (!a.isDisposed()) {
+      let isTitleScreen = a.IS_TITLE_SCREEN;
       var b = a.totalMineCount - a.flagCount,
         time = getTimerValue(a.maxTime ? a.maxTime - a.Mb : a.Mb);
       a.Ya("coins").el().style.display = a.adventure ? "" : "hidden"
-      _.ln(document.getElementById("livesCounter"), Math.max(a.lives,0).toString())
+      _.ln(document.getElementById("livesCounter"), isTitleScreen ? "\u2013" : Math.max(a.lives,0).toString())
       document.getElementById("timerDiv").style.background = a.maxTime
         ? "red"
         : "";
-      _.ln(a.Ya("MUaQvf").el(), b.toString());
-      _.ln(a.Ya("ajb2Y").el(), time);
-      _.ln(a.Ya("coins").el(), a.coins);
+      _.ln(a.Ya("MUaQvf").el(), isTitleScreen ? "\u2013\u2013\u2013" : b.toString());
+      _.ln(a.Ya("ajb2Y").el(), isTitleScreen ? "\u2013\u2013\u2013" : time);
+      _.ln(a.Ya("coins").el(), isTitleScreen ? "\u2013\u2013\u2013" : a.coins);
       a.Ja("Yfvsbd").hb().style.visibility === "hidden" &&
         ((b = a.didWin ? time : "\u2013\u2013\u2013"),
         (time = a.highScores[a.Da]),
@@ -3523,6 +3524,9 @@ loaded_h_0(function (_) {
           menu.appendChild(elem);
         })
       });
+      document.getElementById("menuButton").addEventListener('click', () => {
+        this.toMenu();
+      });
       document.addEventListener('click', function(event) {
           if (!(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id)) {
             document.getElementById("powerupsMenuDiv").style.display = "none";
@@ -3792,11 +3796,13 @@ loaded_h_0(function (_) {
       document.querySelector('div[jsname="V68bde"]').style.display = "none";
       if (this.TITLE_SCREEN_PAGE === "go" && this.IS_TITLE_SCREEN) {
         this.IS_TITLE_SCREEN = false;
+        document.getElementById("menuDiv").style.opacity = "1";
         this.setFreePlaySettings();
         return;
       }
       createGrid(this, true, true);
       if (this.IS_TITLE_SCREEN) {
+        document.getElementById("menuDiv").style.opacity = "0.5";
         F6.fSd.play();
         switch (this.TITLE_SCREEN_PAGE) {
           case "main":
