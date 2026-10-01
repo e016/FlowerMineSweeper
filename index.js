@@ -1084,9 +1084,9 @@ loaded_h_0(function (_) {
       DIG_REVEAL_NEG_SEVEN: new Audio("audio/-7.wav"),
       DIG_REVEAL_NEG_EIGHT: new Audio("audio/-8.wav"),
     };
-    extraSounds.NINE_LOOP.loop = true;
-    extraSounds.TEN_LOOP.loop = true;
-    extraSounds.TEN_GROW.loop = true;
+  extraSounds.NINE_LOOP.loop = true;
+  extraSounds.TEN_LOOP.loop = true;
+  extraSounds.TEN_GROW.loop = true;
 
   var gPE = class extends _.fIE {
     constructor() {
@@ -1353,76 +1353,76 @@ loaded_h_0(function (_) {
   adventureMaps = [
     [
       {
-          "name": "Flower Pot",
-          "mineCount": 4,
-          "width": 7,
-          "height": 7,
-          "powerups": 0,
-          "theme": 0,
+        name: "Flower Pot",
+        mineCount: 4,
+        width: 7,
+        height: 7,
+        powerups: 0,
+        theme: 0,
       },
       {
-          "name": "Greenhouse",
-          "mineCount": 6,
-          "width": 8,
-          "height": 8,
-          "powerups": 1,
-          "theme": 0,
+        name: "Greenhouse",
+        mineCount: 6,
+        width: 8,
+        height: 8,
+        powerups: 1,
+        theme: 0,
       },
       {
-          "name": "First Customer",
-          "mineCount": 10,
-          "width": 10,
-          "height": 8,
-          "powerups": 1,
-          "theme": 1,
+        name: "First Customer",
+        mineCount: 10,
+        width: 10,
+        height: 8,
+        powerups: 1,
+        theme: 1,
       },
       {
-          "name": "Backyard's Revenge",
-          "mineCount": 15,
-          "width": 9,
-          "height": 13,
-          "theme": 1,
+        name: "Backyard's Revenge",
+        mineCount: 15,
+        width: 9,
+        height: 13,
+        theme: 1,
       },
       {
-          "name": "Half The Acre",
-          "mineCount": 50,
-          "width": 20,
-          "height": 16,
-          "theme": 2,
+        name: "Half The Acre",
+        mineCount: 50,
+        width: 20,
+        height: 16,
+        theme: 2,
       },
       {
-          "name": "Novice Patio",
-          "mineCount": 40,
-          "width": 18,
-          "height": 14,
-          "powerups": 3,
-          "theme": 2,
+        name: "Novice Patio",
+        mineCount: 40,
+        width: 18,
+        height: 14,
+        powerups: 3,
+        theme: 2,
       },
       {
-          "name": "Sun's Set",
-          "mineCount": 88,
-          "width": 20,
-          "height": 16,
-          "powerups": 3,
-          "theme": 3,
+        name: "Sun's Set",
+        mineCount: 88,
+        width: 20,
+        height: 16,
+        powerups: 3,
+        theme: 3,
       },
       {
-          "name": "Midnight Gardening",
-          "mineCount": 88,
-          "width": 20,
-          "height": 16,
-          "powerups": 3,
-          "theme": 3,
+        name: "Midnight Gardening",
+        mineCount: 88,
+        width: 20,
+        height: 16,
+        powerups: 3,
+        theme: 3,
       },
       {
-          "name": "????SWEEPER",
-          "mineCount": 35,
-          "width": 20,
-          "height": 16,
-          "powerups": 0,
-          "theme": 0,
-      }
-    ]
+        name: "????SWEEPER",
+        mineCount: 35,
+        width: 20,
+        height: 16,
+        powerups: 0,
+        theme: 0,
+      },
+    ],
   ];
   sPE = function (a) {
     return a.Coa().then(() => {
@@ -1456,22 +1456,25 @@ loaded_h_0(function (_) {
     }
   };
   const newCell = function (props) {
-    return Object.assign({
-      enabled: true,
-      isBossTile: false,
-      isMine: false,
-      mineValue: 0,
-      FLb: false,
-      mgd: 0,
-      flagCount: 0,
-      uNb: -1,
-      cellDug: false,
-      mineCount: 0,
-      value: 0,
-      color: uPE[Math.floor(Math.random() * uPE.length)],
-      powerup: null,
-    }, props || {});
-  }
+    return Object.assign(
+      {
+        enabled: true,
+        isBossTile: false,
+        isMine: false,
+        mineValue: 0,
+        FLb: false,
+        mgd: 0,
+        flagCount: 0,
+        uNb: -1,
+        cellDug: false,
+        mineCount: 0,
+        value: 0,
+        color: uPE[Math.floor(Math.random() * uPE.length)],
+        powerup: null,
+      },
+      props || {},
+    );
+  };
   createGrid = function (a, noReset, chipOthers) {
     if (!noReset) {
       a.oa = Array(a.Aa.width);
@@ -1498,12 +1501,18 @@ loaded_h_0(function (_) {
       let isTitleScreen = a.IS_TITLE_SCREEN;
       var b = a.totalMineCount - a.flagCount,
         time = getTimerValue(a.maxTime ? a.maxTime - a.Mb : a.Mb);
-      a.Ya("coins").el().style.display = a.adventure ? "" : "hidden"
-      _.ln(document.getElementById("livesCounter"), isTitleScreen ? "\u2013" : Math.max(a.lives,0).toString())
+      a.Ya("coins").el().style.display = a.adventure ? "" : "hidden";
+      _.ln(
+        document.getElementById("livesCounter"),
+        isTitleScreen ? "\u2013" : Math.max(a.lives, 0).toString(),
+      );
       document.getElementById("timerDiv").style.background = a.maxTime
         ? "red"
         : "";
-      _.ln(a.Ya("MUaQvf").el(), isTitleScreen ? "\u2013\u2013\u2013" : b.toString());
+      _.ln(
+        a.Ya("MUaQvf").el(),
+        isTitleScreen ? "\u2013\u2013\u2013" : b.toString(),
+      );
       _.ln(a.Ya("ajb2Y").el(), isTitleScreen ? "\u2013\u2013\u2013" : time);
       _.ln(a.Ya("coins").el(), isTitleScreen ? "\u2013\u2013\u2013" : a.coins);
       a.Ja("Yfvsbd").hb().style.visibility === "hidden" &&
@@ -1515,11 +1524,18 @@ loaded_h_0(function (_) {
     }
   };
   const isCellDug = function (a, b, c) {
-    const isTen = (a.ten && !a.bossIntro && b.x === a.tenPosition.x && b.y === a.tenPosition.y);
+    const isTen =
+      a.ten &&
+      !a.bossIntro &&
+      b.x === a.tenPosition.x &&
+      b.y === a.tenPosition.y;
     if (c) {
       return (
         a.oa[b.x][b.y].enabled &&
-        (a.oa[b.x][b.y].cellDug || isTen || isTileNine(a, b) || isTileAdjacentNine(a, b))
+        (a.oa[b.x][b.y].cellDug ||
+          isTen ||
+          isTileNine(a, b) ||
+          isTileAdjacentNine(a, b))
       );
     }
     return (
@@ -1531,320 +1547,331 @@ loaded_h_0(function (_) {
     );
   };
   APE = function (a) {
-    try{
-    if (!a.isDisposed()) {
-      if (true) {
-        //!!!!!
-
-        if (a.bossIntro) {
-          let now = Date.now(),
-            centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
-          if (
-            !centerCell.cellDug &&
-            (now - centerCell.mgd > 1000 || centerCell.mgd === 0)
-          ) {
-            centerCell.mgd = now;
-          }
-        }
-        for (var b = 0; b < a.Aa.width; b++)
-          for (var c = 0; c < a.Aa.height; c++)
-            isCellDug(a, new _.Td(b, c)) &&
-              !(
-                (a.oa[b][c].isMine && !isTileNine(a, new _.Td(b, c))) ||
-                isTileAdjacentNine(a, new _.Td(b, c))
-              ) &&
-              drawCell(a, new _.Td(b, c));
-        a.context.fillStyle = currentTheme[7];
-        b = Math.round(a.cellSize * 0.08);
-
-        for (c = 0; c < a.Aa.width; c++)
-          for (var d = 0; d < a.Aa.height; d++) {
-            var e = new _.Td(c, d);
-            (!isCellDug(a, e, true) ||
-              (a.oa[e.x][e.y].FLb && !isTileNine(a, e)) ||
-              isTileAdjacentNine(a, e)) &&
-              ((e.x > 0 && isCellDug(a, new _.Td(e.x - 1, e.y), true)) ||
-                (e.y > 0 && isCellDug(a, new _.Td(e.x, e.y - 1), true)) ||
-                (e.x < a.Aa.width - 1 &&
-                  isCellDug(a, new _.Td(e.x + 1, e.y), true)) ||
-                (e.y < a.Aa.height - 1 &&
-                  isCellDug(a, new _.Td(e.x, e.y + 1), true))) &&
-              a.context.fillRect(
-                e.x * a.cellSize - b,
-                e.y * a.cellSize - b,
-                a.cellSize + 2 * b,
-                a.cellSize + 2 * b,
-              );
-          }
-      }
-      for (b = 0; b < a.Aa.width; b++)
-        for (c = 0; c < a.Aa.height; c++)
-          (isCellDug(a, new _.Td(b, c), true) &&
-            !(a.oa[b][c].FLb || isTileAdjacentNine(a, new _.Td(b, c)))) ||
-            drawCell(a, new _.Td(b, c));
-
-      if (a.nine && a.maxTime) {
-        let flowerSize = a.cellSize * 2.6
-        a.context.save();
-        a.context.translate((a.ninePosition.x + 0.5) * a.cellSize, (a.ninePosition.y + 0.5) * a.cellSize);
-        a.context.rotate((a.nineRotation * Math.PI) / 180);
-        a.context.drawImage(
-          a.NINE_FLOWER,
-          flowerSize / -2,
-          flowerSize / -2,
-          flowerSize,
-          flowerSize,
-        );
-        a.context.restore();
-        a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
-        a.context.textAlign = "center";
-        a.context.fillStyle = gQE[8];
-        a.context.fillText(
-          "9",
-          a.ninePosition.x * a.cellSize + a.cellSize / 2,
-          a.ninePosition.y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1,
-        );
-        
-      }
-      if (a.ten && !a.bossIntro) {
-        a.context.fillStyle = colorToColor(gQE[9], gQE[2], a.tenTimer / 10000);
-        a.context.beginPath();
-        a.context.arc(
-          a.tenPosition.x * a.cellSize + a.cellSize / 2,
-          a.tenPosition.y * a.cellSize + a.cellSize / 2,
-          getTenRadius(a),
-          0,
-          Math.PI * 2
-        );
-        a.context.closePath();
-        a.context.fill();
-        drawCell(
-          a,
-          a.tenPosition,
-          true
-        );
-      }
-      if (a.IS_TITLE_SCREEN) {
-        function drawText(text, x, y) {
-          a.context.fillText(
-            text,
-            x * a.cellSize + a.cellSize / 2,
-            y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1, // grrr...
-          );
-
-        };
-        a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
-        a.context.textAlign = "center";
-        a.context.fillStyle = "#242424";
-        switch (a.TITLE_SCREEN_PAGE) {
-          case "main":
-            a.context.drawImage(
-              a.LOGO,
-              2.5 * a.cellSize,
-              2 * a.cellSize,
-              13 * a.cellSize,
-              13 * a.cellSize / 5.5
-            );
-            
-            drawText("ADVENTURE", 9, 6);
-            drawText("FREE PLAY", 9, 9);
-            break;
-          case "free":
-            drawText("PLAY", 15, 12);
-            break;
-          case "credits":
-            drawText("Google Minesweeper", 9.5, 1);
-            drawText("developed by Google Inc.", 9.5, 2);
-
-            drawText("Game modded by", 9.5, 4);
-            drawText("d016", 9.5, 5);
-
-            drawText("Game inspired by", 9.5, 7);
-            drawText("Minesweeper Plus", 9.5, 8);
-
-            drawText("Music partially based by", 9.5, 10);
-            drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
-            drawText("Final Boss Theme\" series", 9.5, 12)
-            break;
-          case "adventure":
-            drawText("Not yet...", 8.5, 6);
-            drawText("Coming Soon!", 8.5, 7);
-            break;
-        }
-      };
-      a.context.globalCompositeOperation = "lighter";
-      for (b = 0; b < a.glowParticles.length; b++) {
-        c = a.glowParticles[b];
-        let gradient = a.context.createRadialGradient(c.pos.x, c.pos.y, 0, c.pos.x, c.pos.y, c.size);
-        gradient.addColorStop(0, "#FFF2");
-        gradient.addColorStop(1, "#0000");
-        a.context.globalAlpha = c.opacity;
-        a.context.fillStyle = gradient;
-        a.context.beginPath();
-        a.context.arc(c.pos.x, c.pos.y, c.size, 0, Math.PI * 2)
-        a.context.closePath();
-        a.context.fill();
-      }
-      a.context.globalAlpha = 1;
-      a.context.globalCompositeOperation = "source-over";
-      a.context.setTransform(1, 0, 0, 1, 0, 0);
-      a.context.fillStyle = currentTheme[6];
-      a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
-      a.context.fillRect(
-        a.canvas.width - a.Ca.width,
-        0,
-        a.Ca.width,
-        a.canvas.height,
-      );
-      a.context.fillRect(0, 0, a.canvas.width, a.Ca.height);
-      a.context.fillRect(
-        0,
-        a.canvas.height - a.Ca.height,
-        a.canvas.width,
-        a.Ca.height,
-      );
-      a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height);
-      a.Ba && drawCell(a, a.Ba);
-      for (b = 0; b < a.Ua.length; b++) {
-        c = a.Ua[b];
-        if (c.size <= 0) continue;
-        e = Math.round(c.pos.x);
-        var f = Math.round(c.pos.y);
-        let g = (c.angle * Math.PI) / 180;
-        g += (c.J8d ? 1 : -1) * c.size;
-        d = c.radius * c.size;
-        a.context.save();
-        a.context.translate(e, f);
-        a.context.rotate(g);
-        switch (c.type) {
-          case 0:
-            a.context.fillStyle = c.color;
-            a.context.beginPath();
-            a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
-            a.context.fill();
-            a.context.fillStyle = darkenColor(c.color, 0.2);
-            a.context.beginPath();
-            a.context.arc(0, 0, d * 0.3, 0, 2 * Math.PI, false);
-            a.context.fill();
-            break;
-          case 1:
-            e = d * 2;
-            f = e / 3;
-            a.context.fillStyle = c.color;
-            a.context.fillRect(-(e / 2), -(f / 2), e, f);
-            a.context.rotate(Math.PI / 3);
-            a.context.fillRect(-(e / 2), -(f / 2), e, f);
-            a.context.rotate(-Math.PI / 3);
-            a.context.rotate((2 * Math.PI) / 3);
-            a.context.fillRect(-(e / 2), -(f / 2), e, f);
-            a.context.rotate((-2 * Math.PI) / 3);
-            a.context.fillStyle = darkenColor(c.color, 0.2);
-            a.context.beginPath();
-            a.context.arc(0, 0, d * 0.4, 0, 2 * Math.PI, false);
-            a.context.fill();
-            break;
-          case 2:
-            d *= 2 / 3;
-            a.context.fillStyle = c.color;
-            a.context.scale(2, 1);
-            a.context.beginPath();
-            a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
-            a.context.fill();
-            a.context.scale(0.5, 2);
-            a.context.beginPath();
-            a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
-            a.context.fill();
-            a.context.scale(1, 0.5);
-            a.context.fillStyle = darkenColor(c.color, 0.2);
-            a.context.beginPath();
-            a.context.arc(0, 0, d * 0.5, 0, 2 * Math.PI, false);
-            a.context.fill();
-            break;
-          case 3:
-            ((e = d * 2),
-              (a.context.fillStyle = c.color),
-              a.context.fillRect(-(e / 2), -(e / 2), e, e),
-              a.context.rotate(Math.PI / 4),
-              a.context.fillRect(-(e / 2), -(e / 2), e, e),
-              a.context.rotate(-Math.PI / 4),
-              (a.context.fillStyle = darkenColor(c.color, 0.2)),
-              a.context.beginPath(),
-              a.context.arc(0, 0, d * 0.5, 0, 2 * Math.PI, false),
-              a.context.fill());
-        }
-        a.context.restore();
-      }
+    try {
       if (!a.isDisposed()) {
-        for (b = 0; b < a.Za.length; b++)
-          ((c = a.Za[b]),
-            (d = Math.round(c.pos.x + a.cellSize / 6)),
-            (e = Math.round(c.pos.y + a.cellSize / 9)),
-            (f = c.Fe.x * 0.025),
-            a.context.save(),
-            a.context.translate(d, e),
-            a.context.rotate(f),
-            (d = Math.min(1, c.size)),
-            (a.context.fillStyle = c.color),
-            a.context.fillRect(
-              -(a.cellSize / 6) * d,
-              -(a.cellSize / 9) * d,
-              (a.cellSize / 3) * d,
-              (a.cellSize / 4.5) * d,
-            ),
-            a.context.restore());
-        for (b = 0; b < a.wb.length; b++)
-          ((c = a.wb[b]),
-            (d = Math.round(c.pos.x + a.cellSize / 2)),
-            (e = Math.round(c.pos.y + a.cellSize / 2)),
-            (f = (c.angle * Math.PI) / 180),
-            a.context.save(),
-            a.context.translate(d, e),
-            a.context.rotate(f),
-            (d = Math.min(1, c.size)),
-            (a.context.fillStyle = c.color),
-            a.context.fillRect(
-              -(a.cellSize / 2) * d,
-              -(a.cellSize / 2) * d,
-              a.cellSize * d,
-              a.cellSize * d,
-            ),
-            a.context.restore());
-        for (b = 0; b < a.ob.length; b++) {
-          c = a.ob[b];
-          let texture = c.texture;
-          d = Math.round(c.pos.x + a.cellSize / 2);
-          e = Math.round(c.pos.y + a.cellSize / 2);
-          f = (c.angle * Math.PI) / 180;
+        if (true) {
+          //!!!!!
+
+          if (a.bossIntro) {
+            let now = Date.now(),
+              centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
+            if (
+              !centerCell.cellDug &&
+              (now - centerCell.mgd > 1000 || centerCell.mgd === 0)
+            ) {
+              centerCell.mgd = now;
+            }
+          }
+          for (var b = 0; b < a.Aa.width; b++)
+            for (var c = 0; c < a.Aa.height; c++)
+              isCellDug(a, new _.Td(b, c)) &&
+                !(
+                  (a.oa[b][c].isMine && !isTileNine(a, new _.Td(b, c))) ||
+                  isTileAdjacentNine(a, new _.Td(b, c))
+                ) &&
+                drawCell(a, new _.Td(b, c));
+          a.context.fillStyle = currentTheme[7];
+          b = Math.round(a.cellSize * 0.08);
+
+          for (c = 0; c < a.Aa.width; c++)
+            for (var d = 0; d < a.Aa.height; d++) {
+              var e = new _.Td(c, d);
+              (!isCellDug(a, e, true) ||
+                (a.oa[e.x][e.y].FLb && !isTileNine(a, e)) ||
+                isTileAdjacentNine(a, e)) &&
+                ((e.x > 0 && isCellDug(a, new _.Td(e.x - 1, e.y), true)) ||
+                  (e.y > 0 && isCellDug(a, new _.Td(e.x, e.y - 1), true)) ||
+                  (e.x < a.Aa.width - 1 &&
+                    isCellDug(a, new _.Td(e.x + 1, e.y), true)) ||
+                  (e.y < a.Aa.height - 1 &&
+                    isCellDug(a, new _.Td(e.x, e.y + 1), true))) &&
+                a.context.fillRect(
+                  e.x * a.cellSize - b,
+                  e.y * a.cellSize - b,
+                  a.cellSize + 2 * b,
+                  a.cellSize + 2 * b,
+                );
+            }
+        }
+        for (b = 0; b < a.Aa.width; b++)
+          for (c = 0; c < a.Aa.height; c++)
+            (isCellDug(a, new _.Td(b, c), true) &&
+              !(a.oa[b][c].FLb || isTileAdjacentNine(a, new _.Td(b, c)))) ||
+              drawCell(a, new _.Td(b, c));
+
+        if (a.nine && a.maxTime) {
+          let flowerSize = a.cellSize * 2.6;
           a.context.save();
-          a.context.translate(d, e);
-          a.context.rotate(f);
-          c = Math.min(1, c.size);
+          a.context.translate(
+            (a.ninePosition.x + 0.5) * a.cellSize,
+            (a.ninePosition.y + 0.5) * a.cellSize,
+          );
+          a.context.rotate((a.nineRotation * Math.PI) / 180);
           a.context.drawImage(
-            texture,
-            -(a.cellSize / 2) * c,
-            -(a.cellSize / 2) * c,
-            a.cellSize * c,
-            a.cellSize * c,
+            a.NINE_FLOWER,
+            flowerSize / -2,
+            flowerSize / -2,
+            flowerSize,
+            flowerSize,
           );
           a.context.restore();
+          a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
+          a.context.textAlign = "center";
+          a.context.fillStyle = gQE[8];
+          a.context.fillText(
+            "9",
+            a.ninePosition.x * a.cellSize + a.cellSize / 2,
+            a.ninePosition.y * a.cellSize +
+              a.cellSize * 0.62 +
+              (a.cellSize - a.cellSize * 0.62) / 2.1,
+          );
         }
-      };
-      
-      a.Bb > 0 &&
-        (a.context.setTransform(1, 0, 0, 1, 0, 0),
-        (c = (a.Bb / 1e3) * 8),
-        (b = Math.random() * c - c / 2),
-        (c = Math.random() * c - c / 2),
-        a.context.canvas.height > 0 &&
-          a.context.canvas.width > 0 &&
-          (a.context.drawImage(a.context.canvas, b, c),
-          a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height)));
-      
+        if (a.ten && !a.bossIntro) {
+          a.context.fillStyle = colorToColor(
+            gQE[9],
+            gQE[2],
+            a.tenTimer / 10000,
+          );
+          a.context.beginPath();
+          a.context.arc(
+            a.tenPosition.x * a.cellSize + a.cellSize / 2,
+            a.tenPosition.y * a.cellSize + a.cellSize / 2,
+            getTenRadius(a),
+            0,
+            Math.PI * 2,
+          );
+          a.context.closePath();
+          a.context.fill();
+          drawCell(a, a.tenPosition, true);
+        }
+        if (a.IS_TITLE_SCREEN) {
+          function drawText(text, x, y) {
+            a.context.fillText(
+              text,
+              x * a.cellSize + a.cellSize / 2,
+              y * a.cellSize +
+                a.cellSize * 0.62 +
+                (a.cellSize - a.cellSize * 0.62) / 2.1, // grrr...
+            );
+          }
+          a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
+          a.context.textAlign = "center";
+          a.context.fillStyle = "#242424";
+          switch (a.TITLE_SCREEN_PAGE) {
+            case "main":
+              a.context.drawImage(
+                a.LOGO,
+                2.5 * a.cellSize,
+                2 * a.cellSize,
+                13 * a.cellSize,
+                (13 * a.cellSize) / 5.5,
+              );
+
+              drawText("ADVENTURE", 9, 6);
+              drawText("FREE PLAY", 9, 9);
+              break;
+            case "free":
+              drawText("PLAY", 15, 12);
+              break;
+            case "credits":
+              drawText("Google Minesweeper", 9.5, 1);
+              drawText("developed by Google Inc.", 9.5, 2);
+
+              drawText("Game modded by", 9.5, 4);
+              drawText("d016", 9.5, 5);
+
+              drawText("Game inspired by", 9.5, 7);
+              drawText("Minesweeper Plus", 9.5, 8);
+
+              drawText("Music partially based by", 9.5, 10);
+              drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
+              drawText('Final Boss Theme" series', 9.5, 12);
+              break;
+            case "adventure":
+              drawText("Not yet...", 8.5, 6);
+              drawText("Coming Soon!", 8.5, 7);
+              break;
+          }
+        }
+        a.context.globalCompositeOperation = "lighter";
+        for (b = 0; b < a.glowParticles.length; b++) {
+          c = a.glowParticles[b];
+          let gradient = a.context.createRadialGradient(
+            c.pos.x,
+            c.pos.y,
+            0,
+            c.pos.x,
+            c.pos.y,
+            c.size,
+          );
+          gradient.addColorStop(0, "#FFF2");
+          gradient.addColorStop(1, "#0000");
+          a.context.globalAlpha = c.opacity;
+          a.context.fillStyle = gradient;
+          a.context.beginPath();
+          a.context.arc(c.pos.x, c.pos.y, c.size, 0, Math.PI * 2);
+          a.context.closePath();
+          a.context.fill();
+        }
+        a.context.globalAlpha = 1;
+        a.context.globalCompositeOperation = "source-over";
+        a.context.setTransform(1, 0, 0, 1, 0, 0);
+        a.context.fillStyle = currentTheme[6];
+        a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
+        a.context.fillRect(
+          a.canvas.width - a.Ca.width,
+          0,
+          a.Ca.width,
+          a.canvas.height,
+        );
+        a.context.fillRect(0, 0, a.canvas.width, a.Ca.height);
+        a.context.fillRect(
+          0,
+          a.canvas.height - a.Ca.height,
+          a.canvas.width,
+          a.Ca.height,
+        );
+        a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height);
+        a.Ba && drawCell(a, a.Ba);
+        for (b = 0; b < a.Ua.length; b++) {
+          c = a.Ua[b];
+          if (c.size <= 0) continue;
+          e = Math.round(c.pos.x);
+          var f = Math.round(c.pos.y);
+          let g = (c.angle * Math.PI) / 180;
+          g += (c.J8d ? 1 : -1) * c.size;
+          d = c.radius * c.size;
+          a.context.save();
+          a.context.translate(e, f);
+          a.context.rotate(g);
+          switch (c.type) {
+            case 0:
+              a.context.fillStyle = c.color;
+              a.context.beginPath();
+              a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
+              a.context.fill();
+              a.context.fillStyle = darkenColor(c.color, 0.2);
+              a.context.beginPath();
+              a.context.arc(0, 0, d * 0.3, 0, 2 * Math.PI, false);
+              a.context.fill();
+              break;
+            case 1:
+              e = d * 2;
+              f = e / 3;
+              a.context.fillStyle = c.color;
+              a.context.fillRect(-(e / 2), -(f / 2), e, f);
+              a.context.rotate(Math.PI / 3);
+              a.context.fillRect(-(e / 2), -(f / 2), e, f);
+              a.context.rotate(-Math.PI / 3);
+              a.context.rotate((2 * Math.PI) / 3);
+              a.context.fillRect(-(e / 2), -(f / 2), e, f);
+              a.context.rotate((-2 * Math.PI) / 3);
+              a.context.fillStyle = darkenColor(c.color, 0.2);
+              a.context.beginPath();
+              a.context.arc(0, 0, d * 0.4, 0, 2 * Math.PI, false);
+              a.context.fill();
+              break;
+            case 2:
+              d *= 2 / 3;
+              a.context.fillStyle = c.color;
+              a.context.scale(2, 1);
+              a.context.beginPath();
+              a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
+              a.context.fill();
+              a.context.scale(0.5, 2);
+              a.context.beginPath();
+              a.context.arc(0, 0, d, 0, 2 * Math.PI, false);
+              a.context.fill();
+              a.context.scale(1, 0.5);
+              a.context.fillStyle = darkenColor(c.color, 0.2);
+              a.context.beginPath();
+              a.context.arc(0, 0, d * 0.5, 0, 2 * Math.PI, false);
+              a.context.fill();
+              break;
+            case 3:
+              ((e = d * 2),
+                (a.context.fillStyle = c.color),
+                a.context.fillRect(-(e / 2), -(e / 2), e, e),
+                a.context.rotate(Math.PI / 4),
+                a.context.fillRect(-(e / 2), -(e / 2), e, e),
+                a.context.rotate(-Math.PI / 4),
+                (a.context.fillStyle = darkenColor(c.color, 0.2)),
+                a.context.beginPath(),
+                a.context.arc(0, 0, d * 0.5, 0, 2 * Math.PI, false),
+                a.context.fill());
+          }
+          a.context.restore();
+        }
+        if (!a.isDisposed()) {
+          for (b = 0; b < a.Za.length; b++)
+            ((c = a.Za[b]),
+              (d = Math.round(c.pos.x + a.cellSize / 6)),
+              (e = Math.round(c.pos.y + a.cellSize / 9)),
+              (f = c.Fe.x * 0.025),
+              a.context.save(),
+              a.context.translate(d, e),
+              a.context.rotate(f),
+              (d = Math.min(1, c.size)),
+              (a.context.fillStyle = c.color),
+              a.context.fillRect(
+                -(a.cellSize / 6) * d,
+                -(a.cellSize / 9) * d,
+                (a.cellSize / 3) * d,
+                (a.cellSize / 4.5) * d,
+              ),
+              a.context.restore());
+          for (b = 0; b < a.wb.length; b++)
+            ((c = a.wb[b]),
+              (d = Math.round(c.pos.x + a.cellSize / 2)),
+              (e = Math.round(c.pos.y + a.cellSize / 2)),
+              (f = (c.angle * Math.PI) / 180),
+              a.context.save(),
+              a.context.translate(d, e),
+              a.context.rotate(f),
+              (d = Math.min(1, c.size)),
+              (a.context.fillStyle = c.color),
+              a.context.fillRect(
+                -(a.cellSize / 2) * d,
+                -(a.cellSize / 2) * d,
+                a.cellSize * d,
+                a.cellSize * d,
+              ),
+              a.context.restore());
+          for (b = 0; b < a.ob.length; b++) {
+            c = a.ob[b];
+            let texture = c.texture;
+            d = Math.round(c.pos.x + a.cellSize / 2);
+            e = Math.round(c.pos.y + a.cellSize / 2);
+            f = (c.angle * Math.PI) / 180;
+            a.context.save();
+            a.context.translate(d, e);
+            a.context.rotate(f);
+            c = Math.min(1, c.size);
+            a.context.drawImage(
+              texture,
+              -(a.cellSize / 2) * c,
+              -(a.cellSize / 2) * c,
+              a.cellSize * c,
+              a.cellSize * c,
+            );
+            a.context.restore();
+          }
+        }
+
+        a.Bb > 0 &&
+          (a.context.setTransform(1, 0, 0, 1, 0, 0),
+          (c = (a.Bb / 1e3) * 8),
+          (b = Math.random() * c - c / 2),
+          (c = Math.random() * c - c / 2),
+          a.context.canvas.height > 0 &&
+            a.context.canvas.width > 0 &&
+            (a.context.drawImage(a.context.canvas, b, c),
+            a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height)));
+      }
+    } catch (e) {
+      console.error(e);
+      debugger;
     }
-  } catch(e) {
-    console.error(e);
-    debugger;
-  }
   };
   const getTenRadius = function (a) {
     if (!a.ten || !a.startedGame || a.bossIntro) {
@@ -1854,14 +1881,14 @@ loaded_h_0(function (_) {
     return ratio * a.cellSize * Math.min(a.Aa.width, a.Aa.height) * 0.5;
   };
   const isClickingTen = function (a, b) {
-    if ((!a.ten || !a.startedGame) || a.bossIntro) {
+    if (!a.ten || !a.startedGame || a.bossIntro) {
       return false;
     }
     let r = Math.max(getTenRadius(a), a.cellSize / 2);
     cx = (a.tenPosition.x + 0.5) * a.cellSize;
     cy = (a.tenPosition.y + 0.5) * a.cellSize;
-    return (b.x * a.cellSize - cx)**2 + (b.y * a.cellSize - cy)**2 <= r*r
-  }
+    return (b.x * a.cellSize - cx) ** 2 + (b.y * a.cellSize - cy) ** 2 <= r * r;
+  };
   showFinishPopup = function (a, willShow) {
     if (!a.isDisposed()) {
       var c = a.Ja("Yfvsbd").hb();
@@ -1891,7 +1918,7 @@ loaded_h_0(function (_) {
         a.adventure.coins = a.coins;
         a.adventure.powerups = a.powerups;
         a.adventure.level++;
-      };
+      }
     }
   };
   showMobileButtons = function (a) {
@@ -1911,10 +1938,13 @@ loaded_h_0(function (_) {
       q = 8 - l.length;
     for (let r = 0; r < l.length; r++) {
       let t = l[r];
-      (a.oa[t.x][t.y].flagCount || (isTileMine(a, t) && isCellDug(a, t))) && surroundingFlags++;
+      (a.oa[t.x][t.y].flagCount || (isTileMine(a, t) && isCellDug(a, t))) &&
+        surroundingFlags++;
       a.oa[t.x][t.y].cellDug && q++;
     }
-    b = surroundingFlags === a.oa[a.Ba.x][b.y].mineCount && surroundingFlags + q !== 8;
+    b =
+      surroundingFlags === a.oa[a.Ba.x][b.y].mineCount &&
+      surroundingFlags + q !== 8;
     (!h && !k) || (h && b)
       ? ((k = g ? Math.PI / 2 : (3 * Math.PI) / 2),
         (a.La = new _.Td(
@@ -1955,9 +1985,13 @@ loaded_h_0(function (_) {
     if (count === -2) {
       return 0;
     }
-    return a.antiMines === 1 
-    ? a.doubleMines === 1 ? -2 : -1 
-    : a.doubleMines === 1 ? 2 : 1;
+    return a.antiMines === 1
+      ? a.doubleMines === 1
+        ? -2
+        : -1
+      : a.doubleMines === 1
+        ? 2
+        : 1;
   };
   placeFlag = function (a, b) {
     let pastFlagCount = a.oa[b.x][b.y].flagCount;
@@ -1983,11 +2017,11 @@ loaded_h_0(function (_) {
   };
   OPE = function (a, b, c) {
     var digging = a.leftClicking && !a.Sa,
-      flagging = (a.rightClicking || (a.leftClicking && a.Sa)),
+      flagging = a.rightClicking || (a.leftClicking && a.Sa),
       chording = a.readyToChord;
     if (a.IS_TITLE_SCREEN) {
       var g = getCellFromPixelPosition(a, b, c),
-      role = a.oa[g.x][g.y].role;
+        role = a.oa[g.x][g.y].role;
       console.warn(g, role, digging);
       if (digging && role) {
         a.TITLE_SCREEN_PAGE = role;
@@ -1999,9 +2033,9 @@ loaded_h_0(function (_) {
         : a.Va > 0 && (a.Va = Math.max(0, a.Va - 1e3));
     else {
       var g = getCellFromPixelPosition(a, b, c),
-      clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
+        clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
       console.warn(a, g, b, c, a.Ca, a.cellSize);
-      chording = chording || (digging && isCellDug(a, g) && a.startedGame)
+      chording = chording || (digging && isCellDug(a, g) && a.startedGame);
       if (g !== null) {
         a.isMobile()
           ? ((digging = false),
@@ -2014,36 +2048,49 @@ loaded_h_0(function (_) {
                 : HPE(a, b, c, a.Ma)
                   ? (placeFlag(a, a.Ba), (digging = true))
                   : HPE(a, b, c, a.Ha) && (digging = true)),
-            digging || !(a.bossIntro
-                  ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
-                  : true)
+            digging ||
+            !(a.bossIntro
+              ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
+              : true)
               ? clearMobileSelectedTile(a)
-              : clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : !a.startedGame && isCellInGrid(a, g) 
-                ? (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g))
-                : !isCellInGrid(a, g) ||
-                    (isCellDug(a, g) && a.oa[g.x][g.y].mineCount === 0 && !a.oa[g.x][g.y].powerup)
-                  ? clearMobileSelectedTile(a)
-                  : a.Ba !== null && a.Ba.x === g.x && a.Ba.y === g.y
-                    ? (a.Qc < 350 &&
-                        (isNumberCellOpen(a, a.Ba)
-                          ? chordCells(a, a.Ba)
-                          : userDigCells(a, a.Ba)),
-                      clearMobileSelectedTile(a))
-                    : a.oa[g.x][g.y].powerup ? userDigCells(a, g) : ((a.Ba = g),
-                      showMobileButtons(a),
-                      a.La === null &&
-                        a.Ma === null &&
-                        a.Ha === null &&
-                        clearMobileSelectedTile(a)))
+              : clickingTen
+                ? ((a.tenTimer = 0), moveTen(a, g))
+                : !a.startedGame && isCellInGrid(a, g)
+                  ? clickingTen
+                    ? ((a.tenTimer = 0), moveTen(a, g))
+                    : userDigCells(a, g)
+                  : !isCellInGrid(a, g) ||
+                      (isCellDug(a, g) &&
+                        a.oa[g.x][g.y].mineCount === 0 &&
+                        !a.oa[g.x][g.y].powerup)
+                    ? clearMobileSelectedTile(a)
+                    : a.Ba !== null && a.Ba.x === g.x && a.Ba.y === g.y
+                      ? (a.Qc < 350 &&
+                          (isNumberCellOpen(a, a.Ba)
+                            ? chordCells(a, a.Ba)
+                            : userDigCells(a, a.Ba)),
+                        clearMobileSelectedTile(a))
+                      : a.oa[g.x][g.y].powerup
+                        ? userDigCells(a, g)
+                        : ((a.Ba = g),
+                          showMobileButtons(a),
+                          a.La === null &&
+                            a.Ma === null &&
+                            a.Ha === null &&
+                            clearMobileSelectedTile(a)))
           : (a.bossIntro
-                  ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
-                  : true) && ((chording || (digging && flagging)) && !a.powerup
-            ? (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : chordCells(a, g))
-            : flagging
-              ? placeFlag(a, g)
-              : digging &&
-                
-                (clickingTen ? (a.tenTimer = 0, moveTen(a, g)) : userDigCells(a, g)));
+              ? g.x === a.ninePosition.x && g.y === a.ninePosition.y
+              : true) &&
+            ((chording || (digging && flagging)) && !a.powerup
+              ? clickingTen
+                ? ((a.tenTimer = 0), moveTen(a, g))
+                : chordCells(a, g)
+              : flagging
+                ? placeFlag(a, g)
+                : digging &&
+                  (clickingTen
+                    ? ((a.tenTimer = 0), moveTen(a, g))
+                    : userDigCells(a, g)));
         if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) {
           a.lastTenClicked = a.Mb;
           a.tenTimer = 0;
@@ -2108,11 +2155,13 @@ loaded_h_0(function (_) {
         d = 0;
       for (var e = 0; e < c.length; e++) {
         var f = c[e],
-          isAdjacentNine = isTileAdjacentNine(a, f)
-          isOpenMine = isCellDug(a, f) && isTileMine(a, f);
+          isAdjacentNine = isTileAdjacentNine(a, f);
+        isOpenMine = isCellDug(a, f) && isTileMine(a, f);
         (!isCellDug(a, f) || isOpenMine) &&
           (d += isOpenMine
-            ? isAdjacentNine ? 1 : a.oa[f.x][f.y].mineValue
+            ? isAdjacentNine
+              ? 1
+              : a.oa[f.x][f.y].mineValue
             : a.oa[f.x][f.y].flagCount);
       }
       e = false;
@@ -2149,19 +2198,19 @@ loaded_h_0(function (_) {
         a.oa[c.x][c.y].isMine = true;
         a.oa[c.x][c.y].mineValue = 1;
         a.oa[c.x][c.y].isBossTile = true;
-        a.Ea.push(
-            (0, _.xo)(() => openCell(a, c), Math.random() * 4000 + 2000),
-          );
+        a.Ea.push((0, _.xo)(() => openCell(a, c), Math.random() * 4000 + 2000));
         a.Ea.push(
           (0, _.xo)(() => {
             a.bossIntro = false;
             a.maxTime = 199000;
-          }, 4000 + 2000));
+          }, 4000 + 2000),
+        );
         a.Ea.push(
           (0, _.xo)(() => {
             a.bossIntro = false;
             a.maxTime = 199000;
-          }, 8000));
+          }, 8000),
+        );
       });
     } else if (number == 10) {
       extraSounds.TEN_INTRO.currentTime = 0;
@@ -2177,9 +2226,9 @@ loaded_h_0(function (_) {
     let powerup = a.oa[b.x][b.y].powerup;
     a.oa[b.x][b.y].powerup = null;
     if (powerup !== "coin" && powerup !== "coins") {
-      a.powerups.push(powerup)
+      a.powerups.push(powerup);
     } else {
-      a.coins += powerup === "coin" ? 10 : 40
+      a.coins += powerup === "coin" ? 10 : 40;
     }
     F6.UNPLANT_FLAG.play();
     b = {
@@ -2190,14 +2239,11 @@ loaded_h_0(function (_) {
       color: "",
       size: a.Ij && !a.didWin ? 3 : 1.5 + Math.random() * 0.5,
       midpoint: 0,
-      texture:
-        a.itemTextures[powerup],
+      texture: a.itemTextures[powerup],
     };
     b.Fe.y > -15 && (b.Fe.y = -15);
     Math.abs(b.Fe.x) < 5 && (b.Fe.x = 5 * (b.Fe.x > 0 ? 1 : -1));
     a.ob.push(b);
-
-
   };
   userDigCells = function (a, b) {
     if (isCellInGrid(a, b) && !a.oa[b.x][b.y].flagCount)
@@ -2213,11 +2259,13 @@ loaded_h_0(function (_) {
         }
       } else if (a.startedGame) {
         if (!a.oa[b.x][b.y].cellDug) {
-          var uncoveringMineWithBrush = a.oa[b.x][b.y].isMine && a.powerup === "brush";
+          var uncoveringMineWithBrush =
+            a.oa[b.x][b.y].isMine && a.powerup === "brush";
           var c = uncoveringMineWithBrush ? placeFlag(a, b) : openCell(a, b);
           a.oa[b.x][b.y].isMine || playNumberSound(c);
           a.powerup = null;
-          a.lives <= 0 && !uncoveringMineWithBrush &&
+          a.lives <= 0 &&
+            !uncoveringMineWithBrush &&
             !a.oa[b.x][b.y].flagCount &&
             a.oa[b.x][b.y].isMine &&
             endGame(a);
@@ -2358,13 +2406,15 @@ loaded_h_0(function (_) {
     var openCells = 0;
     for (let c = 0; c < a.Aa.width; c++)
       for (let d = 0; d < a.Aa.height; d++) {
-        let isPartOfNine = isTileNine(a, new _.Td(c, d)) || isTileAdjacentNine(a, new _.Td(c, d)),
-        isMine = a.oa[c][d].isMine,
-        cellDug = a.oa[c][d].cellDug;
-        if (isPartOfNine ? (isMine) : (!cellDug || isMine)) {
+        let isPartOfNine =
+            isTileNine(a, new _.Td(c, d)) ||
+            isTileAdjacentNine(a, new _.Td(c, d)),
+          isMine = a.oa[c][d].isMine,
+          cellDug = a.oa[c][d].cellDug;
+        if (isPartOfNine ? isMine : !cellDug || isMine) {
           openCells++;
         }
-      };
+      }
     return openCells;
   };
   endGame = function (a) {
@@ -2513,18 +2563,23 @@ loaded_h_0(function (_) {
     a.startedGame = !a.bossIntro;
   };
   const pickRandom = function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  },
-  moveTen = function (a, exclude) {
-    let pos = new _.Td(
-      Math.random() * (a.Aa.width - 1),
-      Math.random() * (a.Aa.height - 1),
-    );
-    a.tenPosition = pos;
-    extraSounds.RESET_TEN.play();
-  };
+      return array[Math.floor(Math.random() * array.length)];
+    },
+    moveTen = function (a, exclude) {
+      let pos = new _.Td(
+        Math.random() * (a.Aa.width - 1),
+        Math.random() * (a.Aa.height - 1),
+      );
+      a.tenPosition = pos;
+      extraSounds.RESET_TEN.play();
+    };
   openCell = function (a, b, force) {
-    if (!isCellInGrid(a, b) || (isClickingTen(a, b) && a.lives > 0) || isCellDug(a, b) || (a.oa[b.x][b.y].flagCount && !force))
+    if (
+      !isCellInGrid(a, b) ||
+      (isClickingTen(a, b) && a.lives > 0) ||
+      isCellDug(a, b) ||
+      (a.oa[b.x][b.y].flagCount && !force)
+    )
       return {
         cellsDug: 0,
         mineCount: 0,
@@ -2606,7 +2661,7 @@ loaded_h_0(function (_) {
         case 10:
           extraSounds.DIG_REVEAL_TEN.play();
           return;
-      };
+      }
       if (a.totalValue === 0) {
         extraSounds.DIG_REVEAL_ZERO.play();
       }
@@ -2875,15 +2930,15 @@ loaded_h_0(function (_) {
       // night
       [
         "#494351",
-        '#443e4c',
-        '#432c68',
-        '#3d285d',
+        "#443e4c",
+        "#432c68",
+        "#3d285d",
         "#90CAF9",
         "#83C4F7",
         "#262428",
-        '#7850c5',
+        "#7850c5",
         "#494351",
-        '#443e4c',
+        "#443e4c",
       ],
 
       // rocks (unfinished)
@@ -2958,35 +3013,39 @@ loaded_h_0(function (_) {
     base = _.lG(base);
     target = _.lG(target);
     return _.kG(_.mG(target, base, amount));
-  }
-  const isTileNine = function (a, b) {
-    return (
-      a.nine &&
-      !a.bossIntro &&
-      b.x == a.ninePosition.x &&
-      b.y === a.ninePosition.y
-    )
-  },
-  isTileAdjacentNine = function (a, b) {
-    return (
-      a.nine &&
-      !a.bossIntro &&
-      !isTileNine(a, b) &&
-      Math.abs(b.x - a.ninePosition.x) < 2 &&
-      Math.abs(b.y - a.ninePosition.y) < 2
-    );
   };
+  const isTileNine = function (a, b) {
+      return (
+        a.nine &&
+        !a.bossIntro &&
+        b.x == a.ninePosition.x &&
+        b.y === a.ninePosition.y
+      );
+    },
+    isTileAdjacentNine = function (a, b) {
+      return (
+        a.nine &&
+        !a.bossIntro &&
+        !isTileNine(a, b) &&
+        Math.abs(b.x - a.ninePosition.x) < 2 &&
+        Math.abs(b.y - a.ninePosition.y) < 2
+      );
+    };
   drawCell = function (a, b, force) {
-    var c = force ? 
-      newCell({
-        enabled: true,
-        cellDug: true,
-        isTen: true,
-      })
-    : a.oa[b.x][b.y];
+    var c = force
+      ? newCell({
+          enabled: true,
+          cellDug: true,
+          isTen: true,
+        })
+      : a.oa[b.x][b.y];
     const isNine = isTileNine(a, b),
       isAdjacentNine = isTileAdjacentNine(a, b),
-      isTen = a.ten && !a.bossIntro && b.x === a.tenPosition.x && b.y === a.tenPosition.y;
+      isTen =
+        a.ten &&
+        !a.bossIntro &&
+        b.x === a.tenPosition.x &&
+        b.y === a.tenPosition.y;
     drawCellPart(
       a,
       b,
@@ -3070,7 +3129,11 @@ loaded_h_0(function (_) {
         break;
       case "ADJACENT":
         drawCellPart(a, b, "DUG", tile);
-        let d = isTen ? Math.max(10 - Math.floor(a.tenTimer / 1000), 0) : isNine ? 9 : tile.value;
+        let d = isTen
+          ? Math.max(10 - Math.floor(a.tenTimer / 1000), 0)
+          : isNine
+            ? 9
+            : tile.value;
         let color = gQE[Math.abs(isTen ? 10 : d) - 1] || "#FFF";
         if (typeof d === "string") {
           color = "#000";
@@ -3150,37 +3213,37 @@ loaded_h_0(function (_) {
         break;
       case "MINE":
         a.context.fillStyle = darkenColor(tile.color, 0.35);
-          tile.mineValue < 0 &&
-            (a.context.fillStyle = darkenColor(tile.color, -0.35));
-          a.context.beginPath();
-           if (Math.abs(tile.mineValue) === 2) {
-            a.context.arc(
-              b.x * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
-              b.y * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
-              a.cellSize / 4,
-              0,
-              2 * Math.PI,
-              false,
-            );
-            a.context.arc(
-              b.x * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
-              b.y * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
-              a.cellSize / 4,
-              0,
-              2 * Math.PI,
-              false,
-            );
-          } else {
-            a.context.arc(
-              b.x * a.cellSize + a.cellSize / 2,
-              b.y * a.cellSize + a.cellSize / 2,
-              a.cellSize / 4,
-              0,
-              2 * Math.PI,
-              false,
-            );
-          }
-          a.context.fill();
+        tile.mineValue < 0 &&
+          (a.context.fillStyle = darkenColor(tile.color, -0.35));
+        a.context.beginPath();
+        if (Math.abs(tile.mineValue) === 2) {
+          a.context.arc(
+            b.x * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
+            b.y * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
+            a.cellSize / 4,
+            0,
+            2 * Math.PI,
+            false,
+          );
+          a.context.arc(
+            b.x * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
+            b.y * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
+            a.cellSize / 4,
+            0,
+            2 * Math.PI,
+            false,
+          );
+        } else {
+          a.context.arc(
+            b.x * a.cellSize + a.cellSize / 2,
+            b.y * a.cellSize + a.cellSize / 2,
+            a.cellSize / 4,
+            0,
+            2 * Math.PI,
+            false,
+          );
+        }
+        a.context.fill();
         break;
     }
     a.Ba &&
@@ -3522,20 +3585,22 @@ loaded_h_0(function (_) {
       this.tenTimer = 0;
       this.nineRotation = 0;
 
-      this.adventure = true ? null : {
-        episode: 0,
-        level: 0,
-        powerups: [],
-        coins: 0
-      }
+      this.adventure = true
+        ? null
+        : {
+            episode: 0,
+            level: 0,
+            powerups: [],
+            coins: 0,
+          };
 
       this.bossBattle = this.nine || this.ten;
       this.bossIntro = this.bossBattle;
       this.setAdventureLevel();
       this.Dw && (this.Yf(), this.Ne());
-      
 
-      document.getElementById("theme").value = localStorage.getItem("savedTheme");
+      document.getElementById("theme").value =
+        localStorage.getItem("savedTheme");
       document.getElementById("theme").onchange = () => {
         currentTheme = themes[+document.getElementById("theme").value];
         document.querySelector(".NWJp1d").style.backgroundColor =
@@ -3551,27 +3616,35 @@ loaded_h_0(function (_) {
         document.getElementById("height").value = this.od[this.Da].height;
         document.getElementById("mines").value = this.Bd[this.Da];
       };
-      document.getElementById("powerupsButton").addEventListener('click', () => {
-        document.getElementById("powerupsMenuDiv").style.display = "initial";
-        let menu = document.getElementById("powerupsMenu");
-        menu.innerHTML = "";
-        this.powerups.forEach((name, index) => {
-          let elem = document.createElement("div")
-          elem.className = "YpcDnf OSrXXb hoverable";
-          elem.innerText = name;
-          elem.onclick = () => {
-            this.usePowerup(index);
-          }
-          menu.appendChild(elem);
-        })
-      });
-      document.getElementById("menuButton").addEventListener('click', () => {
+      document
+        .getElementById("powerupsButton")
+        .addEventListener("click", () => {
+          document.getElementById("powerupsMenuDiv").style.display = "initial";
+          let menu = document.getElementById("powerupsMenu");
+          menu.innerHTML = "";
+          this.powerups.forEach((name, index) => {
+            let elem = document.createElement("div");
+            elem.className = "YpcDnf OSrXXb hoverable";
+            elem.innerText = name;
+            elem.onclick = () => {
+              this.usePowerup(index);
+            };
+            menu.appendChild(elem);
+          });
+        });
+      document.getElementById("menuButton").addEventListener("click", () => {
         this.toMenu();
       });
-      document.addEventListener('click', function(event) {
-          if (!(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id)) {
-            document.getElementById("powerupsMenuDiv").style.display = "none";
-          }
+      document.addEventListener("click", function (event) {
+        if (
+          ![
+            "powerupsButtonLabel",
+            "powerupsButton",
+            "powerupsButtonDiv",
+          ].includes(event.target.id)
+        ) {
+          document.getElementById("powerupsMenuDiv").style.display = "none";
+        }
       });
     }
     setFreePlaySettings() {
@@ -3593,7 +3666,7 @@ loaded_h_0(function (_) {
     usePowerup(i) {
       let item = this.powerups[i];
       this.powerups = this.powerups.filter((e, t) => t !== i);
-      this.powerup = item
+      this.powerup = item;
     }
     rT() {
       return this.Ao;
@@ -3758,7 +3831,7 @@ loaded_h_0(function (_) {
     reset() {
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
       this.setAdventureLevel();
-      
+
       return this.Coa().then(() => {
         this.resetState();
         this.jd = true;
@@ -3766,15 +3839,15 @@ loaded_h_0(function (_) {
     }
     setAdventureLevel() {
       if (this.adventure) {
-        let adventureLevel = adventureMaps[this.adventure.episode][this.adventure.level];
+        let adventureLevel =
+          adventureMaps[this.adventure.episode][this.adventure.level];
         currentTheme = themes[adventureLevel.theme];
         console.log(adventureLevel.name);
-        this.Aa = new _.Xd(
-          adventureLevel.width,
-          adventureLevel.height,
-        );
+        this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
         this.totalMineCount = adventureLevel.mineCount;
-        this.totalPowerupCount = adventureLevel.powerups ?? Math.ceil((this.Aa.width * this.Aa.height) / 50);
+        this.totalPowerupCount =
+          adventureLevel.powerups ??
+          Math.ceil((this.Aa.width * this.Aa.height) / 50);
         this.B5a();
       }
     }
@@ -3862,7 +3935,7 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(9, 9, 0, "free");
             this.digTileForTitleSceen(10, 9, 0, "free");
             this.digTileForTitleSceen(11, 9, 0, "free");
-    
+
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
@@ -3891,7 +3964,7 @@ loaded_h_0(function (_) {
             }
             break;
         }
-      };
+      }
     }
     digTileForTitleSceen(x, y, v, r) {
       this.oa[x][y].cellDug = true;
@@ -3913,10 +3986,11 @@ loaded_h_0(function (_) {
         this.Ao = a;
         this.Qc += b;
         this.startedGame
-          ? this.Ij || ((this.Mb = this.Ce + (a - this.startTime)))
+          ? this.Ij || (this.Mb = this.Ce + (a - this.startTime))
           : (this.startTime = a);
         if (this.ten && !this.Ij && this.startedGame && !this.didWin) {
-          this.tenTimer += ((this.Aa.width * this.Aa.height) / (countOpenCells(this))) * 10;
+          this.tenTimer +=
+            ((this.Aa.width * this.Aa.height) / countOpenCells(this)) * 10;
         }
         if (this.ten && this.tenTimer > 10000 && !this.Ij && this.startedGame) {
           this.lives = 0;
@@ -3926,13 +4000,15 @@ loaded_h_0(function (_) {
             openCell(this, new _.Td(x, y), true);
           }
           endGame(this);
-            
         }
         extraSounds.NINE_INTRO.volume = this.muted ? 0 : 1;
         extraSounds.NINE_LOOP.volume = this.muted ? 0 : 1;
         extraSounds.TEN_INTRO.volume = this.muted ? 0 : 1;
         extraSounds.TEN_LOOP.volume = this.muted ? 0 : 1;
-        extraSounds.TEN_GROW.volume = Math.min(Math.max((this.tenTimer - 5000) / 5000, 0), 1);
+        extraSounds.TEN_GROW.volume = Math.min(
+          Math.max((this.tenTimer - 5000) / 5000, 0),
+          1,
+        );
         if (this.nine && this.Mb > this.maxTime && !centerCell.isMine) {
           centerCell.isMine = true;
           centerCell.mineValue = 1;
@@ -3943,26 +4019,29 @@ loaded_h_0(function (_) {
         a = b * 0.01;
         if (this.Ij) {
           if (this.nineRotationDelta > 0) {
-            this.nineRotationDelta -= 1 * a
+            this.nineRotationDelta -= 1 * a;
           } else {
             this.nineRotationDelta = 0;
           }
         } else if (this.nine && this.startedGame) {
-          this.nineRotationDelta += 0.009 * a
+          this.nineRotationDelta += 0.009 * a;
         }
         this.nineRotation += this.nineRotationDelta;
-        this.specialFx && this.glowParticles.length < 60 && this.glowParticles.push(
-          {
-            pos: { x: Math.random() * this.Aa.width * this.cellSize,  y: this.Aa.height * this.cellSize },
+        this.specialFx &&
+          this.glowParticles.length < 60 &&
+          this.glowParticles.push({
+            pos: {
+              x: Math.random() * this.Aa.width * this.cellSize,
+              y: this.Aa.height * this.cellSize,
+            },
             Fe: {
-              x: (Math.random() * this.cellSize) - this.cellSize / 2,
-              y: -Math.random() * this.cellSize * 4
+              x: Math.random() * this.cellSize - this.cellSize / 2,
+              y: -Math.random() * this.cellSize * 4,
             },
             size: Math.random() * this.cellSize,
-            opacity: Math.random()
-          }
-        )
-        
+            opacity: Math.random(),
+          });
+
         for (var c = 0; c < this.Za.length; c++) {
           var d = this.Za[c];
           d.Fe.y < 0
@@ -3979,7 +4058,8 @@ loaded_h_0(function (_) {
           d.pos.x += d.Fe.x * a * 0.1;
           d.pos.y += d.Fe.y * a * 0.1;
           d.size = Math.max(0, d.size - a * 0.1);
-          (d.size <= 0 || d.pos.y <= 0) && (this.glowParticles.splice(c, 1), c--);
+          (d.size <= 0 || d.pos.y <= 0) &&
+            (this.glowParticles.splice(c, 1), c--);
         }
         for (c = 0; c < this.wb.length; c++)
           ((d = this.wb[c]),
@@ -4016,7 +4096,9 @@ loaded_h_0(function (_) {
           this.Lc &&
           this.Ba &&
           this.Qc > 700 &&
-          ((this.Lc = false), placeFlag(this, this.Ba), clearMobileSelectedTile(this));
+          ((this.Lc = false),
+          placeFlag(this, this.Ba),
+          clearMobileSelectedTile(this));
         APE(this);
         setHtmlDisplays(this);
       }
