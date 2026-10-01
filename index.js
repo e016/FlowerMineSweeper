@@ -1075,6 +1075,14 @@ loaded_h_0(function (_) {
 
       TEN_INTRO: new Audio("audio/ten-intro.mp3"),
       TEN_LOOP: new Audio("audio/ten-loop.mp3"),
+
+      DIG_REVEAL_NEG_TWO: new Audio("audio/-2.wav"),
+      DIG_REVEAL_NEG_THREE: new Audio("audio/-3.wav"),
+      DIG_REVEAL_NEG_FOUR: new Audio("audio/-4.wav"),
+      DIG_REVEAL_NEG_FIVE: new Audio("audio/-5.wav"),
+      DIG_REVEAL_NEG_SIX: new Audio("audio/-6.wav"),
+      DIG_REVEAL_NEG_SEVEN: new Audio("audio/-7.wav"),
+      DIG_REVEAL_NEG_EIGHT: new Audio("audio/-8.wav"),
     };
     extraSounds.NINE_LOOP.loop = true;
     extraSounds.TEN_LOOP.loop = true;
@@ -1890,7 +1898,9 @@ loaded_h_0(function (_) {
     if (count === -2) {
       return 0;
     }
-    return 1;
+    return a.antiMines === 1 
+    ? a.doubleMines === 1 ? -2 : -1 
+    : a.doubleMines === 1 ? 2 : 1;
   };
   placeFlag = function (a, b) {
     let pastFlagCount = a.oa[b.x][b.y].flagCount;
@@ -2534,31 +2544,60 @@ loaded_h_0(function (_) {
       if (a.totalValue === 0) {
         extraSounds.DIG_REVEAL_ZERO.play();
       }
-      switch (((a.totalValue - 1) % 8) + 1) {
-        case 1:
-          F6.ATd.play();
-          break;
-        case 2:
-          F6.BTd.play();
-          break;
-        case 3:
-          F6.CTd.play();
-          break;
-        case 4:
-          F6.DTd.play();
-          break;
-        case 5:
-          F6.ETd.play();
-          break;
-        case 6:
-          F6.FTd.play();
-          break;
-        case 7:
-          F6.GTd.play();
-          break;
-        case 8:
-          F6.HTd.play();
-          break;
+      if (a.totalValue < 0) {
+        switch (((Math.abs(a.totalValue) - 1) % 8) + 1) {
+          case 1:
+            F6.ATd.play();
+            break;
+          case 2:
+            extraSounds.DIG_REVEAL_NEG_TWO.play();
+            break;
+          case 3:
+            extraSounds.DIG_REVEAL_NEG_THREE.play();
+            break;
+          case 4:
+            extraSounds.DIG_REVEAL_NEG_FOUR.play();
+            break;
+          case 5:
+            extraSounds.DIG_REVEAL_NEG_FIVE.play();
+            break;
+          case 6:
+            extraSounds.DIG_REVEAL_NEG_SIX.play();
+            break;
+          case 7:
+            extraSounds.DIG_REVEAL_NEG_SEVEN.play();
+            break;
+          case 8:
+            extraSounds.DIG_REVEAL_NEG_EIGHT.play();
+            break;
+        }
+      } else {
+        switch (((a.totalValue - 1) % 8) + 1) {
+          case 1:
+            F6.ATd.play();
+            break;
+          case 2:
+            F6.BTd.play();
+            break;
+          case 3:
+            F6.CTd.play();
+            break;
+          case 4:
+            F6.DTd.play();
+            break;
+          case 5:
+            F6.ETd.play();
+            break;
+          case 6:
+            F6.FTd.play();
+            break;
+          case 7:
+            F6.GTd.play();
+            break;
+          case 8:
+            F6.HTd.play();
+            break;
+        }
       }
     }
   };
@@ -3045,7 +3084,7 @@ loaded_h_0(function (_) {
           tile.mineValue < 0 &&
             (a.context.fillStyle = darkenColor(tile.color, -0.35));
           a.context.beginPath();
-           if (tile.mineValue === 2) {
+           if (Math.abs(tile.mineValue) === 2) {
             a.context.arc(
               b.x * a.cellSize + a.cellSize / 2 - a.cellSize / 10,
               b.y * a.cellSize + a.cellSize / 2 + a.cellSize / 10,
