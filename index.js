@@ -1472,7 +1472,7 @@ loaded_h_0(function (_) {
       powerup: null,
     }, props || {});
   }
-  createGrid = function (a, noReset) {
+  createGrid = function (a, noReset, chipOthers) {
     if (!noReset) {
       a.oa = Array(a.Aa.width);
     }
@@ -1481,6 +1481,9 @@ loaded_h_0(function (_) {
         a.oa[b] = Array(a.Aa.height);
       }
       for (let c = 0; c < a.Aa.height; c++) {
+        if (noReset && chipOthers && a.oa[b][c].cellDug) {
+          chipAwayCell(a, { x: b, y: c }, false, true);
+        }
         a.oa[b][c] = newCell();
       }
     }
@@ -1492,16 +1495,17 @@ loaded_h_0(function (_) {
   };
   setHtmlDisplays = function (a) {
     if (!a.isDisposed()) {
+      let isTitleScreen = a.IS_TITLE_SCREEN;
       var b = a.totalMineCount - a.flagCount,
         time = getTimerValue(a.maxTime ? a.maxTime - a.Mb : a.Mb);
       a.Ya("coins").el().style.display = a.adventure ? "" : "hidden"
-      _.ln(document.getElementById("livesCounter"), Math.max(a.lives,0).toString())
+      _.ln(document.getElementById("livesCounter"), isTitleScreen ? "\u2013" : Math.max(a.lives,0).toString())
       document.getElementById("timerDiv").style.background = a.maxTime
         ? "red"
         : "";
-      _.ln(a.Ya("MUaQvf").el(), b.toString());
-      _.ln(a.Ya("ajb2Y").el(), time);
-      _.ln(a.Ya("coins").el(), a.coins);
+      _.ln(a.Ya("MUaQvf").el(), isTitleScreen ? "\u2013\u2013\u2013" : b.toString());
+      _.ln(a.Ya("ajb2Y").el(), isTitleScreen ? "\u2013\u2013\u2013" : time);
+      _.ln(a.Ya("coins").el(), isTitleScreen ? "\u2013\u2013\u2013" : a.coins);
       a.Ja("Yfvsbd").hb().style.visibility === "hidden" &&
         ((b = a.didWin ? time : "\u2013\u2013\u2013"),
         (time = a.highScores[a.Da]),
@@ -1527,6 +1531,7 @@ loaded_h_0(function (_) {
     );
   };
   APE = function (a) {
+    try{
     if (!a.isDisposed()) {
       if (true) {
         //!!!!!
@@ -1619,6 +1624,54 @@ loaded_h_0(function (_) {
           true
         );
       }
+      if (a.IS_TITLE_SCREEN) {
+        function drawText(text, x, y) {
+          a.context.fillText(
+            text,
+            x * a.cellSize + a.cellSize / 2,
+            y * a.cellSize + a.cellSize * 0.62 + (a.cellSize - a.cellSize * 0.62) / 2.1, // grrr...
+          );
+
+        };
+        a.context.font = `bold ${a.cellSize * 0.62}pt Roboto, sans-serif`;
+        a.context.textAlign = "center";
+        a.context.fillStyle = "#242424";
+        switch (a.TITLE_SCREEN_PAGE) {
+          case "main":
+            a.context.drawImage(
+              a.LOGO,
+              2.5 * a.cellSize,
+              2 * a.cellSize,
+              13 * a.cellSize,
+              13 * a.cellSize / 5.5
+            );
+            
+            drawText("ADVENTURE", 9, 6);
+            drawText("FREE PLAY", 9, 9);
+            break;
+          case "free":
+            drawText("PLAY", 15, 12);
+            break;
+          case "credits":
+            drawText("Google Minesweeper", 9.5, 1);
+            drawText("developed by Google Inc.", 9.5, 2);
+
+            drawText("Game modded by", 9.5, 4);
+            drawText("d016", 9.5, 5);
+
+            drawText("Game inspired by", 9.5, 7);
+            drawText("Minesweeper Plus", 9.5, 8);
+
+            drawText("Music partially based by", 9.5, 10);
+            drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
+            drawText("Final Boss Theme\" series", 9.5, 12)
+            break;
+          case "adventure":
+            drawText("Not yet...", 8.5, 6);
+            drawText("Coming Soon!", 8.5, 7);
+            break;
+        }
+      };
       a.context.globalCompositeOperation = "lighter";
       for (b = 0; b < a.glowParticles.length; b++) {
         c = a.glowParticles[b];
@@ -1788,6 +1841,10 @@ loaded_h_0(function (_) {
           a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height)));
       
     }
+  } catch(e) {
+    console.error(e);
+    debugger;
+  }
   };
   const getTenRadius = function (a) {
     if (!a.ten || !a.startedGame || a.bossIntro) {
@@ -1926,15 +1983,24 @@ loaded_h_0(function (_) {
   };
   OPE = function (a, b, c) {
     var digging = a.leftClicking && !a.Sa,
-      flagging = a.rightClicking || (a.leftClicking && a.Sa),
+      flagging = (a.rightClicking || (a.leftClicking && a.Sa)),
       chording = a.readyToChord;
-    if (a.Ij)
+    if (a.IS_TITLE_SCREEN) {
+      var g = getCellFromPixelPosition(a, b, c),
+      role = a.oa[g.x][g.y].role;
+      console.warn(g, role, digging);
+      if (digging && role) {
+        a.TITLE_SCREEN_PAGE = role;
+        a.digUpTitleScreenPage();
+      }
+    } else if (a.Ij)
       a.Va === 0 && (digging || a.isMobile())
         ? showFinishPopup(a, true)
         : a.Va > 0 && (a.Va = Math.max(0, a.Va - 1e3));
     else {
       var g = getCellFromPixelPosition(a, b, c),
       clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
+      console.warn(a, g, b, c, a.Ca, a.cellSize);
       chording = chording || (digging && isCellDug(a, g) && a.startedGame)
       if (g !== null) {
         a.isMobile()
@@ -3006,6 +3072,9 @@ loaded_h_0(function (_) {
         drawCellPart(a, b, "DUG", tile);
         let d = isTen ? Math.max(10 - Math.floor(a.tenTimer / 1000), 0) : isNine ? 9 : tile.value;
         let color = gQE[Math.abs(isTen ? 10 : d) - 1] || "#FFF";
+        if (typeof d === "string") {
+          color = "#000";
+        }
         c = a.cellSize * 0.62 * (d.toString().length > 1 ? 0.8 : 1);
         a.context.strokeStyle = "white";
         a.context.lineWidth = Math.round(a.cellSize * 0.08);
@@ -3232,6 +3301,8 @@ loaded_h_0(function (_) {
     }
     constructor(a) {
       super(a.Na);
+      this.IS_TITLE_SCREEN = true;
+      this.TITLE_SCREEN_PAGE = "main";
       this.cutout = null;
       this.qc = null;
       this.Ud = {};
@@ -3410,6 +3481,8 @@ loaded_h_0(function (_) {
       this.NINE_FLOWER.src = "./img/nine_flower.png";
       this.TEN_VINES = new Image();
       this.TEN_VINES.src = "./img/ten_vines.png";
+      this.LOGO = new Image();
+      this.LOGO.src = "./img/logo.png";
       _.rIE(
         [
           this.Ll,
@@ -3427,6 +3500,7 @@ loaded_h_0(function (_) {
           this.ANTI_DOUBLE_FLAG_PLANT.WB,
           this.NINE_FLOWER,
           this.TEN_VINES,
+          this.LOGO,
           ...Object.values(this.itemTextures),
         ],
         () => {
@@ -3459,24 +3533,9 @@ loaded_h_0(function (_) {
       this.bossIntro = this.bossBattle;
       this.setAdventureLevel();
       this.Dw && (this.Yf(), this.Ne());
+      
 
-      const myself = this;
-      document.getElementById("goButton").onclick = () => {
-        this.Aa = new _.Xd(
-          +document.getElementById("width").value,
-          +document.getElementById("height").value,
-        );
-
-        this.totalMineCount = +document.getElementById("mines").value;
-        this.specialFx = document.getElementById("specialFx").checked;
-        this.nine = document.getElementById("nine").checked;
-        this.ten = document.getElementById("ten").checked;
-        this.doubleMines = +document.getElementById("doublemines").value / 100;
-        this.antiMines = +document.getElementById("antimines").value / 100;
-        this.B5a();
-        this.reset();
-        document.querySelector('div[jsname="V68bde"]').style.display = "none";
-      };
+      document.getElementById("theme").value = localStorage.getItem("savedTheme");
       document.getElementById("theme").onchange = () => {
         currentTheme = themes[+document.getElementById("theme").value];
         document.querySelector(".NWJp1d").style.backgroundColor =
@@ -3488,16 +3547,9 @@ loaded_h_0(function (_) {
       };
       document.getElementById("difficulty").onchange = () => {
         this.Da = document.getElementById("difficulty").value;
-        this.Aa = this.od[this.Da];
-        this.cellSize = this.Ud[this.Da];
-        this.trueCellSize = this.Ud[this.Da];
-        this.totalMineCount = this.Bd[this.Da];
-        this.B5a();
-        this.reset();
-        document.getElementById("width").value = this.Aa.width;
-        document.getElementById("height").value = this.Aa.height;
-        document.getElementById("mines").value = this.totalMineCount;
-        document.querySelector('div[jsname="V68bde"]').style.display = "none";
+        document.getElementById("width").value = this.od[this.Da].width;
+        document.getElementById("height").value = this.od[this.Da].height;
+        document.getElementById("mines").value = this.Bd[this.Da];
       };
       document.getElementById("powerupsButton").addEventListener('click', () => {
         document.getElementById("powerupsMenuDiv").style.display = "initial";
@@ -3513,12 +3565,30 @@ loaded_h_0(function (_) {
           menu.appendChild(elem);
         })
       });
+      document.getElementById("menuButton").addEventListener('click', () => {
+        this.toMenu();
+      });
       document.addEventListener('click', function(event) {
-        console.warn(event.target, event.target.id, !(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id))
           if (!(["powerupsButtonLabel", "powerupsButton", "powerupsButtonDiv"]).includes(event.target.id)) {
             document.getElementById("powerupsMenuDiv").style.display = "none";
           }
       });
+    }
+    setFreePlaySettings() {
+      this.Aa = new _.Xd(
+        +document.getElementById("width").value,
+        +document.getElementById("height").value,
+      );
+      createGrid(this);
+
+      this.totalMineCount = +document.getElementById("mines").value;
+      this.specialFx = !!document.getElementById("specialFx").checked;
+      this.nine = !!document.getElementById("nine").checked;
+      this.ten = !!document.getElementById("ten").checked;
+      this.doubleMines = +document.getElementById("doublemines").value / 100;
+      this.antiMines = +document.getElementById("antimines").value / 100;
+      this.reset();
+      document.querySelector('div[jsname="V68bde"]').style.display = "none";
     }
     usePowerup(i) {
       let item = this.powerups[i];
@@ -3619,12 +3689,12 @@ loaded_h_0(function (_) {
           var b = _.oIE();
           if (true) {
             //this.isMobile()) {
-            var c = this.Qe[this.Da];
+            var c = this.Qe["MEDIUM"];
             this.qc = _.Etb(this.canvas);
-            if (this.qc.width === 0) {
+            /*if (this.qc.width === 0) {
               a.resolve();
               return;
-            }
+            }*/
             var d = this.qc.width - 40;
             let e = this.qc.height - 40;
             c = (d * e) / c;
@@ -3676,8 +3746,16 @@ loaded_h_0(function (_) {
       this.Ij && _.fw(this.Ja("NSjDf").el());
       return this.reset();
     }
+    toMenu() {
+      this.Ij && _.fw(this.Ja("returnToMenu").el());
+      this.IS_TITLE_SCREEN = true;
+      this.TITLE_SCREEN_PAGE = "main";
+      this.Aa = this.od["MEDIUM"];
+      this.nine = false;
+      this.ten = false;
+      return this.Xg();
+    }
     reset() {
-      this.cellSize = 0;
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
       this.setAdventureLevel();
       
@@ -3754,7 +3832,72 @@ loaded_h_0(function (_) {
       this.Ua = [];
       this.Dc = false;
       this.Ce = 0;
+      this.digUpTitleScreenPage();
       showFinishPopup(this, false);
+    }
+    digUpTitleScreenPage() {
+      document.querySelector('div[jsname="V68bde"]').style.display = "none";
+      if (this.TITLE_SCREEN_PAGE === "go" && this.IS_TITLE_SCREEN) {
+        this.IS_TITLE_SCREEN = false;
+        document.getElementById("menuDiv").style.opacity = "1";
+        this.setFreePlaySettings();
+        return;
+      }
+      createGrid(this, true, true);
+      if (this.IS_TITLE_SCREEN) {
+        document.getElementById("menuDiv").style.opacity = "0.5";
+        F6.fSd.play();
+        switch (this.TITLE_SCREEN_PAGE) {
+          case "main":
+            this.digTileForTitleSceen(6, 6, 1, "adventure");
+            this.digTileForTitleSceen(7, 6, 0, "adventure");
+            this.digTileForTitleSceen(8, 6, 0, "adventure");
+            this.digTileForTitleSceen(9, 6, 0, "adventure");
+            this.digTileForTitleSceen(10, 6, 0, "adventure");
+            this.digTileForTitleSceen(11, 6, 0, "adventure");
+
+            this.digTileForTitleSceen(6, 9, 2, "free");
+            this.digTileForTitleSceen(7, 9, 0, "free");
+            this.digTileForTitleSceen(8, 9, 0, "free");
+            this.digTileForTitleSceen(9, 9, 0, "free");
+            this.digTileForTitleSceen(10, 9, 0, "free");
+            this.digTileForTitleSceen(11, 9, 0, "free");
+    
+            this.digTileForTitleSceen(16, 12, "i", "credits");
+            break;
+          case "adventure":
+            this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 4; b < 14; b++) {
+              for (let c = 5; c < 9; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
+            break;
+          case "free":
+            document.querySelector('div[jsname="V68bde"]').style.display = "";
+
+            this.digTileForTitleSceen(1, 12, "<", "main");
+
+            this.digTileForTitleSceen(14, 12, 0, "go");
+            this.digTileForTitleSceen(15, 12, 0, "go");
+            this.digTileForTitleSceen(16, 12, 0, "go");
+            break;
+          case "credits":
+            this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 3; b < 17; b++) {
+              for (let c = 0; c < 14; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
+            break;
+        }
+      };
+    }
+    digTileForTitleSceen(x, y, v, r) {
+      this.oa[x][y].cellDug = true;
+      this.oa[x][y].mineCount = v;
+      this.oa[x][y].value = v;
+      this.oa[x][y].role = r;
     }
     M6() {
       return sPE(this);
@@ -4005,6 +4148,9 @@ loaded_h_0(function (_) {
   };
   _.G6.prototype.$wa$JrrOHc = function () {
     return this.Xg;
+  };
+  _.G6.prototype.$wa$toTheMenu = function () {
+    return this.toMenu;
   };
   _.G6.prototype.$wa$Wt8qFe = function () {
     return this.f1;
