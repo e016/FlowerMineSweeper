@@ -1633,7 +1633,9 @@ loaded_h_0(function (_) {
             a.context.drawImage(
               a.LOGO,
               2.5 * a.cellSize,
-              2 * a.cellSize
+              2 * a.cellSize,
+              13 * a.cellSize,
+              13 * a.cellSize / 5.5
             );
             
             drawText("ADVENTURE", 9, 6);
@@ -3494,7 +3496,7 @@ loaded_h_0(function (_) {
       this.Dw && (this.Yf(), this.Ne());
       
 
-      const myself = this;
+      document.getElementById("theme").value = localStorage.getItem("savedTheme");
       document.getElementById("theme").onchange = () => {
         currentTheme = themes[+document.getElementById("theme").value];
         document.querySelector(".NWJp1d").style.backgroundColor =
@@ -3709,7 +3711,9 @@ loaded_h_0(function (_) {
       this.Ij && _.fw(this.Ja("returnToMenu").el());
       this.IS_TITLE_SCREEN = true;
       this.TITLE_SCREEN_PAGE = "main";
-      this.Aa = this.od["MEDIUM"]
+      this.Aa = this.od["MEDIUM"];
+      this.nine = false;
+      this.ten = false;
       return this.Xg();
     }
     reset() {
