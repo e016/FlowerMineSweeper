@@ -1551,7 +1551,11 @@ loaded_h_0(function (_) {
       if (!a.isDisposed()) {
         if (true) {
           //!!!!!
-
+          a.context.fillStyle = currentTheme[6];
+          a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
+          a.context.translate(a.cameraPan.x, a.cameraPan.y);
+          a.context.scale(a.cameraZoom, a.cameraZoom);
+          a.cameraZoom += 0.001;
           if (a.bossIntro) {
             let now = Date.now(),
               centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
@@ -1715,21 +1719,24 @@ loaded_h_0(function (_) {
         }
         a.context.globalAlpha = 1;
         a.context.globalCompositeOperation = "source-over";
-        a.context.setTransform(1, 0, 0, 1, 0, 0);
+        // ok the top bit doesn't quite work
+        // but everything else does!!!
+        // well, sort of :(
+        a.context.setTransform(1, 0, 0, 1, a.cameraPan.x, a.cameraPan.y);
         a.context.fillStyle = currentTheme[6];
-        a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
+        a.context.fillRect(-a.cameraPan.x, 0, a.Ca.width + a.cameraPan.x, a.canvas.height);
         a.context.fillRect(
           a.canvas.width - a.Ca.width,
           0,
-          a.Ca.width,
+          a.Ca.width - a.cameraPan.x,
           a.canvas.height,
         );
-        a.context.fillRect(0, 0, a.canvas.width, a.Ca.height);
+        a.context.fillRect(0, -a.cameraPan.y, a.canvas.width, a.Ca.height + a.cameraPan.y);
         a.context.fillRect(
           0,
           a.canvas.height - a.Ca.height,
           a.canvas.width,
-          a.Ca.height,
+          a.Ca.height - a.cameraPan.y,
         );
         a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height);
         a.Ba && drawCell(a, a.Ba);
@@ -1742,7 +1749,7 @@ loaded_h_0(function (_) {
           g += (c.J8d ? 1 : -1) * c.size;
           d = c.radius * c.size;
           a.context.save();
-          a.context.translate(e, f);
+          a.context.translate(e + a.cameraPan.x, f + a.cameraPan.y);
           a.context.rotate(g);
           switch (c.type) {
             case 0:
@@ -1809,7 +1816,7 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 9)),
               (f = c.Fe.x * 0.025),
               a.context.save(),
-              a.context.translate(d, e),
+              a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1826,7 +1833,7 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 2)),
               (f = (c.angle * Math.PI) / 180),
               a.context.save(),
-              a.context.translate(d, e),
+              a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1844,7 +1851,7 @@ loaded_h_0(function (_) {
             e = Math.round(c.pos.y + a.cellSize / 2);
             f = (c.angle * Math.PI) / 180;
             a.context.save();
-            a.context.translate(d, e);
+            a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y);
             a.context.rotate(f);
             c = Math.min(1, c.size);
             a.context.drawImage(
@@ -1857,7 +1864,7 @@ loaded_h_0(function (_) {
             a.context.restore();
           }
         }
-
+        // how do I add camera panning???????
         a.Bb > 0 &&
           (a.context.setTransform(1, 0, 0, 1, 0, 0),
           (c = (a.Bb / 1e3) * 8),
@@ -2111,6 +2118,8 @@ loaded_h_0(function (_) {
     }
   };
   getCellFromPixelPosition = function (a, x, y) {
+    x -= a.cameraPan.x;
+    y -= a.cameraPan.y;
     var d = _.oIE(), // device to pixel ratio
       e = new _.Td(); // coordinate
     e.x = Math.floor((x * d - a.Ca.width) / a.cellSize);
@@ -2118,6 +2127,8 @@ loaded_h_0(function (_) {
     return e;
   };
   const getFloatCellFromPixelPosition = function (a, x, y) {
+    x -= a.cameraPan.x;
+    y -= a.cameraPan.y;
     var d = _.oIE(), // device to pixel ratio
       e = new _.Td(); // coordinate
     e.x = (x * d - a.Ca.width) / a.cellSize;
@@ -3399,6 +3410,8 @@ loaded_h_0(function (_) {
       this.closed = true;
       this.Wb = -1;
       this.Zc = this.Yb = this.Bb = 0;
+      this.cameraPan = new _.Td(0, 0)
+      this.cameraZoom = 1;
       this.Lf = a.service.Lf;
       this.yf = _.Oh(gPE);
       this.Th = _.Oh(jPE);
@@ -3472,8 +3485,10 @@ loaded_h_0(function (_) {
           }),
           _.ze(this.canvas, "mousemove", (b) => {
             this.Ab = getCellFromPixelPosition(this, b.offsetX, b.offsetY);
+            this.pixelPosition = new _.Td(b.offsetX, b.offsetY);
           }),
           _.ze(this.canvas, "mouseout", () => {
+            this.pixelPosition = null;
             this.Ab = null;
             this.readyToChord = this.rightClicking = this.leftClicking = false;
           }),
@@ -3484,6 +3499,12 @@ loaded_h_0(function (_) {
                 case 17:
                   this.Sa = false;
               }
+              b.preventDefault();
+            }
+          }),
+          _.ze(document, "wheel", (b) => {
+            if (!this.closed) {
+              console.log(b);
               b.preventDefault();
             }
           }),
@@ -3500,6 +3521,7 @@ loaded_h_0(function (_) {
       this.tq =
         "//www.gstatic.com/images/icons/material/system/2x/volume_off_white_24dp.png";
       this.Ab = null;
+      this.mousePosition = null;
       this.Ca = new _.Xd(0, 0);
       this.Vt = new pPE();
       this.Ll = new Image();
@@ -3860,6 +3882,8 @@ loaded_h_0(function (_) {
       extraSounds.NINE_INTRO.pause();
       extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
+      this.cameraPan = new _.Td(0, 0)
+      this.cameraZoom = 1;
       this.powerups = this.adventure ? this.adventure.powerups : this.powerups;
       this.coins = this.adventure ? this.adventure.coins : this.coins;
       this.maxTime = 0;
@@ -3894,6 +3918,7 @@ loaded_h_0(function (_) {
         this.leftClicking =
           false;
       this.Ab = null;
+      this.mousePosition = null;
       this.Qc = 0;
       this.Lc = false;
       this.Wb = -1;
@@ -4118,6 +4143,22 @@ loaded_h_0(function (_) {
             break;
           case 17:
             this.Sa = true;
+            break;
+          case 87:
+            this.cameraPan.y -= 5;
+            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+            break;
+          case 83:
+            this.cameraPan.y += 5;
+            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+            break;
+          case 65:
+            this.cameraPan.x -= 5;
+            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+            break;
+          case 68:
+            this.cameraPan.x += 5;
+            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
             return;
