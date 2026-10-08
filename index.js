@@ -1555,7 +1555,7 @@ loaded_h_0(function (_) {
           a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
           a.context.translate(a.cameraPan.x, a.cameraPan.y);
           a.context.scale(a.cameraZoom, a.cameraZoom);
-          a.cameraZoom += 0.001;
+          //a.cameraZoom += 0.001;
           if (a.bossIntro) {
             let now = Date.now(),
               centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
@@ -1722,21 +1722,21 @@ loaded_h_0(function (_) {
         // ok the top bit doesn't quite work
         // but everything else does!!!
         // well, sort of :(
-        a.context.setTransform(1, 0, 0, 1, a.cameraPan.x, a.cameraPan.y);
+        a.context.setTransform(1, 0, 0, 1, 0, 0);
         a.context.fillStyle = currentTheme[6];
-        a.context.fillRect(-a.cameraPan.x, 0, a.Ca.width + a.cameraPan.x, a.canvas.height);
+        a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
         a.context.fillRect(
           a.canvas.width - a.Ca.width,
           0,
-          a.Ca.width - a.cameraPan.x,
+          a.Ca.width,
           a.canvas.height,
         );
-        a.context.fillRect(0, -a.cameraPan.y, a.canvas.width, a.Ca.height + a.cameraPan.y);
+        a.context.fillRect(0, 0, a.canvas.width, a.Ca.height);
         a.context.fillRect(
           0,
           a.canvas.height - a.Ca.height,
           a.canvas.width,
-          a.Ca.height - a.cameraPan.y,
+          a.Ca.height,
         );
         a.context.setTransform(1, 0, 0, 1, a.Ca.width, a.Ca.height);
         a.Ba && drawCell(a, a.Ba);
@@ -2118,21 +2118,21 @@ loaded_h_0(function (_) {
     }
   };
   getCellFromPixelPosition = function (a, x, y) {
-    x -= a.cameraPan.x;
-    y -= a.cameraPan.y;
     var d = _.oIE(), // device to pixel ratio
-      e = new _.Td(); // coordinate
-    e.x = Math.floor((x * d - a.Ca.width) / a.cellSize);
-    e.y = Math.floor((y * d - a.Ca.height) / a.cellSize);
+    e = new _.Td(); // coordinate
+    x -= a.cameraPan.x / d;
+    y -= a.cameraPan.y / d;
+    e.x = Math.floor((x * d - a.Ca.width) / a.cellSize / a.cameraZoom);
+    e.y = Math.floor((y * d - a.Ca.height) / a.cellSize / a.cameraZoom);
     return e;
   };
   const getFloatCellFromPixelPosition = function (a, x, y) {
-    x -= a.cameraPan.x;
-    y -= a.cameraPan.y;
     var d = _.oIE(), // device to pixel ratio
       e = new _.Td(); // coordinate
-    e.x = (x * d - a.Ca.width) / a.cellSize;
-    e.y = (y * d - a.Ca.height) / a.cellSize;
+    x -= a.cameraPan.x / d;
+    y -= a.cameraPan.y / d;
+    e.x = (x * d - a.Ca.width) / a.cellSize / a.cameraZoom;
+    e.y = (y * d - a.Ca.height) / a.cellSize / a.cameraZoom;
     return e;
   };
   HPE = function (a, b, c, d) {
@@ -3504,7 +3504,12 @@ loaded_h_0(function (_) {
           }),
           _.ze(document, "wheel", (b) => {
             if (!this.closed) {
-              console.log(b);
+              console.log(b.Ph);
+              if (b.Ph.deltaMode === 0) {
+                if (b.Ph.deltaY) {
+                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -50
+                }
+              }
               b.preventDefault();
             }
           }),
@@ -4150,14 +4155,21 @@ loaded_h_0(function (_) {
             break;
           case 83:
             this.cameraPan.y += 5;
+            if (this.cameraPan.y > 0) {
+              this.cameraPan.y = 0;
+            }
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 65:
-            this.cameraPan.x -= 5;
+            this.cameraPan.x += 5;
+            if (this.cameraPan.x > 0) {
+              this.cameraPan.x = 0;
+            }
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 68:
-            this.cameraPan.x += 5;
+            this.cameraPan.x -= 5;
+            
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
