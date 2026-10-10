@@ -1550,6 +1550,8 @@ loaded_h_0(function (_) {
     try {
       if (!a.isDisposed()) {
         if (true) {
+          var renderWidth = Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom);
+          var renderHeight = Math.ceil((a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom);
           //!!!!!
           a.context.fillStyle = currentTheme[6];
           a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
@@ -1566,8 +1568,8 @@ loaded_h_0(function (_) {
               centerCell.mgd = now;
             }
           }
-          for (var b = 0; b < a.Aa.width; b++)
-            for (var c = 0; c < a.Aa.height; c++)
+          for (var b = 0; b < renderWidth; b++)
+            for (var c = 0; c < renderHeight; c++)
               isCellDug(a, new _.Td(b, c)) &&
                 !(
                   (a.oa[b][c].isMine && !isTileNine(a, new _.Td(b, c))) ||
@@ -1577,8 +1579,8 @@ loaded_h_0(function (_) {
           a.context.fillStyle = currentTheme[7];
           b = Math.round(a.cellSize * 0.08);
 
-          for (c = 0; c < a.Aa.width; c++)
-            for (var d = 0; d < a.Aa.height; d++) {
+          for (c = 0; c < renderWidth; c++)
+            for (var d = 0; d < renderHeight; d++) {
               var e = new _.Td(c, d);
               (!isCellDug(a, e, true) ||
                 (a.oa[e.x][e.y].FLb && !isTileNine(a, e)) ||
@@ -1597,8 +1599,8 @@ loaded_h_0(function (_) {
                 );
             }
         }
-        for (b = 0; b < a.Aa.width; b++)
-          for (c = 0; c < a.Aa.height; c++)
+        for (b = 0; b < renderWidth; b++)
+          for (c = 0; c < renderHeight; c++)
             (isCellDug(a, new _.Td(b, c), true) &&
               !(a.oa[b][c].FLb || isTileAdjacentNine(a, new _.Td(b, c)))) ||
               drawCell(a, new _.Td(b, c));
@@ -1750,6 +1752,7 @@ loaded_h_0(function (_) {
           d = c.radius * c.size;
           a.context.save();
           a.context.translate(e + a.cameraPan.x, f + a.cameraPan.y);
+          a.context.scale(a.cameraZoom, a.cameraZoom);
           a.context.rotate(g);
           switch (c.type) {
             case 0:
@@ -1817,6 +1820,7 @@ loaded_h_0(function (_) {
               (f = c.Fe.x * 0.025),
               a.context.save(),
               a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
+              a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1834,6 +1838,7 @@ loaded_h_0(function (_) {
               (f = (c.angle * Math.PI) / 180),
               a.context.save(),
               a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
+              a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1852,6 +1857,7 @@ loaded_h_0(function (_) {
             f = (c.angle * Math.PI) / 180;
             a.context.save();
             a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y);
+            a.context.scale(a.cameraZoom, a.cameraZoom),
             a.context.rotate(f);
             c = Math.min(1, c.size);
             a.context.drawImage(
@@ -3507,8 +3513,11 @@ loaded_h_0(function (_) {
               console.log(b.Ph);
               if (b.Ph.deltaMode === 0) {
                 if (b.Ph.deltaY) {
-                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -50
+                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -30
                 }
+              }
+              if (this.cameraZoom < 1) {
+                this.cameraZoom = 1;
               }
               b.preventDefault();
             }
@@ -3830,12 +3839,12 @@ loaded_h_0(function (_) {
               (this.cellSize *= b));
           }
         }
-        if (false) {
+        if (true) {
           this.cutout = new Image();
           this.cutout.onload = () => {
             a.resolve();
           };
-          this.cutout.src = "bitmap/2_7_3.png";
+          this.cutout.src = "bitmap/GAH.png";
         } else {
           a.resolve();
         }
@@ -4150,14 +4159,16 @@ loaded_h_0(function (_) {
             this.Sa = true;
             break;
           case 87:
-            this.cameraPan.y -= 5;
-            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
-            break;
-          case 83:
             this.cameraPan.y += 5;
             if (this.cameraPan.y > 0) {
               this.cameraPan.y = 0;
             }
+            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+            break;
+          case 83:
+            this.cameraPan.y -= 5;
+            let maxY = (this.cellSize * this.Aa.height * this.cameraZoom) - (this.cellSize * this.Aa.height);
+            this.cameraPan.y = Math.max(this.cameraPan.y, -maxY);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 65:
@@ -4169,7 +4180,9 @@ loaded_h_0(function (_) {
             break;
           case 68:
             this.cameraPan.x -= 5;
-            
+            // (this.cellSize * this.Aa.width * this.cameraZoom) - (this.cellSize * this.Aa.width)
+            let maxX = (this.cellSize * this.Aa.width * this.cameraZoom) - (this.cellSize * this.Aa.width);
+            this.cameraPan.x = Math.max(this.cameraPan.x, -maxX);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
