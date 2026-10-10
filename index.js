@@ -1550,8 +1550,8 @@ loaded_h_0(function (_) {
     try {
       if (!a.isDisposed()) {
         if (true) {
-          var renderWidth = Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom);
-          var renderHeight = Math.ceil((a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom);
+          var renderWidth = Math.min(Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom), a.Aa.width);
+          var renderHeight = Math.min(Math.ceil((a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom), a.Aa.height);
           //!!!!!
           a.context.fillStyle = currentTheme[6];
           a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
@@ -1751,7 +1751,7 @@ loaded_h_0(function (_) {
           g += (c.J8d ? 1 : -1) * c.size;
           d = c.radius * c.size;
           a.context.save();
-          a.context.translate(e + a.cameraPan.x, f + a.cameraPan.y);
+          a.context.translate((e + a.cameraPan.x) * a.cameraZoom, (f + a.cameraPan.y) * a.cameraZoom);
           a.context.scale(a.cameraZoom, a.cameraZoom);
           a.context.rotate(g);
           switch (c.type) {
@@ -1819,7 +1819,7 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 9)),
               (f = c.Fe.x * 0.025),
               a.context.save(),
-              a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
+              a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom),
               a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
@@ -1837,7 +1837,7 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 2)),
               (f = (c.angle * Math.PI) / 180),
               a.context.save(),
-              a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y),
+              a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom),
               a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
@@ -1856,7 +1856,7 @@ loaded_h_0(function (_) {
             e = Math.round(c.pos.y + a.cellSize / 2);
             f = (c.angle * Math.PI) / 180;
             a.context.save();
-            a.context.translate(d + a.cameraPan.x, e + a.cameraPan.y);
+            a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom);
             a.context.scale(a.cameraZoom, a.cameraZoom),
             a.context.rotate(f);
             c = Math.min(1, c.size);
@@ -3526,12 +3526,16 @@ loaded_h_0(function (_) {
               if (b.Ph.deltaMode === 0) {
                 if (b.Ph.deltaY) {
                   this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
+                  console.warn(this.cellSize);
+                  if (this.cellSize * this.cameraZoom > 145.5) {
+                    this.cameraZoom = 145.5 / this.cellSize;
+                  }
                 }
               }
               if (this.cameraZoom < 1) {
                 this.cameraZoom = 1;
               }
-              keepBoardInBounds(a);
+              keepBoardInBounds(this);
               b.preventDefault();
             }
           }),
@@ -3852,7 +3856,7 @@ loaded_h_0(function (_) {
               (this.cellSize *= b));
           }
         }
-        if (true) {
+        if (false) {
           this.cutout = new Image();
           this.cutout.onload = () => {
             a.resolve();
@@ -4173,22 +4177,22 @@ loaded_h_0(function (_) {
             break;
           case 87:
             this.cameraPan.y += 5;
-            keepBoardInBounds(a);
+            keepBoardInBounds(this);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 83:
             this.cameraPan.y -= 5;
-            keepBoardInBounds(a);
+            keepBoardInBounds(this);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 65:
             this.cameraPan.x += 5;
-            keepBoardInBounds(a);
+            keepBoardInBounds(this);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 68:
             this.cameraPan.x -= 5;
-            keepBoardInBounds(a);
+            keepBoardInBounds(this);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
