@@ -2035,7 +2035,6 @@ loaded_h_0(function (_) {
     if (a.IS_TITLE_SCREEN) {
       var g = getCellFromPixelPosition(a, b, c),
         role = a.oa[g.x][g.y].role;
-      console.warn(g, role, digging);
       if (digging && role) {
         a.TITLE_SCREEN_PAGE = role;
         a.digUpTitleScreenPage();
@@ -2047,7 +2046,6 @@ loaded_h_0(function (_) {
     else {
       var g = getCellFromPixelPosition(a, b, c),
         clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
-      console.warn(a, g, b, c, a.Ca, a.cellSize);
       chording = chording || (digging && isCellDug(a, g) && a.startedGame);
       if (g !== null) {
         a.isMobile()
@@ -3522,11 +3520,9 @@ loaded_h_0(function (_) {
           }),
           _.ze(document, "wheel", (b) => {
             if (!this.closed) {
-              console.log(b.Ph);
               if (b.Ph.deltaMode === 0) {
                 if (b.Ph.deltaY) {
                   this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
-                  console.warn(this.cellSize);
                   if (this.cellSize * this.cameraZoom > 145.5) {
                     this.cameraZoom = 145.5 / this.cellSize;
                   }
