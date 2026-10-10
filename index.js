@@ -3368,6 +3368,18 @@ loaded_h_0(function (_) {
     c = _.lG(c);
     return _.kG(_.mG(c, a, d));
   };
+  function keepBoardInBounds(a) {
+    if (a.cameraPan.y > 0) {
+      a.cameraPan.y = 0;
+    }
+    let maxY = (a.cellSize * a.Aa.height * a.cameraZoom) - (a.cellSize * a.Aa.height);
+    a.cameraPan.y = Math.max(a.cameraPan.y, -maxY);
+    let maxX = (a.cellSize * a.Aa.width * a.cameraZoom) - (a.cellSize * a.Aa.width);
+    a.cameraPan.x = Math.max(a.cameraPan.x, -maxX);
+    if (a.cameraPan.x > 0) {
+      a.cameraPan.x = 0;
+    }
+  }
   _.G6 = class extends _.Js {
     static Ta() {
       return {
@@ -3513,12 +3525,13 @@ loaded_h_0(function (_) {
               console.log(b.Ph);
               if (b.Ph.deltaMode === 0) {
                 if (b.Ph.deltaY) {
-                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -30
+                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
                 }
               }
               if (this.cameraZoom < 1) {
                 this.cameraZoom = 1;
               }
+              keepBoardInBounds(a);
               b.preventDefault();
             }
           }),
@@ -4160,29 +4173,22 @@ loaded_h_0(function (_) {
             break;
           case 87:
             this.cameraPan.y += 5;
-            if (this.cameraPan.y > 0) {
-              this.cameraPan.y = 0;
-            }
+            keepBoardInBounds(a);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 83:
             this.cameraPan.y -= 5;
-            let maxY = (this.cellSize * this.Aa.height * this.cameraZoom) - (this.cellSize * this.Aa.height);
-            this.cameraPan.y = Math.max(this.cameraPan.y, -maxY);
+            keepBoardInBounds(a);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 65:
             this.cameraPan.x += 5;
-            if (this.cameraPan.x > 0) {
-              this.cameraPan.x = 0;
-            }
+            keepBoardInBounds(a);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           case 68:
             this.cameraPan.x -= 5;
-            // (this.cellSize * this.Aa.width * this.cameraZoom) - (this.cellSize * this.Aa.width)
-            let maxX = (this.cellSize * this.Aa.width * this.cameraZoom) - (this.cellSize * this.Aa.width);
-            this.cameraPan.x = Math.max(this.cameraPan.x, -maxX);
+            keepBoardInBounds(a);
             this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
