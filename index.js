@@ -1550,14 +1550,20 @@ loaded_h_0(function (_) {
     try {
       if (!a.isDisposed()) {
         if (true) {
-          var renderWidth = Math.min(Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom), a.Aa.width);
-          var renderHeight = Math.min(Math.ceil((a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom), a.Aa.height);
-          //!!!!!
+          var renderWidth = Math.min(
+            Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom),
+            a.Aa.width,
+          );
+          var renderHeight = Math.min(
+            Math.ceil(
+              (a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom,
+            ),
+            a.Aa.height,
+          );
           a.context.fillStyle = currentTheme[6];
           a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
           a.context.translate(a.cameraPan.x, a.cameraPan.y);
           a.context.scale(a.cameraZoom, a.cameraZoom);
-          //a.cameraZoom += 0.001;
           if (a.bossIntro) {
             let now = Date.now(),
               centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
@@ -1723,9 +1729,6 @@ loaded_h_0(function (_) {
         }
         a.context.globalAlpha = 1;
         a.context.globalCompositeOperation = "source-over";
-        // ok the top bit doesn't quite work
-        // but everything else does!!!
-        // well, sort of :(
         a.context.setTransform(1, 0, 0, 1, 0, 0);
         a.context.fillStyle = currentTheme[6];
         a.context.fillRect(0, 0, a.Ca.width, a.canvas.height);
@@ -1753,7 +1756,10 @@ loaded_h_0(function (_) {
           g += (c.J8d ? 1 : -1) * c.size;
           d = c.radius * c.size;
           a.context.save();
-          a.context.translate((e + a.cameraPan.x) * a.cameraZoom, (f + a.cameraPan.y) * a.cameraZoom);
+          a.context.translate(
+            e * a.cameraZoom + a.cameraPan.x,
+            f * a.cameraZoom + a.cameraPan.y,
+          );
           a.context.scale(a.cameraZoom, a.cameraZoom);
           a.context.rotate(g);
           switch (c.type) {
@@ -1821,7 +1827,10 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 9)),
               (f = c.Fe.x * 0.025),
               a.context.save(),
-              a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom),
+              a.context.translate(
+                d * a.cameraZoom + a.cameraPan.x,
+                e * a.cameraZoom + a.cameraPan.y,
+              ),
               a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
@@ -1839,7 +1848,10 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 2)),
               (f = (c.angle * Math.PI) / 180),
               a.context.save(),
-              a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom),
+              a.context.translate(
+                d * a.cameraZoom + a.cameraPan.x,
+                e * a.cameraZoom + a.cameraPan.y,
+              ),
               a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
@@ -1858,9 +1870,11 @@ loaded_h_0(function (_) {
             e = Math.round(c.pos.y + a.cellSize / 2);
             f = (c.angle * Math.PI) / 180;
             a.context.save();
-            a.context.translate((d + a.cameraPan.x) * a.cameraZoom, (e + a.cameraPan.y) * a.cameraZoom);
-            a.context.scale(a.cameraZoom, a.cameraZoom),
-            a.context.rotate(f);
+            a.context.translate(
+              d * a.cameraZoom + a.cameraPan.x,
+              e * a.cameraZoom + a.cameraPan.y,
+            );
+            (a.context.scale(a.cameraZoom, a.cameraZoom), a.context.rotate(f));
             c = Math.min(1, c.size);
             a.context.drawImage(
               texture,
@@ -1872,7 +1886,6 @@ loaded_h_0(function (_) {
             a.context.restore();
           }
         }
-        // how do I add camera panning???????
         a.Bb > 0 &&
           (a.context.setTransform(1, 0, 0, 1, 0, 0),
           (c = (a.Bb / 1e3) * 8),
@@ -2125,7 +2138,7 @@ loaded_h_0(function (_) {
   };
   getCellFromPixelPosition = function (a, x, y) {
     var d = _.oIE(), // device to pixel ratio
-    e = new _.Td(); // coordinate
+      e = new _.Td(); // coordinate
     x -= a.cameraPan.x / d;
     y -= a.cameraPan.y / d;
     e.x = Math.floor((x * d - a.Ca.width) / a.cellSize / a.cameraZoom);
@@ -3372,9 +3385,10 @@ loaded_h_0(function (_) {
     if (a.cameraPan.y > 0) {
       a.cameraPan.y = 0;
     }
-    let maxY = (a.cellSize * a.Aa.height * a.cameraZoom) - (a.cellSize * a.Aa.height);
+    let maxY =
+      a.cellSize * a.Aa.height * a.cameraZoom - a.cellSize * a.Aa.height;
     a.cameraPan.y = Math.max(a.cameraPan.y, -maxY);
-    let maxX = (a.cellSize * a.Aa.width * a.cameraZoom) - (a.cellSize * a.Aa.width);
+    let maxX = a.cellSize * a.Aa.width * a.cameraZoom - a.cellSize * a.Aa.width;
     a.cameraPan.x = Math.max(a.cameraPan.x, -maxX);
     if (a.cameraPan.x > 0) {
       a.cameraPan.x = 0;
@@ -3428,7 +3442,7 @@ loaded_h_0(function (_) {
       this.closed = true;
       this.Wb = -1;
       this.Zc = this.Yb = this.Bb = 0;
-      this.cameraPan = new _.Td(0, 0)
+      this.cameraPan = new _.Td(0, 0);
       this.cameraZoom = 1;
       this.Lf = a.service.Lf;
       this.yf = _.Oh(gPE);
@@ -3511,7 +3525,6 @@ loaded_h_0(function (_) {
             this.Ab = null;
             this.readyToChord = this.rightClicking = this.leftClicking = false;
           }),
-          
           _.ze(document, "keydown", (b) => this.onKeyPressed(b)),
           _.ze(document, "keyup", (b) => {
             if (!this.closed) {
@@ -3528,8 +3541,8 @@ loaded_h_0(function (_) {
               if (b.Ph.deltaMode === 0 && !this.IS_TITLE_SCREEN) {
                 if (b.Ph.deltaY) {
                   this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
-                  if (this.cellSize * this.cameraZoom > 90) {
-                    this.cameraZoom = Math.max(90 / this.cellSize, 1);
+                  if (this.cellSize * this.cameraZoom > 60) {
+                    this.cameraZoom = Math.max(60 / this.cellSize, 1);
                   }
                 }
               }
@@ -3914,7 +3927,7 @@ loaded_h_0(function (_) {
       extraSounds.NINE_INTRO.pause();
       extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
-      this.cameraPan = new _.Td(0, 0)
+      this.cameraPan = new _.Td(0, 0);
       this.cameraZoom = 1;
       this.powerups = this.adventure ? this.adventure.powerups : this.powerups;
       this.coins = this.adventure ? this.adventure.coins : this.coins;
@@ -4067,7 +4080,11 @@ loaded_h_0(function (_) {
         }
         keepBoardInBounds(this);
         if (this.pixelPosition) {
-          this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+          this.Ab = getCellFromPixelPosition(
+            this,
+            this.pixelPosition.x,
+            this.pixelPosition.y,
+          );
         }
         var b = a - this.Ao;
         let centerCell = this.oa[this.ninePosition.x][this.ninePosition.y];
