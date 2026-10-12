@@ -1550,8 +1550,20 @@ loaded_h_0(function (_) {
     try {
       if (!a.isDisposed()) {
         if (true) {
-          //!!!!!
-
+          var renderWidth = Math.min(
+            Math.ceil((a.Aa.width - a.cameraPan.x / a.cellSize) / a.cameraZoom),
+            a.Aa.width,
+          );
+          var renderHeight = Math.min(
+            Math.ceil(
+              (a.Aa.height - a.cameraPan.y / a.cellSize) / a.cameraZoom,
+            ),
+            a.Aa.height,
+          );
+          a.context.fillStyle = currentTheme[6];
+          a.context.fillRect(0, 0, a.canvas.height, a.canvas.height);
+          a.context.translate(a.cameraPan.x, a.cameraPan.y);
+          a.context.scale(a.cameraZoom, a.cameraZoom);
           if (a.bossIntro) {
             let now = Date.now(),
               centerCell = a.oa[a.ninePosition.x][a.ninePosition.y];
@@ -1562,8 +1574,8 @@ loaded_h_0(function (_) {
               centerCell.mgd = now;
             }
           }
-          for (var b = 0; b < a.Aa.width; b++)
-            for (var c = 0; c < a.Aa.height; c++)
+          for (var b = 0; b < renderWidth; b++)
+            for (var c = 0; c < renderHeight; c++)
               isCellDug(a, new _.Td(b, c)) &&
                 !(
                   (a.oa[b][c].isMine && !isTileNine(a, new _.Td(b, c))) ||
@@ -1573,8 +1585,8 @@ loaded_h_0(function (_) {
           a.context.fillStyle = currentTheme[7];
           b = Math.round(a.cellSize * 0.08);
 
-          for (c = 0; c < a.Aa.width; c++)
-            for (var d = 0; d < a.Aa.height; d++) {
+          for (c = 0; c < renderWidth; c++)
+            for (var d = 0; d < renderHeight; d++) {
               var e = new _.Td(c, d);
               (!isCellDug(a, e, true) ||
                 (a.oa[e.x][e.y].FLb && !isTileNine(a, e)) ||
@@ -1593,8 +1605,8 @@ loaded_h_0(function (_) {
                 );
             }
         }
-        for (b = 0; b < a.Aa.width; b++)
-          for (c = 0; c < a.Aa.height; c++)
+        for (b = 0; b < renderWidth; b++)
+          for (c = 0; c < renderHeight; c++)
             (isCellDug(a, new _.Td(b, c), true) &&
               !(a.oa[b][c].FLb || isTileAdjacentNine(a, new _.Td(b, c)))) ||
               drawCell(a, new _.Td(b, c));
@@ -1668,7 +1680,8 @@ loaded_h_0(function (_) {
               );
 
               drawText("ADVENTURE", 9, 6);
-              drawText("FREE PLAY", 9, 9);
+              drawText("FREE PLAY", 9, 8);
+              drawText("ENDLESS", 9, 10);
               break;
             case "free":
               drawText("PLAY", 15, 12);
@@ -1687,6 +1700,7 @@ loaded_h_0(function (_) {
               drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
               drawText('Final Boss Theme" series', 9.5, 12);
               break;
+            case "endless":
             case "adventure":
               drawText("Not yet...", 8.5, 6);
               drawText("Coming Soon!", 8.5, 7);
@@ -1742,7 +1756,11 @@ loaded_h_0(function (_) {
           g += (c.J8d ? 1 : -1) * c.size;
           d = c.radius * c.size;
           a.context.save();
-          a.context.translate(e, f);
+          a.context.translate(
+            e * a.cameraZoom + a.cameraPan.x,
+            f * a.cameraZoom + a.cameraPan.y,
+          );
+          a.context.scale(a.cameraZoom, a.cameraZoom);
           a.context.rotate(g);
           switch (c.type) {
             case 0:
@@ -1809,7 +1827,11 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 9)),
               (f = c.Fe.x * 0.025),
               a.context.save(),
-              a.context.translate(d, e),
+              a.context.translate(
+                d * a.cameraZoom + a.cameraPan.x,
+                e * a.cameraZoom + a.cameraPan.y,
+              ),
+              a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1826,7 +1848,11 @@ loaded_h_0(function (_) {
               (e = Math.round(c.pos.y + a.cellSize / 2)),
               (f = (c.angle * Math.PI) / 180),
               a.context.save(),
-              a.context.translate(d, e),
+              a.context.translate(
+                d * a.cameraZoom + a.cameraPan.x,
+                e * a.cameraZoom + a.cameraPan.y,
+              ),
+              a.context.scale(a.cameraZoom, a.cameraZoom),
               a.context.rotate(f),
               (d = Math.min(1, c.size)),
               (a.context.fillStyle = c.color),
@@ -1844,8 +1870,11 @@ loaded_h_0(function (_) {
             e = Math.round(c.pos.y + a.cellSize / 2);
             f = (c.angle * Math.PI) / 180;
             a.context.save();
-            a.context.translate(d, e);
-            a.context.rotate(f);
+            a.context.translate(
+              d * a.cameraZoom + a.cameraPan.x,
+              e * a.cameraZoom + a.cameraPan.y,
+            );
+            (a.context.scale(a.cameraZoom, a.cameraZoom), a.context.rotate(f));
             c = Math.min(1, c.size);
             a.context.drawImage(
               texture,
@@ -1857,7 +1886,6 @@ loaded_h_0(function (_) {
             a.context.restore();
           }
         }
-
         a.Bb > 0 &&
           (a.context.setTransform(1, 0, 0, 1, 0, 0),
           (c = (a.Bb / 1e3) * 8),
@@ -2022,7 +2050,6 @@ loaded_h_0(function (_) {
     if (a.IS_TITLE_SCREEN) {
       var g = getCellFromPixelPosition(a, b, c),
         role = a.oa[g.x][g.y].role;
-      console.warn(g, role, digging);
       if (digging && role) {
         a.TITLE_SCREEN_PAGE = role;
         a.digUpTitleScreenPage();
@@ -2034,7 +2061,6 @@ loaded_h_0(function (_) {
     else {
       var g = getCellFromPixelPosition(a, b, c),
         clickingTen = isClickingTen(a, getFloatCellFromPixelPosition(a, b, c));
-      console.warn(a, g, b, c, a.Ca, a.cellSize);
       chording = chording || (digging && isCellDug(a, g) && a.startedGame);
       if (g !== null) {
         a.isMobile()
@@ -2113,15 +2139,19 @@ loaded_h_0(function (_) {
   getCellFromPixelPosition = function (a, x, y) {
     var d = _.oIE(), // device to pixel ratio
       e = new _.Td(); // coordinate
-    e.x = Math.floor((x * d - a.Ca.width) / a.cellSize);
-    e.y = Math.floor((y * d - a.Ca.height) / a.cellSize);
+    x -= a.cameraPan.x / d;
+    y -= a.cameraPan.y / d;
+    e.x = Math.floor((x * d - a.Ca.width) / a.cellSize / a.cameraZoom);
+    e.y = Math.floor((y * d - a.Ca.height) / a.cellSize / a.cameraZoom);
     return e;
   };
   const getFloatCellFromPixelPosition = function (a, x, y) {
     var d = _.oIE(), // device to pixel ratio
       e = new _.Td(); // coordinate
-    e.x = (x * d - a.Ca.width) / a.cellSize;
-    e.y = (y * d - a.Ca.height) / a.cellSize;
+    x -= a.cameraPan.x / d;
+    y -= a.cameraPan.y / d;
+    e.x = (x * d - a.Ca.width) / a.cellSize / a.cameraZoom;
+    e.y = (y * d - a.Ca.height) / a.cellSize / a.cameraZoom;
     return e;
   };
   HPE = function (a, b, c, d) {
@@ -3351,6 +3381,19 @@ loaded_h_0(function (_) {
     c = _.lG(c);
     return _.kG(_.mG(c, a, d));
   };
+  function keepBoardInBounds(a) {
+    if (a.cameraPan.y > 0) {
+      a.cameraPan.y = 0;
+    }
+    let maxY =
+      a.cellSize * a.Aa.height * a.cameraZoom - a.cellSize * a.Aa.height;
+    a.cameraPan.y = Math.max(a.cameraPan.y, -maxY);
+    let maxX = a.cellSize * a.Aa.width * a.cameraZoom - a.cellSize * a.Aa.width;
+    a.cameraPan.x = Math.max(a.cameraPan.x, -maxX);
+    if (a.cameraPan.x > 0) {
+      a.cameraPan.x = 0;
+    }
+  }
   _.G6 = class extends _.Js {
     static Ta() {
       return {
@@ -3362,6 +3405,7 @@ loaded_h_0(function (_) {
         },
       };
     }
+    GAME_VERSION = "0.4";
     constructor(a) {
       super(a.Na);
       this.IS_TITLE_SCREEN = true;
@@ -3399,6 +3443,8 @@ loaded_h_0(function (_) {
       this.closed = true;
       this.Wb = -1;
       this.Zc = this.Yb = this.Bb = 0;
+      this.cameraPan = new _.Td(0, 0);
+      this.cameraZoom = 1;
       this.Lf = a.service.Lf;
       this.yf = _.Oh(gPE);
       this.Th = _.Oh(jPE);
@@ -3436,6 +3482,7 @@ loaded_h_0(function (_) {
       this.Qe.EASY = 80;
       this.Qe.MEDIUM = 200;
       this.Qe.HARD = 360;
+      this.keysPressed = {};
       this.isMobile()
         ? (_.ze(this.canvas, "touchstart", (b) => this.roa(b)),
           _.ze(this.canvas, "touchmove", (b) => {
@@ -3472,18 +3519,38 @@ loaded_h_0(function (_) {
           }),
           _.ze(this.canvas, "mousemove", (b) => {
             this.Ab = getCellFromPixelPosition(this, b.offsetX, b.offsetY);
+            this.pixelPosition = new _.Td(b.offsetX, b.offsetY);
           }),
           _.ze(this.canvas, "mouseout", () => {
+            this.pixelPosition = null;
             this.Ab = null;
             this.readyToChord = this.rightClicking = this.leftClicking = false;
           }),
-          _.ze(document, "keydown", (b) => this.Nda(b)),
+          _.ze(document, "keydown", (b) => this.onKeyPressed(b)),
           _.ze(document, "keyup", (b) => {
             if (!this.closed) {
+              delete this.keysPressed[b.keyCode];
               switch (b.keyCode) {
                 case 17:
                   this.Sa = false;
               }
+              b.preventDefault();
+            }
+          }),
+          _.ze(document, "wheel", (b) => {
+            if (!this.closed) {
+              if (b.Ph.deltaMode === 0 && !this.IS_TITLE_SCREEN) {
+                if (b.Ph.deltaY) {
+                  this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
+                  if (this.cellSize * this.cameraZoom > 60) {
+                    this.cameraZoom = Math.max(60 / this.cellSize, 1);
+                  }
+                }
+              }
+              if (this.cameraZoom < 1) {
+                this.cameraZoom = 1;
+              }
+              keepBoardInBounds(this);
               b.preventDefault();
             }
           }),
@@ -3500,6 +3567,7 @@ loaded_h_0(function (_) {
       this.tq =
         "//www.gstatic.com/images/icons/material/system/2x/volume_off_white_24dp.png";
       this.Ab = null;
+      this.mousePosition = null;
       this.Ca = new _.Xd(0, 0);
       this.Vt = new pPE();
       this.Ll = new Image();
@@ -3808,7 +3876,7 @@ loaded_h_0(function (_) {
           this.cutout.onload = () => {
             a.resolve();
           };
-          this.cutout.src = "bitmap/2_7_3.png";
+          this.cutout.src = "bitmap/GAH.png";
         } else {
           a.resolve();
         }
@@ -3860,6 +3928,8 @@ loaded_h_0(function (_) {
       extraSounds.NINE_INTRO.pause();
       extraSounds.NINE_LOOP.pause();
       extraSounds.TEN_GROW.pause();
+      this.cameraPan = new _.Td(0, 0);
+      this.cameraZoom = 1;
       this.powerups = this.adventure ? this.adventure.powerups : this.powerups;
       this.coins = this.adventure ? this.adventure.coins : this.coins;
       this.maxTime = 0;
@@ -3894,6 +3964,7 @@ loaded_h_0(function (_) {
         this.leftClicking =
           false;
       this.Ab = null;
+      this.mousePosition = null;
       this.Qc = 0;
       this.Lc = false;
       this.Wb = -1;
@@ -3929,16 +4000,31 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(10, 6, 0, "adventure");
             this.digTileForTitleSceen(11, 6, 0, "adventure");
 
-            this.digTileForTitleSceen(6, 9, 2, "free");
-            this.digTileForTitleSceen(7, 9, 0, "free");
-            this.digTileForTitleSceen(8, 9, 0, "free");
-            this.digTileForTitleSceen(9, 9, 0, "free");
-            this.digTileForTitleSceen(10, 9, 0, "free");
-            this.digTileForTitleSceen(11, 9, 0, "free");
+            this.digTileForTitleSceen(6, 8, 2, "free");
+            this.digTileForTitleSceen(7, 8, 0, "free");
+            this.digTileForTitleSceen(8, 8, 0, "free");
+            this.digTileForTitleSceen(9, 8, 0, "free");
+            this.digTileForTitleSceen(10, 8, 0, "free");
+            this.digTileForTitleSceen(11, 8, 0, "free");
+
+            this.digTileForTitleSceen(6, 10, 3, "endless");
+            this.digTileForTitleSceen(7, 10, 0, "endless");
+            this.digTileForTitleSceen(8, 10, 0, "endless");
+            this.digTileForTitleSceen(9, 10, 0, "endless");
+            this.digTileForTitleSceen(10, 10, 0, "endless");
+            this.digTileForTitleSceen(11, 10, 0, "endless");
 
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
+            this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 4; b < 14; b++) {
+              for (let c = 5; c < 9; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
+            break;
+          case "endless":
             this.digTileForTitleSceen(1, 12, "<", "main");
             for (let b = 4; b < 14; b++) {
               for (let c = 5; c < 9; c++) {
@@ -3981,6 +4067,26 @@ loaded_h_0(function (_) {
     }
     Gw(a) {
       if (this.jd && !this.closed) {
+        if (this.keysPressed[87]) {
+          this.cameraPan.y += 5;
+        }
+        if (this.keysPressed[83]) {
+          this.cameraPan.y -= 5;
+        }
+        if (this.keysPressed[65]) {
+          this.cameraPan.x += 5;
+        }
+        if (this.keysPressed[68]) {
+          this.cameraPan.x -= 5;
+        }
+        keepBoardInBounds(this);
+        if (this.pixelPosition) {
+          this.Ab = getCellFromPixelPosition(
+            this,
+            this.pixelPosition.x,
+            this.pixelPosition.y,
+          );
+        }
         var b = a - this.Ao;
         let centerCell = this.oa[this.ninePosition.x][this.ninePosition.y];
         this.Ao = a;
@@ -4103,8 +4209,9 @@ loaded_h_0(function (_) {
         setHtmlDisplays(this);
       }
     }
-    Nda(a) {
+    onKeyPressed(a) {
       if (!this.closed) {
+        this.keysPressed[a.keyCode] = true;
         switch (a.keyCode) {
           case 77:
             this.ll();
