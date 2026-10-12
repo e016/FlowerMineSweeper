@@ -3405,6 +3405,7 @@ loaded_h_0(function (_) {
         },
       };
     }
+    GAME_VERSION = "0.4";
     constructor(a) {
       super(a.Na);
       this.IS_TITLE_SCREEN = true;
