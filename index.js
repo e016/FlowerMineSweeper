@@ -1674,7 +1674,8 @@ loaded_h_0(function (_) {
               );
 
               drawText("ADVENTURE", 9, 6);
-              drawText("FREE PLAY", 9, 9);
+              drawText("FREE PLAY", 9, 8);
+              drawText("ENDLESS", 9, 10);
               break;
             case "free":
               drawText("PLAY", 15, 12);
@@ -1693,6 +1694,7 @@ loaded_h_0(function (_) {
               drawText("yuumiyam's \"Google Minesweeper:", 9.5, 11);
               drawText('Final Boss Theme" series', 9.5, 12);
               break;
+            case "endless":
             case "adventure":
               drawText("Not yet...", 8.5, 6);
               drawText("Coming Soon!", 8.5, 7);
@@ -3465,6 +3467,7 @@ loaded_h_0(function (_) {
       this.Qe.EASY = 80;
       this.Qe.MEDIUM = 200;
       this.Qe.HARD = 360;
+      this.keysPressed = {};
       this.isMobile()
         ? (_.ze(this.canvas, "touchstart", (b) => this.roa(b)),
           _.ze(this.canvas, "touchmove", (b) => {
@@ -3508,9 +3511,11 @@ loaded_h_0(function (_) {
             this.Ab = null;
             this.readyToChord = this.rightClicking = this.leftClicking = false;
           }),
-          _.ze(document, "keydown", (b) => this.Nda(b)),
+          
+          _.ze(document, "keydown", (b) => this.onKeyPressed(b)),
           _.ze(document, "keyup", (b) => {
             if (!this.closed) {
+              delete this.keysPressed[b.keyCode];
               switch (b.keyCode) {
                 case 17:
                   this.Sa = false;
@@ -3520,11 +3525,11 @@ loaded_h_0(function (_) {
           }),
           _.ze(document, "wheel", (b) => {
             if (!this.closed) {
-              if (b.Ph.deltaMode === 0) {
+              if (b.Ph.deltaMode === 0 && !this.IS_TITLE_SCREEN) {
                 if (b.Ph.deltaY) {
                   this.cameraZoom += Math.sign(b.Ph.deltaY) / -30;
-                  if (this.cellSize * this.cameraZoom > 145.5) {
-                    this.cameraZoom = 145.5 / this.cellSize;
+                  if (this.cellSize * this.cameraZoom > 90) {
+                    this.cameraZoom = Math.max(90 / this.cellSize, 1);
                   }
                 }
               }
@@ -3981,16 +3986,31 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(10, 6, 0, "adventure");
             this.digTileForTitleSceen(11, 6, 0, "adventure");
 
-            this.digTileForTitleSceen(6, 9, 2, "free");
-            this.digTileForTitleSceen(7, 9, 0, "free");
-            this.digTileForTitleSceen(8, 9, 0, "free");
-            this.digTileForTitleSceen(9, 9, 0, "free");
-            this.digTileForTitleSceen(10, 9, 0, "free");
-            this.digTileForTitleSceen(11, 9, 0, "free");
+            this.digTileForTitleSceen(6, 8, 2, "free");
+            this.digTileForTitleSceen(7, 8, 0, "free");
+            this.digTileForTitleSceen(8, 8, 0, "free");
+            this.digTileForTitleSceen(9, 8, 0, "free");
+            this.digTileForTitleSceen(10, 8, 0, "free");
+            this.digTileForTitleSceen(11, 8, 0, "free");
+
+            this.digTileForTitleSceen(6, 10, 3, "endless");
+            this.digTileForTitleSceen(7, 10, 0, "endless");
+            this.digTileForTitleSceen(8, 10, 0, "endless");
+            this.digTileForTitleSceen(9, 10, 0, "endless");
+            this.digTileForTitleSceen(10, 10, 0, "endless");
+            this.digTileForTitleSceen(11, 10, 0, "endless");
 
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
+            this.digTileForTitleSceen(1, 12, "<", "main");
+            for (let b = 4; b < 14; b++) {
+              for (let c = 5; c < 9; c++) {
+                this.digTileForTitleSceen(b, c, 0);
+              }
+            }
+            break;
+          case "endless":
             this.digTileForTitleSceen(1, 12, "<", "main");
             for (let b = 4; b < 14; b++) {
               for (let c = 5; c < 9; c++) {
@@ -4033,6 +4053,22 @@ loaded_h_0(function (_) {
     }
     Gw(a) {
       if (this.jd && !this.closed) {
+        if (this.keysPressed[87]) {
+          this.cameraPan.y += 5;
+        }
+        if (this.keysPressed[83]) {
+          this.cameraPan.y -= 5;
+        }
+        if (this.keysPressed[65]) {
+          this.cameraPan.x += 5;
+        }
+        if (this.keysPressed[68]) {
+          this.cameraPan.x -= 5;
+        }
+        keepBoardInBounds(this);
+        if (this.pixelPosition) {
+          this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
+        }
         var b = a - this.Ao;
         let centerCell = this.oa[this.ninePosition.x][this.ninePosition.y];
         this.Ao = a;
@@ -4155,8 +4191,9 @@ loaded_h_0(function (_) {
         setHtmlDisplays(this);
       }
     }
-    Nda(a) {
+    onKeyPressed(a) {
       if (!this.closed) {
+        this.keysPressed[a.keyCode] = true;
         switch (a.keyCode) {
           case 77:
             this.ll();
@@ -4170,26 +4207,6 @@ loaded_h_0(function (_) {
             break;
           case 17:
             this.Sa = true;
-            break;
-          case 87:
-            this.cameraPan.y += 5;
-            keepBoardInBounds(this);
-            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
-            break;
-          case 83:
-            this.cameraPan.y -= 5;
-            keepBoardInBounds(this);
-            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
-            break;
-          case 65:
-            this.cameraPan.x += 5;
-            keepBoardInBounds(this);
-            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
-            break;
-          case 68:
-            this.cameraPan.x -= 5;
-            keepBoardInBounds(this);
-            this.Ab = getCellFromPixelPosition(this, this.pixelPosition.x, this.pixelPosition.y);
             break;
           default:
             return;
