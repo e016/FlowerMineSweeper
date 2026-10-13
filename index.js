@@ -2061,7 +2061,7 @@ loaded_h_0(function (_) {
         if (role) {
           a.TITLE_SCREEN_PAGE = role;
           a.digUpTitleScreenPage();
-        } else {
+        } else if (a.oa[g.x][g.y].mineCount > 0) {
           playNumberSound({
             cellsDug: a.oa[g.x][g.y].mineCount,
             totalValue: a.oa[g.x][g.y].value,
@@ -2999,20 +2999,6 @@ loaded_h_0(function (_) {
         "#6d7374",
         "#666c6d",
       ],
-
-      // nostalga
-      [
-        "#c0c0c0",
-        "#b7b7b7",
-        "#b0b0b0",
-        "#acacac",
-        "#a7c0d4",
-        "#8fadc5",
-        "#a0a0a0",
-        "#808080",
-        "#90CAF9",
-        "#83C4F7",
-      ],
       // beach
       [
         "#f2d78c",
@@ -3025,6 +3011,19 @@ loaded_h_0(function (_) {
         "#af843a",
         "#E5C29F",
         "#D7B899",
+      ],
+      // fall
+      [
+        "#ed853b",
+        "#e88030",
+        "#E5C29F",
+        "#D7B899",
+        "#90CAF9",
+        "#83C4F7",
+        "#8e4f11",
+        "#af783a",
+        "#ed853b",
+        "#e88030",
       ],
       // 11
       [
@@ -3673,7 +3672,6 @@ loaded_h_0(function (_) {
 
       this.bossBattle = this.nine || this.ten;
       this.bossIntro = this.bossBattle;
-      this.setAdventureLevel();
       this.Dw && (this.Yf(), this.Ne());
 
       document.getElementById("theme").value =
@@ -3726,10 +3724,10 @@ loaded_h_0(function (_) {
     }
     setAdventure() {
       this.adventure =
-        this.MODE && this.MODE !== "freeplay"
+        this.MODE && this.MODE !== "free"
           ? {
               episode: 0,
-              level: 0,
+              level: 1,
               powerups: [],
               coins: 0,
               endless: this.MODE === "endless",
@@ -3737,6 +3735,7 @@ loaded_h_0(function (_) {
           : null;
     }
     setFreePlaySettings() {
+      this.adventure = null;
       this.Aa = new _.Xd(
         +document.getElementById("width").value,
         +document.getElementById("height").value,
@@ -3910,6 +3909,8 @@ loaded_h_0(function (_) {
     }
     toMenu() {
       this.Ij && _.fw(this.Ja("returnToMenu").el());
+      this.MODE = "";
+      this.adventure = null;
       this.IS_TITLE_SCREEN = true;
       this.TITLE_SCREEN_PAGE = "main";
       this.Aa = this.od[2];
@@ -3919,7 +3920,7 @@ loaded_h_0(function (_) {
     }
     reset() {
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
-      setAdventureLevel();
+      this.setAdventureLevel();
       return this.Coa().then(() => {
         this.resetState();
         this.jd = true;
@@ -3929,10 +3930,12 @@ loaded_h_0(function (_) {
       let level = adventure.level,
       width = diff + 7,
       height = diff + 7,
-      mineCount = diff * 2 + level;
+      density = (level + diff * 4) / 100,
+      mineCount = 0;
 
       level % 2 == 0 ? (width += level) : (width += level - 1);
       level % 2 != 0 ? (height += level) : (height += level - 1);
+      mineCount = Math.floor((width * height) * density);
       return {
         name: `Stage ${level}`,
         level: level,
@@ -3954,10 +3957,6 @@ loaded_h_0(function (_) {
         this.totalPowerupCount =
           adventureLevel.powerups ??
           Math.ceil((this.Aa.width * this.Aa.height) / 50);
-        return this.Coa().then(() => {
-          this.resetState();
-          this.jd = true;
-        });
       }
     }
     Sua() {
@@ -4028,6 +4027,7 @@ loaded_h_0(function (_) {
         this.setAdventure();
         if (this.adventure) {
           this.setAdventureLevel();
+          this.reset();
           return;
         }
         this.setFreePlaySettings();
