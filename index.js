@@ -2064,8 +2064,9 @@ loaded_h_0(function (_) {
         } else {
           playNumberSound({
             cellsDug: a.oa[g.x][g.y].mineCount,
-            totalValue: a.oa[g.x][g.y].mineCount,
-          })
+            totalValue: a.oa[g.x][g.y].value,
+          });
+          a.Da = a.oa[g.x][g.y].value;
         }
       }
     } else if (a.Ij)
@@ -3332,7 +3333,12 @@ loaded_h_0(function (_) {
       isAdjacentNine = isTileAdjacentNine(a, b),
       cellDug = tile.isTen || isCellDug(a, b);
     var c =
-        b.equals(a.Ab) && (!cellDug || tile.mineCount !== 0) && tile.enabled,
+        (b.equals(a.Ab) ||
+          (a.IS_TITLE_SCREEN &&
+            a.TITLE_SCREEN_PAGE === "endless" &&
+            a.Da === tile.value)) &&
+        (!cellDug || tile.mineCount !== 0) &&
+        tile.enabled,
       d =
         a.Ab === null ||
         !(
@@ -3719,15 +3725,16 @@ loaded_h_0(function (_) {
       });
     }
     setAdventure() {
-      this.adventure = this.MODE && this.MODE !== "freeplay"
-        ? {
-            episode: 0,
-            level: 0,
-            powerups: [],
-            coins: 0,
-            endless: this.MODE === "endless",
-          }
-        : null;
+      this.adventure =
+        this.MODE && this.MODE !== "freeplay"
+          ? {
+              episode: 0,
+              level: 0,
+              powerups: [],
+              coins: 0,
+              endless: this.MODE === "endless",
+            }
+          : null;
     }
     setFreePlaySettings() {
       this.Aa = new _.Xd(
@@ -3919,10 +3926,14 @@ loaded_h_0(function (_) {
         this.jd = true;
       });
     }
+    getEndlessLevel(adventure, difficulty) {
+      return {};
+    }
     setAdventureLevel() {
       if (this.adventure) {
-        let adventureLevel =
-          adventureMaps[this.adventure.episode][this.adventure.level];
+        let adventureLevel = this.adventure.endless
+          ? this.getEndlessLevel(this.adventure, this.Da)
+          : adventureMaps[this.adventure.episode][this.adventure.level];
         currentTheme = themes[adventureLevel.theme];
         console.log(adventureLevel.name);
         this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
@@ -3930,7 +3941,7 @@ loaded_h_0(function (_) {
         this.totalPowerupCount =
           adventureLevel.powerups ??
           Math.ceil((this.Aa.width * this.Aa.height) / 50);
-        this.B5a();
+        this.reset();
       }
     }
     Sua() {
@@ -3998,6 +4009,11 @@ loaded_h_0(function (_) {
       if (this.TITLE_SCREEN_PAGE === "go" && this.IS_TITLE_SCREEN) {
         this.IS_TITLE_SCREEN = false;
         document.getElementById("menuDiv").style.opacity = "1";
+        if (this.adventure) {
+          this.setAdventure();
+          this.setAdventureLevel();
+          return;
+        }
         this.setFreePlaySettings();
         return;
       }
