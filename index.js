@@ -3919,20 +3919,33 @@ loaded_h_0(function (_) {
     }
     reset() {
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
-      this.setAdventureLevel();
-
+      setAdventureLevel();
       return this.Coa().then(() => {
         this.resetState();
         this.jd = true;
       });
     }
-    getEndlessLevel(adventure, difficulty) {
-      return {};
+    getEndlessLevel(adventure, diff) {
+      let level = adventure.level,
+      width = diff + 7,
+      height = diff + 7,
+      mineCount = diff * 2 + level;
+
+      level % 2 == 0 ? (width += level) : (width += level - 1);
+      level % 2 != 0 ? (height += level) : (height += level - 1);
+      return {
+        name: `Stage ${level}`,
+        level: level,
+        mineCount,
+        width,
+        height,
+        theme: Math.floor(Math.random() * themes.length),
+      };
     }
     setAdventureLevel() {
       if (this.adventure) {
         let adventureLevel = this.adventure.endless
-          ? this.getEndlessLevel(this.adventure, this.Da)
+          ? this.getEndlessLevel(this.adventure, +this.Da)
           : adventureMaps[this.adventure.episode][this.adventure.level];
         currentTheme = themes[adventureLevel.theme];
         console.log(adventureLevel.name);
@@ -3941,7 +3954,10 @@ loaded_h_0(function (_) {
         this.totalPowerupCount =
           adventureLevel.powerups ??
           Math.ceil((this.Aa.width * this.Aa.height) / 50);
-        this.reset();
+        return this.Coa().then(() => {
+          this.resetState();
+          this.jd = true;
+        });
       }
     }
     Sua() {
@@ -4009,8 +4025,8 @@ loaded_h_0(function (_) {
       if (this.TITLE_SCREEN_PAGE === "go" && this.IS_TITLE_SCREEN) {
         this.IS_TITLE_SCREEN = false;
         document.getElementById("menuDiv").style.opacity = "1";
+        this.setAdventure();
         if (this.adventure) {
-          this.setAdventure();
           this.setAdventureLevel();
           return;
         }
