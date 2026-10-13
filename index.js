@@ -1701,6 +1701,13 @@ loaded_h_0(function (_) {
               drawText('Final Boss Theme" series', 9.5, 12);
               break;
             case "endless":
+              drawText("Want to challenge yourself?", 8.5, 3);
+              drawText("Each stage only gets harder and harder,", 8.5, 4);
+              drawText("So see how far you can get!", 8.5, 5);
+
+              drawText("DIFFICULTY", 8, 8);
+              drawText("PLAY", 15, 12);
+              break;
             case "adventure":
               drawText("Not yet...", 8.5, 6);
               drawText("Coming Soon!", 8.5, 7);
@@ -2050,9 +2057,16 @@ loaded_h_0(function (_) {
     if (a.IS_TITLE_SCREEN) {
       var g = getCellFromPixelPosition(a, b, c),
         role = a.oa[g.x][g.y].role;
-      if (digging && role) {
-        a.TITLE_SCREEN_PAGE = role;
-        a.digUpTitleScreenPage();
+      if (digging) {
+        if (role) {
+          a.TITLE_SCREEN_PAGE = role;
+          a.digUpTitleScreenPage();
+        } else {
+          playNumberSound({
+            cellsDug: a.oa[g.x][g.y].mineCount,
+            totalValue: a.oa[g.x][g.y].mineCount,
+          })
+        }
       }
     } else if (a.Ij)
       a.Va === 0 && (digging || a.isMobile())
@@ -3424,7 +3438,7 @@ loaded_h_0(function (_) {
       this.Va = 0;
       this.didWin = false;
       this.Mb = 0;
-      this.highScores = {};
+      this.highScores = [-1, -1, -1, -1, -1];
       this.flagCount = this.Ao = this.startTime = 0;
       this.startedGame = this.muted = this.Sa = false;
       this.maxTime = 0;
@@ -3454,34 +3468,34 @@ loaded_h_0(function (_) {
       this.topBar = this.Ja("P0FCKc").el();
       _.ZO(this);
       this.powerup = null;
-      this.Da = "MEDIUM";
+      this.Da = 2;
       // cellSize
-      this.Ud.EASY = 45;
-      this.Ud.MEDIUM = 30;
-      this.Ud.HARD = 25;
+      this.Ud[1] = 45;
+      this.Ud[2] = 30;
+      this.Ud[3] = 25;
       this.cellSize = this.Ud[this.Da];
       this.trueCellSize = this.Ud[this.Da];
       // mine count values
-      this.Bd.EASY = 10;
-      this.Bd.MEDIUM = this.isMobile() ? 35 : 40;
-      this.Bd.HARD = this.isMobile() ? 75 : 99;
+      this.Bd[1] = 10;
+      this.Bd[2] = this.isMobile() ? 35 : 40;
+      this.Bd[3] = this.isMobile() ? 75 : 99;
       // usable mine count
       this.totalMineCount = this.Bd[this.Da];
       this.doubleMines = 0;
       this.antiMines = 0;
       // board sizes
-      this.od.EASY = new _.Xd(10, 8);
-      this.od.MEDIUM = new _.Xd(18, 14);
-      this.od.HARD = new _.Xd(24, 20);
+      this.od[1] = new _.Xd(10, 8);
+      this.od[2] = new _.Xd(18, 14);
+      this.od[3] = new _.Xd(24, 20);
       // board size (used)
       this.Aa = this.od[this.Da];
       this.lives = 3;
       this.powerups = [];
       this.coins = 0;
       // ?????
-      this.Qe.EASY = 80;
-      this.Qe.MEDIUM = 200;
-      this.Qe.HARD = 360;
+      this.Qe[1] = 80;
+      this.Qe[2] = 200;
+      this.Qe[3] = 360;
       this.keysPressed = {};
       this.isMobile()
         ? (_.ze(this.canvas, "touchstart", (b) => this.roa(b)),
@@ -3557,10 +3571,6 @@ loaded_h_0(function (_) {
           this.canvas.addEventListener("contextmenu", (b) =>
             b.preventDefault(),
           ));
-      // high scores
-      this.highScores.EASY = -1;
-      this.highScores.MEDIUM = -1;
-      this.highScores.HARD = -1;
       this.readyToChord = this.rightClicking = this.leftClicking = false;
       this.Xx =
         "//www.gstatic.com/images/icons/material/system/2x/volume_up_white_24dp.png";
@@ -3652,15 +3662,8 @@ loaded_h_0(function (_) {
       this.lastTenClicked = 0;
       this.tenTimer = 0;
       this.nineRotation = 0;
-
-      this.adventure = true
-        ? null
-        : {
-            episode: 0,
-            level: 0,
-            powerups: [],
-            coins: 0,
-          };
+      this.MODE = "";
+      this.setAdventure();
 
       this.bossBattle = this.nine || this.ten;
       this.bossIntro = this.bossBattle;
@@ -3679,7 +3682,7 @@ loaded_h_0(function (_) {
         );
       };
       document.getElementById("difficulty").onchange = () => {
-        this.Da = document.getElementById("difficulty").value;
+        this.Da = +document.getElementById("difficulty").value;
         document.getElementById("width").value = this.od[this.Da].width;
         document.getElementById("height").value = this.od[this.Da].height;
         document.getElementById("mines").value = this.Bd[this.Da];
@@ -3714,6 +3717,17 @@ loaded_h_0(function (_) {
           document.getElementById("powerupsMenuDiv").style.display = "none";
         }
       });
+    }
+    setAdventure() {
+      this.adventure = this.MODE && this.MODE !== "freeplay"
+        ? {
+            episode: 0,
+            level: 0,
+            powerups: [],
+            coins: 0,
+            endless: this.MODE === "endless",
+          }
+        : null;
     }
     setFreePlaySettings() {
       this.Aa = new _.Xd(
@@ -3891,7 +3905,7 @@ loaded_h_0(function (_) {
       this.Ij && _.fw(this.Ja("returnToMenu").el());
       this.IS_TITLE_SCREEN = true;
       this.TITLE_SCREEN_PAGE = "main";
-      this.Aa = this.od["MEDIUM"];
+      this.Aa = this.od[2];
       this.nine = false;
       this.ten = false;
       return this.Xg();
@@ -3991,6 +4005,7 @@ loaded_h_0(function (_) {
       if (this.IS_TITLE_SCREEN) {
         document.getElementById("menuDiv").style.opacity = "0.5";
         F6.fSd.play();
+        this.MODE = "";
         switch (this.TITLE_SCREEN_PAGE) {
           case "main":
             this.digTileForTitleSceen(6, 6, 1, "adventure");
@@ -4017,6 +4032,7 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
+            this.MODE = this.TITLE_SCREEN_PAGE;
             this.digTileForTitleSceen(1, 12, "<", "main");
             for (let b = 4; b < 14; b++) {
               for (let c = 5; c < 9; c++) {
@@ -4025,14 +4041,31 @@ loaded_h_0(function (_) {
             }
             break;
           case "endless":
+            this.MODE = this.TITLE_SCREEN_PAGE;
             this.digTileForTitleSceen(1, 12, "<", "main");
-            for (let b = 4; b < 14; b++) {
-              for (let c = 5; c < 9; c++) {
+            for (let b = 1; b < 17; b++) {
+              for (let c = 3; c < 6; c++) {
                 this.digTileForTitleSceen(b, c, 0);
               }
             }
+            this.digTileForTitleSceen(6, 8, 0);
+            this.digTileForTitleSceen(7, 8, 0);
+            this.digTileForTitleSceen(8, 8, 0);
+            this.digTileForTitleSceen(9, 8, 0);
+            this.digTileForTitleSceen(10, 8, 0);
+
+            this.digTileForTitleSceen(7, 9, 1);
+            this.digTileForTitleSceen(8, 9, 2);
+            this.digTileForTitleSceen(9, 9, 3);
+            this.digTileForTitleSceen(10, 9, 4);
+            this.digTileForTitleSceen(11, 9, 5);
+
+            this.digTileForTitleSceen(14, 12, 0, "go");
+            this.digTileForTitleSceen(15, 12, 0, "go");
+            this.digTileForTitleSceen(16, 12, 0, "go");
             break;
           case "free":
+            this.MODE = this.TITLE_SCREEN_PAGE;
             document.querySelector('div[jsname="V68bde"]').style.display = "";
 
             this.digTileForTitleSceen(1, 12, "<", "main");
