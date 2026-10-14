@@ -2903,6 +2903,7 @@ loaded_h_0(function (_) {
     a.ob.push(b);
   };
   setPopupBackground = function (a) {
+    (a.Ya("retryImage").el().src = "//www.gstatic.com/images/icons/material/system/2x/refresh_white_24dp.png");
     a.isDisposed() ||
       (a.didWin
         ? (_.tn(
@@ -2910,7 +2911,9 @@ loaded_h_0(function (_) {
             "background-image",
             "url(" + a.Ll.src + ")",
           ),
-          _.ln(a.Ya("AWieJ").el(), "Play again"))
+          _.ln(a.Ya("AWieJ").el(), a.adventure ? "Continue" : "Play again"),
+          a.adventure && (a.Ya("retryImage").el().src = "//www.gstatic.com/images/icons/material/system/2x/arrow_right_alt_white_24dp.png")
+        )
         : (_.tn(
             a.Ya("Rs1rF").el(),
             "background-image",
@@ -3908,7 +3911,7 @@ loaded_h_0(function (_) {
       return this.reset();
     }
     toMenu() {
-      this.Ij && _.fw(this.Ja("returnToMenu").el());
+      // this.Ij && _.fw(this.Ja("returnToMenu").el());
       this.MODE = "";
       this.adventure = null;
       this.IS_TITLE_SCREEN = true;
@@ -3916,7 +3919,7 @@ loaded_h_0(function (_) {
       this.Aa = this.od[2];
       this.nine = false;
       this.ten = false;
-      return this.Xg();
+      return this.reset();
     }
     reset() {
       this.totalPowerupCount = Math.ceil((this.Aa.width * this.Aa.height) / 50);
