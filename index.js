@@ -2132,7 +2132,7 @@ loaded_h_0(function (_) {
                   (clickingTen
                     ? ((a.tenTimer = 0), moveTen(a, g))
                     : userDigCells(a, g)));
-        if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) {
+        if ((countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) || true) {
           a.lastTenClicked = a.Mb;
           a.tenTimer = 0;
           a.didWin = true;
@@ -3933,9 +3933,9 @@ loaded_h_0(function (_) {
       let level = adventure.level,
       width = diff + 7,
       height = diff + 7,
-      density = (level + diff * 4) / 100,
+      density = (Math.log10(level*(diff/2)+diff)*3*diff) / 100,
       mineCount = 0;
-
+      console.log(density);
       level % 2 == 0 ? (width += level) : (width += level - 1);
       level % 2 != 0 ? (height += level) : (height += level - 1);
       mineCount = Math.floor((width * height) * density);
