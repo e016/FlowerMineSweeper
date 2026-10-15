@@ -3933,7 +3933,7 @@ loaded_h_0(function (_) {
       let level = adventure.level,
       width = diff + 7,
       height = diff + 7,
-      density = (Math.log10(level*(diff/2)+diff)*3*diff) / 100,
+      density = Math.max(Math.log10(level*(diff/2)+diff*1.5)*3*diff, 0.01) / 100,
       mineCount = 0;
       console.log(density);
       level % 2 == 0 ? (width += level) : (width += level - 1);
