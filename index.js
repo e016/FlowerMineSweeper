@@ -3931,8 +3931,8 @@ loaded_h_0(function (_) {
     }
     getEndlessLevel(adventure, diff) {
       let level = adventure.level,
-      width = diff + 7,
-      height = diff + 7,
+      width = diff + 5,
+      height = diff + 5,
       density = Math.max(Math.log10(level*(diff/2)+diff*1.5)*3*diff, 0.01) / 100,
       mineCount = 0;
       console.log(density);
