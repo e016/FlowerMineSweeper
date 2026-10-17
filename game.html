@@ -2068,7 +2068,7 @@
             height: auto;
           }
           .HhuoRb {
-            background: #65752c;
+            background: #4a752c; /* #65752c */
             width: 300px;
             height: 64px;
             margin: 12px auto;
@@ -2147,13 +2147,14 @@
           .pause {
             position: absolute;
             left: 0px;
+            z-index: 1000;
           }
         </style>
         <div jsname="P0FCKc" class="NWJp1d" style="width: 100vw; height: 60px">
           
           <div class="b11qzc">
             <div class="pause">
-            <div class="KU0OAc"style="position: unset !important; width: fit-content; margin-right: 20px; margin-left: 20px">
+            <div class="KU0OAc"style="position: unset !important; width: fit-content; margin-right: 20px; margin-left: 20px;">
                 <div class="JfmvR">
                   <g-dropdown-menu class="tgTlrc adGN6" id="menuDiv"
                     ><g-popup
@@ -2162,7 +2163,6 @@
                         class="CcNe6e"
                         aria-expanded="false"
                         aria-haspopup="true"
-                        jsslot=""
                         role="button"
                         id="menuButton"
                         tabindex="0"
@@ -2281,9 +2281,9 @@
                       <div jsname="ibnC6b" class="YpcDnf OSrXXb CB8nDe">
                         Preset:
                         <select name="difficulty" id="difficulty">
-                          <option value="EASY">Easy</option>
-                          <option value="MEDIUM" selected="true">Medium</option>
-                          <option value="HARD">Hard</option>
+                          <option value="1">Easy</option>
+                          <option value="2" selected="true">Medium</option>
+                          <option value="3">Hard</option>
                         </select>
                       </div><br />
                       <br />
@@ -2345,8 +2345,8 @@
                           <option value="2">Snowy</option>
                           <option value="3">NightTime</option>
                           <option value="4">Rocks (unfinished)</option>
-                          <option value="5">Nostalgia</option>
-                          <option value="6">Beach</option>
+                          <option value="5">Beach</option>
+                          <option value="6">Fall</option>
                         </select>
                       </div>
                       <br /><br />
@@ -2418,7 +2418,7 @@
                 <div jsname="Vp6PHf" class="Uobaif">–––</div>
               </div>
             </div>
-            <div
+            <!--<div
               jsname="returnToMenu"
               class="HhuoRb"
               role="button"
@@ -2432,7 +2432,7 @@
                 data-defe="1"
               />
               <h2 jsname="returnToMenuLabel">Continue</h2>
-            </div>
+            </div>-->
             <div
               jsname="NSjDf"
               class="HhuoRb"
@@ -2445,6 +2445,7 @@
                 src="//www.gstatic.com/images/icons/material/system/2x/refresh_white_24dp.png"
                 alt=""
                 data-defe="1"
+                jsname="retryImage"
               />
               <h2 jsname="AWieJ">Play again</h2>
             </div>
