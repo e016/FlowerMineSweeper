@@ -2132,7 +2132,7 @@ loaded_h_0(function (_) {
                   (clickingTen
                     ? ((a.tenTimer = 0), moveTen(a, g))
                     : userDigCells(a, g)));
-        if ((countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) || true) {
+        if (countOpenCells(a) <= a.totalMineCount + (a.nine ? 0 : 0) && !a.Ij) {
           a.lastTenClicked = a.Mb;
           a.tenTimer = 0;
           a.didWin = true;
