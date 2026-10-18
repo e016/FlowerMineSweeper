@@ -2938,14 +2938,14 @@ loaded_h_0(function (_) {
   let themes = [
       // default
       [
-        "#AAD751",
-        "#A2D149",
+        "#AAD751", // #9fc831
+        "#A2D149", // #9ac520
         "#E5C29F",
         "#D7B899",
         "#90CAF9",
         "#83C4F7",
         "#578A34",
-        "#87af3a",
+        "#87af3a", // #8daf28
         "#AAD751",
         "#A2D149",
       ],
@@ -3028,18 +3028,44 @@ loaded_h_0(function (_) {
         "#ed853b",
         "#e88030",
       ],
+      // 10
+      [
+        "#ecefe1",
+        "#e4e7d4",
+        "#fee3b3",
+        "#f8dcac",
+        "#90CAF9",
+        "#83C4F7",
+        "#949494",
+        "#b6d848",
+        "#ebeee0",
+        "#d9ddce",
+      ],
       // 11
       [
         "#071d07",
         "#051505",
         "#180f07",
         "#070503",
-        "#90CAF9",
-        "#83C4F7",
+        "#021322",
+        "#020e18",
         "#1d2e12",
         "#87af3a",
-        "#AAD751",
-        "#A2D149",
+        "#071d07",
+        "#051505",
+      ],
+      // 100
+      [
+        "#0c222f",
+        "#06202f",
+        "#475758",
+        "#405051",
+        "#90CAF9",
+        "#83C4F7",
+        "#07131a",
+        "#00ffff",
+        "#0c222f",
+        "#06202f",
       ],
     ],
     currentTheme = themes[localStorage.getItem("savedTheme") || 0];
@@ -3938,7 +3964,7 @@ loaded_h_0(function (_) {
       console.log(density);
       level % 2 == 0 ? (width += level) : (width += level - 1);
       level % 2 != 0 ? (height += level) : (height += level - 1);
-      mineCount = Math.floor((width * height) * density);
+      mineCount = Math.max(Math.floor((width * height) * density), 1);
       return {
         name: `Stage ${level}`,
         level: level,
@@ -3954,6 +3980,7 @@ loaded_h_0(function (_) {
           ? this.getEndlessLevel(this.adventure, +this.Da)
           : adventureMaps[this.adventure.episode][this.adventure.level];
         currentTheme = themes[adventureLevel.theme];
+        document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[6];
         console.log(adventureLevel.name);
         this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
         this.totalMineCount = adventureLevel.mineCount;
