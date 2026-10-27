@@ -1495,7 +1495,21 @@ loaded_h_0(function (_) {
     } catch (e) {
       console.error(e);
     }
+    console.error(a.adventure);
+    if (a.adventure?.level < 1) {
+      createAdventureMap(a);
+    }
   };
+  function createAdventureMap(a) {
+    // create road
+    a.startedGame = true;
+    for (let x = 0; x++; x < a.Aa.width) {
+      console.warn(x);
+      let cell = a.oa[x][Math.floor(a.Aa.height / 2)];
+      cell.cellDug = true;
+      cell.isRoad = true;
+    }
+  }
   setHtmlDisplays = function (a) {
     if (!a.isDisposed()) {
       let isTitleScreen = a.IS_TITLE_SCREEN;
@@ -1709,8 +1723,11 @@ loaded_h_0(function (_) {
               drawText("PLAY", 15, 12);
               break;
             case "adventure":
-              drawText("Not yet...", 8.5, 6);
-              drawText("Coming Soon!", 8.5, 7);
+              drawText("Let's go on an adventure!", 8.5, 3);
+              drawText("There are ten stages,", 8.5, 4);
+              drawText("can you beat them?", 8.5, 5);
+              drawText("DIFFICULTY", 8, 8);
+              drawText("PLAY", 15, 12);
               break;
           }
         }
@@ -3376,7 +3393,7 @@ loaded_h_0(function (_) {
     var c =
         (b.equals(a.Ab) ||
           (a.IS_TITLE_SCREEN &&
-            a.TITLE_SCREEN_PAGE === "endless" &&
+            (a.TITLE_SCREEN_PAGE === "endless" || a.TITLE_SCREEN_PAGE === "adventure") &&
             a.Da === tile.value)) &&
         (!cellDug || tile.mineCount !== 0) &&
         tile.enabled,
@@ -3764,18 +3781,7 @@ loaded_h_0(function (_) {
         }
       });
     }
-    setAdventure() {
-      this.adventure =
-        this.MODE && this.MODE !== "free"
-          ? {
-              episode: 0,
-              level: 1,
-              powerups: [],
-              coins: 0,
-              endless: this.MODE === "endless",
-            }
-          : null;
-    }
+    
     setFreePlaySettings() {
       this.adventure = null;
       this.Aa = new _.Xd(
@@ -3892,7 +3898,7 @@ loaded_h_0(function (_) {
           var b = _.oIE();
           if (true) {
             //this.isMobile()) {
-            var c = this.Qe["MEDIUM"];
+            var c = this.Qe[2];
             this.qc = _.Etb(this.canvas);
             /*if (this.qc.width === 0) {
               a.resolve();
@@ -3901,8 +3907,9 @@ loaded_h_0(function (_) {
             var d = this.qc.width - 40;
             let e = this.qc.height - 40;
             c = (d * e) / c;
+            console.log(this.adventure, this.adventure?.level);
             this.cellSize = Math.min(
-              Math.floor(d / this.Aa.width),
+              Math.floor(d / (this.adventure?.level < 1 ? 18 : this.Aa.width)),
               Math.floor(e / this.Aa.height),
             );
             this.canvas.width = this.qc.width * b;
@@ -3910,7 +3917,7 @@ loaded_h_0(function (_) {
             this.cellSize *= b;
             this.Ca = new _.Xd(
               Math.ceil(
-                (this.canvas.width - this.Aa.width * this.cellSize) / 2,
+                (this.canvas.width - (this.adventure?.level < 1 ? 18 : this.Aa.width) * this.cellSize) / 2,
               ),
               Math.ceil(
                 (this.canvas.height - this.Aa.height * this.cellSize) / 2,
@@ -3968,6 +3975,18 @@ loaded_h_0(function (_) {
         this.jd = true;
       });
     }
+    setAdventure() {
+      this.adventure =
+        this.MODE && this.MODE !== "free"
+          ? {
+              episode: 0,
+              level: this.MODE !== "endless" ? 0 : 1,
+              powerups: [],
+              coins: 0,
+              endless: this.MODE === "endless",
+            }
+          : null;
+    }
     getEndlessLevel(adventure, diff) {
       let level = adventure.level,
       width = diff + 5,
@@ -3989,12 +4008,21 @@ loaded_h_0(function (_) {
     }
     setAdventureLevel() {
       if (this.adventure) {
-        let adventureLevel = this.adventure.endless
+        console.warn(this.adventure.level);
+        let adventureLevel = this.adventure.level < 1 ? {
+          name: "Map",
+          level: 0,
+          mineCount: 0,
+          width: 60,
+          height: 14,
+          theme: 0,
+          isMap: true,
+        } : this.adventure.endless
           ? this.getEndlessLevel(this.adventure, +this.Da)
-          : adventureMaps[this.adventure.episode][this.adventure.level];
+          : adventureMaps[this.adventure.episode][this.adventure.level - 1];
         currentTheme = themes[adventureLevel.theme];
         document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[6];
-        console.log(adventureLevel.name);
+        console.log(adventureLevel.name, adventureLevel.isMap);
         this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
         this.totalMineCount = adventureLevel.mineCount;
         this.totalPowerupCount =
@@ -4107,14 +4135,6 @@ loaded_h_0(function (_) {
             this.digTileForTitleSceen(16, 12, "i", "credits");
             break;
           case "adventure":
-            this.MODE = this.TITLE_SCREEN_PAGE;
-            this.digTileForTitleSceen(1, 12, "<", "main");
-            for (let b = 4; b < 14; b++) {
-              for (let c = 5; c < 9; c++) {
-                this.digTileForTitleSceen(b, c, 0);
-              }
-            }
-            break;
           case "endless":
             this.MODE = this.TITLE_SCREEN_PAGE;
             this.digTileForTitleSceen(1, 12, "<", "main");
@@ -4175,19 +4195,21 @@ loaded_h_0(function (_) {
     }
     Gw(a) {
       if (this.jd && !this.closed) {
-        if (this.keysPressed[87]) {
-          this.cameraPan.y += 5;
+        if (!(this.adventure?.level < 1)) {
+          if (this.keysPressed[87]) {
+            this.cameraPan.y += 5;
+          }
+          if (this.keysPressed[83]) {
+            this.cameraPan.y -= 5;
+          }
+          if (this.keysPressed[65]) {
+            this.cameraPan.x += 5;
+          }
+          if (this.keysPressed[68]) {
+            this.cameraPan.x -= 5;
+          }
+          keepBoardInBounds(this);
         }
-        if (this.keysPressed[83]) {
-          this.cameraPan.y -= 5;
-        }
-        if (this.keysPressed[65]) {
-          this.cameraPan.x += 5;
-        }
-        if (this.keysPressed[68]) {
-          this.cameraPan.x -= 5;
-        }
-        keepBoardInBounds(this);
         if (this.pixelPosition) {
           this.Ab = getCellFromPixelPosition(
             this,
