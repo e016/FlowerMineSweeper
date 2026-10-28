@@ -1467,6 +1467,7 @@ loaded_h_0(function (_) {
         flagCount: 0,
         uNb: -1,
         cellDug: false,
+        blink: false,
         mineCount: 0,
         value: 0,
         color: uPE[Math.floor(Math.random() * uPE.length)],
@@ -1492,20 +1493,26 @@ loaded_h_0(function (_) {
     }
     try {
       cutGrid(a, a.cutout);
+      if (a.adventure?.level < 1) {
+        createAdventureMap(a);
+      }
     } catch (e) {
       console.error(e);
-    }
-    console.error(a.adventure);
-    if (a.adventure?.level < 1) {
-      createAdventureMap(a);
     }
   };
   function createAdventureMap(a) {
     // create road
-    a.startedGame = true;
-    for (let x = 0; x++; x < a.Aa.width) {
-      console.warn(x);
+    // a.startedGame = true;
+    for (let x = 0; x < a.Aa.width; x++) {
       let cell = a.oa[x][Math.floor(a.Aa.height / 2)];
+      if (x > 3 && x % 6 === 0) {
+        let y = Math.floor(a.Aa.height / 2) - (x % 12 === 0 ? 3 : -3);
+        a.oa[x][y].cellDug = false;
+        a.oa[x][y].blink = true;
+        let neighbors = getRealCellNeighbors(a, new _.Td(x, y));
+        console.warn(neighbors);
+        neighbors.forEach((pos) => a.oa[pos.x][pos.y].cellDug = true);
+      }
       cell.cellDug = true;
       cell.isRoad = true;
     }
@@ -1969,7 +1976,8 @@ loaded_h_0(function (_) {
       if (willShow && a.didWin && a.adventure) {
         a.adventure.coins = a.coins;
         a.adventure.powerups = a.powerups;
-        a.adventure.level++;
+        a.adventure.lastLevel = a.adventure.level;
+        a.adventure.endless ? a.adventure.level++ : (a.adventure.level = 0);
       }
     }
   };
@@ -2074,17 +2082,22 @@ loaded_h_0(function (_) {
     if (a.IS_TITLE_SCREEN) {
       var g = getCellFromPixelPosition(a, b, c),
         role = a.oa[g.x][g.y].role;
-      if (digging) {
-        if (role) {
-          a.TITLE_SCREEN_PAGE = role;
-          a.digUpTitleScreenPage();
-        } else if (a.oa[g.x][g.y].mineCount > 0) {
-          playNumberSound({
-            cellsDug: a.oa[g.x][g.y].mineCount,
-            totalValue: a.oa[g.x][g.y].value,
-          });
-          a.Da = a.oa[g.x][g.y].value;
-        }
+      if (role) {
+        a.TITLE_SCREEN_PAGE = role;
+        a.digUpTitleScreenPage();
+      } else if (a.oa[g.x][g.y].mineCount > 0) {
+        playNumberSound({
+          cellsDug: a.oa[g.x][g.y].mineCount,
+          totalValue: a.oa[g.x][g.y].value,
+        });
+        a.Da = a.oa[g.x][g.y].value;
+      }
+    } else if (a.adventure?.level < 1) {
+      var g = getCellFromPixelPosition(a, b, c);
+      if (g !== null) {
+        a.adventure.lastLevel++;
+        a.setAdventureLevel();
+        a.reset();
       }
     } else if (a.Ij)
       a.Va === 0 && (digging || a.isMobile())
@@ -3389,7 +3402,13 @@ loaded_h_0(function (_) {
   eQE = function (a, b, tile) {
     const isNine = isTileNine(a, b),
       isAdjacentNine = isTileAdjacentNine(a, b),
-      cellDug = tile.isTen || isCellDug(a, b);
+      cellDug = tile.isTen || isCellDug(a, b),
+      now = Date().now;
+    if (
+      tile.blink && (now - tile.mgd > 1000 || tile.mgd === 0)
+    ) {
+      tile.mgd = now;
+    }
     var c =
         (b.equals(a.Ab) ||
           (a.IS_TITLE_SCREEN &&
@@ -3421,7 +3440,7 @@ loaded_h_0(function (_) {
             -(a.Yb / 800) / 2,
           ))
         : (a.Ij && tile.FLb) ||
-          (a.bossIntro &&
+          ((a.bossIntro || tile.blink) &&
             ((c = (1 - (Date.now() - tile.mgd) / 600) * 0.85),
             c > 0 &&
               (a.context.fillStyle = darkenColor(
@@ -3981,6 +4000,7 @@ loaded_h_0(function (_) {
           ? {
               episode: 0,
               level: this.MODE !== "endless" ? 0 : 1,
+              lastLevel: 0,
               powerups: [],
               coins: 0,
               endless: this.MODE === "endless",
@@ -4008,8 +4028,8 @@ loaded_h_0(function (_) {
     }
     setAdventureLevel() {
       if (this.adventure) {
-        console.warn(this.adventure.level);
-        let adventureLevel = this.adventure.level < 1 ? {
+        this.adventure.level = this.adventure.lastLevel;
+        let adventureLevel = Object.assign(Object.assign({}, this.adventure.level), this.adventure.level < 1 ? {
           name: "Map",
           level: 0,
           mineCount: 0,
@@ -4019,7 +4039,7 @@ loaded_h_0(function (_) {
           isMap: true,
         } : this.adventure.endless
           ? this.getEndlessLevel(this.adventure, +this.Da)
-          : adventureMaps[this.adventure.episode][this.adventure.level - 1];
+          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1]);
         currentTheme = themes[adventureLevel.theme];
         document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[6];
         console.log(adventureLevel.name, adventureLevel.isMap);
