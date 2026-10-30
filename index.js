@@ -1603,7 +1603,7 @@ loaded_h_0(function (_) {
                   isTileAdjacentNine(a, new _.Td(b, c))
                 ) &&
                 drawCell(a, new _.Td(b, c));
-          a.context.fillStyle = currentTheme[7];
+          a.context.fillStyle = currentTheme[8];
           b = Math.round(a.cellSize * 0.08);
 
           for (c = 0; c < renderWidth; c++)
@@ -2975,6 +2975,7 @@ loaded_h_0(function (_) {
         "#90CAF9",
         "#83C4F7",
         "#578A34",
+        "#4a752c",
         "#87af3a", // #8daf28
         "#AAD751",
         "#A2D149",
@@ -2987,7 +2988,8 @@ loaded_h_0(function (_) {
         "#dec691",
         "#90CAF9",
         "#83C4F7",
-        "#3b8a34",
+        "#3b8934",
+        "#33762d",
         "#a3af3a",
         "#2eb845",
         "#2caf44",
@@ -3000,6 +3002,7 @@ loaded_h_0(function (_) {
         "#e5dfbd",
         "#90CAF9",
         "#83C4F7",
+        "#879fa1",
         "#75898a",
         "#87af3a",
         "#AAD751",
@@ -3013,6 +3016,7 @@ loaded_h_0(function (_) {
         "#3d285d",
         "#90CAF9",
         "#83C4F7",
+        "#2c2730",
         "#262428",
         "#7850c5",
         "#494351",
@@ -3028,6 +3032,7 @@ loaded_h_0(function (_) {
         "#90CAF9",
         "#83C4F7",
         "#4b4b4b",
+        "#3f3f3f",
         "#c8c8c8",
         "#6d7374",
         "#666c6d",
@@ -3040,6 +3045,7 @@ loaded_h_0(function (_) {
         "#acacac",
         "#90CAF9",
         "#83C4F7",
+        "#977b26",
         "#725e1d",
         "#af843a",
         "#E5C29F",
@@ -3053,7 +3059,8 @@ loaded_h_0(function (_) {
         "#D7B899",
         "#90CAF9",
         "#83C4F7",
-        "#8e4f11",
+        "#a34f1f",
+        "#8e4311",
         "#af783a",
         "#ed853b",
         "#e88030",
@@ -3067,6 +3074,7 @@ loaded_h_0(function (_) {
         "#90CAF9",
         "#83C4F7",
         "#924575",
+        "#853c69",
         "#d26dbd",
         "#e5a9c7",
         "#df9fbe",
@@ -3080,6 +3088,7 @@ loaded_h_0(function (_) {
         "#90CAF9",
         "#83C4F7",
         "#949494",
+        "#747474",
         "#b6d848",
         "#ebeee0",
         "#d9ddce",
@@ -3092,7 +3101,8 @@ loaded_h_0(function (_) {
         "#070503",
         "#021322",
         "#020e18",
-        "#1d2e12",
+        "#1a2910",
+        "#131f0c",
         "#87af3a",
         "#071d07",
         "#051505",
@@ -3106,13 +3116,14 @@ loaded_h_0(function (_) {
         "#90CAF9",
         "#83C4F7",
         "#07131a",
+        "#050f14",
         "#00ffff",
         "#0c222f",
         "#06202f",
       ],
     ],
     currentTheme = themes[localStorage.getItem("savedTheme") || 0];
-  document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[6];
+  document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[7];
   darkenColor = function (color, amount) {
     // to array of [R, G, B]
     color = _.lG(color);
@@ -3195,8 +3206,8 @@ loaded_h_0(function (_) {
       case "GRASS":
         a.context.fillStyle =
           (b.x + b.y) % 2 === 0
-            ? fQE(a, currentTheme[0], currentTheme[8], b)
-            : fQE(a, currentTheme[1], currentTheme[9], b);
+            ? fQE(a, currentTheme[0], currentTheme[9], b)
+            : fQE(a, currentTheme[1], currentTheme[10], b);
         eQE(a, b, tile);
         if (a.powerup && b.equals(a.Ab)) {
           a.context.drawImage(
@@ -3214,7 +3225,7 @@ loaded_h_0(function (_) {
             ? fQE(a, currentTheme[2], currentTheme[4], b)
             : fQE(a, currentTheme[3], currentTheme[5], b);
         eQE(a, b, tile);
-        a.context.strokeStyle = currentTheme[7];
+        a.context.strokeStyle = currentTheme[8];
         let k = Math.round(a.cellSize * 0.08) / 2;
         if (isTen) {
           a.context.strokeRect(
@@ -3757,7 +3768,7 @@ loaded_h_0(function (_) {
       document.getElementById("theme").onchange = () => {
         currentTheme = themes[+document.getElementById("theme").value];
         document.querySelector(".NWJp1d").style.backgroundColor =
-          currentTheme[6];
+          currentTheme[7];
         localStorage.setItem(
           "savedTheme",
           +document.getElementById("theme").value,
@@ -4041,7 +4052,7 @@ loaded_h_0(function (_) {
           ? this.getEndlessLevel(this.adventure, +this.Da)
           : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1]);
         currentTheme = themes[adventureLevel.theme];
-        document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[6];
+        document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[7];
         console.log(adventureLevel.name, adventureLevel.isMap);
         this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
         this.totalMineCount = adventureLevel.mineCount;
