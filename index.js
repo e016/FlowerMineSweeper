@@ -1510,7 +1510,6 @@ loaded_h_0(function (_) {
         a.oa[x][y].cellDug = false;
         a.oa[x][y].blink = true;
         let neighbors = getRealCellNeighbors(a, new _.Td(x, y));
-        console.warn(neighbors);
         neighbors.forEach((pos) => a.oa[pos.x][pos.y].cellDug = true);
       }
       cell.cellDug = true;
@@ -3937,7 +3936,6 @@ loaded_h_0(function (_) {
             var d = this.qc.width - 40;
             let e = this.qc.height - 40;
             c = (d * e) / c;
-            console.log(this.adventure, this.adventure?.level);
             this.cellSize = Math.min(
               Math.floor(d / (this.adventure?.level < 1 ? 18 : this.Aa.width)),
               Math.floor(e / this.Aa.height),
@@ -3984,6 +3982,10 @@ loaded_h_0(function (_) {
     }
     Xg() {
       this.Ij && _.fw(this.Ja("NSjDf").el());
+      if (this.adventure && ! this.adventure.endless) {
+        this.adventure.lastLevel = this.adventure.level;
+        this.adventure.level = 0;
+      }
       return this.reset();
     }
     toMenu() {
@@ -4010,10 +4012,10 @@ loaded_h_0(function (_) {
         this.MODE && this.MODE !== "free"
           ? {
               episode: 0,
-              level: this.MODE !== "endless" ? 0 : 1,
-              lastLevel: 0,
+              level: this.adventure?.level ?? (this.MODE !== "endless" ? 0 : 1),
+              lastLevel: this.adventure?.lastLevel || 0,
               powerups: [],
-              coins: 0,
+              coins: this.adventure?.coins || 0,
               endless: this.MODE === "endless",
             }
           : null;
@@ -4040,9 +4042,10 @@ loaded_h_0(function (_) {
     setAdventureLevel() {
       if (this.adventure) {
         this.adventure.level = this.adventure.lastLevel;
-        let adventureLevel = Object.assign(Object.assign({}, this.adventure.level), this.adventure.level < 1 ? {
+        let adventureLevel = this.adventure.level < 1 ? {
           name: "Map",
           level: 0,
+          lastLevel: this.adventure?.lastLevel,
           mineCount: 0,
           width: 60,
           height: 14,
@@ -4050,10 +4053,10 @@ loaded_h_0(function (_) {
           isMap: true,
         } : this.adventure.endless
           ? this.getEndlessLevel(this.adventure, +this.Da)
-          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1]);
+          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1];
         currentTheme = themes[adventureLevel.theme];
         document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[7];
-        console.log(adventureLevel.name, adventureLevel.isMap);
+        console.log(this.adventure);
         this.Aa = new _.Xd(adventureLevel.width, adventureLevel.height);
         this.totalMineCount = adventureLevel.mineCount;
         this.totalPowerupCount =
