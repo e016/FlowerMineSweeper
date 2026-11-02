@@ -1503,13 +1503,16 @@ loaded_h_0(function (_) {
   function createAdventureMap(a) {
     // create road
     // a.startedGame = true;
+    let level = 0;
     for (let x = 0; x < a.Aa.width; x++) {
       let cell = a.oa[x][Math.floor(a.Aa.height / 2)];
       if (x > 3 && x % 6 === 0) {
+        level++;
         let y = Math.floor(a.Aa.height / 2) - (x % 12 === 0 ? 3 : -3);
         a.oa[x][y].cellDug = false;
         a.oa[x][y].blink = true;
         a.oa[x][y].mgd = 0;
+        a.oa[x][y]._isClickable = level == Math.max(a.adventure.lastLevel, 1);
         let neighbors = getRealCellNeighbors(a, new _.Td(x, y));
         neighbors.forEach((pos) => a.oa[pos.x][pos.y].cellDug = true);
       }
@@ -2092,7 +2095,7 @@ loaded_h_0(function (_) {
       }
     } else if (a.adventure?.level < 1) {
       var g = getCellFromPixelPosition(a, b, c);
-      if (g !== null) {
+      if (g !== null && a.oa[g.x][g.y]._isClickable) {
         a.adventure.lastLevel++;
         a.adventure.level = a.adventure.lastLevel;
         a.setAdventureLevel();
