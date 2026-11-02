@@ -1976,8 +1976,8 @@ loaded_h_0(function (_) {
       if (willShow && a.didWin && a.adventure) {
         a.adventure.coins = a.coins;
         a.adventure.powerups = a.powerups;
-        a.adventure.lastLevel = a.adventure.level;
         a.adventure.endless ? a.adventure.level++ : (a.adventure.level = 0);
+        a.adventure.lastLevel = a.adventure.level;
       }
     }
   };
@@ -2168,6 +2168,7 @@ loaded_h_0(function (_) {
           a.didWin = true;
           endGame(a);
           b = a.Mb;
+          
           if (a.highScores[a.Da] < 0 || b < a.highScores[a.Da])
             a.highScores[a.Da] = b;
           a.Ea.push(
@@ -4010,8 +4011,8 @@ loaded_h_0(function (_) {
         this.MODE && this.MODE !== "free"
           ? {
               episode: 0,
-              level: this.MODE !== "endless" ? 0 : 1,
-              lastLevel: 0,
+              level: this.MODE === "endless" ? 1 : 0,
+              lastLevel: this.MODE === "endless" ? 1 : 0,
               powerups: [],
               coins: 0,
               endless: this.MODE === "endless",
@@ -4040,7 +4041,7 @@ loaded_h_0(function (_) {
     setAdventureLevel() {
       if (this.adventure) {
         this.adventure.level = this.adventure.lastLevel;
-        let adventureLevel = Object.assign(Object.assign({}, this.adventure.level), this.adventure.level < 1 ? {
+        let adventureLevel = this.adventure.level < 1 ? {
           name: "Map",
           level: 0,
           mineCount: 0,
@@ -4050,7 +4051,7 @@ loaded_h_0(function (_) {
           isMap: true,
         } : this.adventure.endless
           ? this.getEndlessLevel(this.adventure, +this.Da)
-          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1]);
+          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1];
         currentTheme = themes[adventureLevel.theme];
         document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[7];
         console.log(adventureLevel.name, adventureLevel.isMap);
