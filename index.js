@@ -1509,6 +1509,7 @@ loaded_h_0(function (_) {
         let y = Math.floor(a.Aa.height / 2) - (x % 12 === 0 ? 3 : -3);
         a.oa[x][y].cellDug = false;
         a.oa[x][y].blink = true;
+        a.oa[x][y].mgd = 0;
         let neighbors = getRealCellNeighbors(a, new _.Td(x, y));
         neighbors.forEach((pos) => a.oa[pos.x][pos.y].cellDug = true);
       }
@@ -3450,14 +3451,23 @@ loaded_h_0(function (_) {
             -(a.Yb / 800) / 2,
           ))
         : (a.Ij && tile.FLb) ||
-          ((a.bossIntro || tile.blink) &&
-            ((c = (1 - (Date.now() - tile.mgd) / 600) * 0.85),
+          ((a.bossIntro) &&
+            ((c = (1 - (now - tile.mgd) / 600) * 0.85),
             c > 0 &&
               (a.context.fillStyle = darkenColor(
                 a.context.fillStyle,
                 Math.min(0, -c),
               ))))
       : (a.context.fillStyle = darkenColor(a.context.fillStyle, -0.25));
+    if (tile.blink) {
+      ((c = (1 - (now - tile.mgd) / 600) * 0.85),
+        c > 0 &&
+          (a.context.fillStyle = darkenColor(
+            a.context.fillStyle,
+            Math.min(0, -c),
+          )
+      ));
+    }
     a.context.fillRect(
       b.x * a.cellSize,
       b.y * a.cellSize,
