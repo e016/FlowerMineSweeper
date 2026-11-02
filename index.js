@@ -1975,8 +1975,6 @@ loaded_h_0(function (_) {
       if (willShow && a.didWin && a.adventure) {
         a.adventure.coins = a.coins;
         a.adventure.powerups = a.powerups;
-        a.adventure.endless ? a.adventure.level++ : (a.adventure.level = 0);
-        a.adventure.lastLevel = a.adventure.level;
       }
     }
   };
@@ -2095,6 +2093,7 @@ loaded_h_0(function (_) {
       var g = getCellFromPixelPosition(a, b, c);
       if (g !== null) {
         a.adventure.lastLevel++;
+        a.adventure.level = a.adventure.lastLevel;
         a.setAdventureLevel();
         a.reset();
       }
@@ -3983,7 +3982,7 @@ loaded_h_0(function (_) {
     }
     Xg() {
       this.Ij && _.fw(this.Ja("NSjDf").el());
-      if (this.adventure && ! this.adventure.endless) {
+      if (this.adventure && !this.adventure.endless && this.adventure.level > 0) {
         this.adventure.lastLevel = this.adventure.level;
         this.adventure.level = 0;
       }
@@ -4042,7 +4041,7 @@ loaded_h_0(function (_) {
     }
     setAdventureLevel() {
       if (this.adventure) {
-        this.adventure.level = this.adventure.lastLevel;
+        
         let adventureLevel = this.adventure.level < 1 ? {
           name: "Map",
           level: 0,
@@ -4054,7 +4053,7 @@ loaded_h_0(function (_) {
           isMap: true,
         } : this.adventure.endless
           ? this.getEndlessLevel(this.adventure, +this.Da)
-          : adventureMaps[this.adventure.episode][this.adventure.lastLevel - 1];
+          : adventureMaps[this.adventure.episode][this.adventure.level - 1];
         currentTheme = themes[adventureLevel.theme];
         document.querySelector(".NWJp1d").style.backgroundColor = currentTheme[7];
         console.log(this.adventure);
